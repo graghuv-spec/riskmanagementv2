@@ -1,6 +1,9 @@
 spring:
   datasource:
-    # Override these via environment variables or application-local.yml (never commit real credentials)
+    # Override DB_URL via environment variable in all non-local environments.
+    # Azure Database for PostgreSQL requires SSL — the production DB_URL must include sslmode=require, e.g.:
+    #   jdbc:postgresql://<server>.postgres.database.azure.com:5432/<db>?sslmode=require&currentSchema=riskmanagement
+    # The fallback below (sslmode=disable) is for local development only.
     url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:admin}
@@ -24,3 +27,11 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.tool.schema: DEBUG
+
+# CORS allowed origins. Override via ALLOWED_ORIGINS env var in production.
+# Comma-separated list of origin patterns. Azure wildcard domains are included by default.
+# Example for Azure Container Apps:
+#   ALLOWED_ORIGINS=https://my-frontend.livelyforest-abc123.eastus.azurecontainerapps.io
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:4200,http://localhost,https://*.azurewebsites.net,https://*.azurecontainerapps.io}

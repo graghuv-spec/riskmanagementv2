@@ -4,7 +4,6 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 # Copy package files first — better layer caching
-# (npm ci only re-runs when package-lock.json changes)
 COPY package.json package-lock.json ./
 RUN npm ci
 
@@ -15,16 +14,20 @@ RUN npm run build:prod
 # ── Stage 2: Serve with nginx ─────────────────────────────────────────────────
 FROM nginx:alpine AS runtime
 
-# Remove default config
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Custom nginx config (Angular routing + API proxy to backend service)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# nginx.conf.template uses ${BACKEND_URL} which is substituted at container
+# start by docker-entrypoint.sh — allows the same image to run locally
+# (BACKEND_URL=http://backend:8080) and on GCP Cloud Run (BACKEND_URL=https://...).
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
 # Copy Angular production build
-# Angular 17 outputs to dist/<project-name>/browser/ (changed from dist/<project-name>/ in v17)
+# Angular 17 outputs to dist/<project>/browser/
 COPY --from=build /app/dist/frontend/browser/ /usr/share/nginx/html/
+
+# Entrypoint runs envsubst on the template then starts nginx
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 EXPOSE 80
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

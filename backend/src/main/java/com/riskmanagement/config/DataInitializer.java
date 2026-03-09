@@ -178,7 +178,7 @@ public class DataInitializer {
             al.setEntityType(d[1]);
             al.setEntityId(Long.parseLong(d[2]));
             al.setTimestamp(LocalDateTime.now().minusDays((int)(Math.random() * 30)));
-            al.setIpAddress("10.0.0.1");
+            al.setIpAddress("127.0.0.1"); // demo/seed data placeholder
             auditLogRepository.save(al);
         }
     }
