@@ -25,7 +25,7 @@ COPY --from=build /app/dist/frontend/browser/ /usr/share/nginx/html/
 
 # Entrypoint runs envsubst on the template then starts nginx
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN sed -i 's/\r//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
 
 EXPOSE 80
 
