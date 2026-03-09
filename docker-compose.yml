@@ -47,8 +47,8 @@ services:
     ports:
       - "80:80"            # browse to http://localhost
     environment:
-      # "backend" resolves via Docker's internal DNS — same image works on GCP
-      # Cloud Run by setting BACKEND_URL=https://<backend-service>.run.app
+      # "backend" resolves via Docker's internal DNS — same image works on Azure
+      # Container Apps by setting BACKEND_URL=https://<backend-app>.<env>.azurecontainerapps.io
       BACKEND_URL: http://backend:8080
     depends_on:
       - backend

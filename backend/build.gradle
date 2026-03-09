@@ -27,7 +27,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-graphql'
     implementation 'org.springframework.security:spring-security-crypto'
     runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly 'com.google.cloud.sql:postgres-socket-factory:1.20.0'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework:spring-webflux'

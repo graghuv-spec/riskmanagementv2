@@ -16,7 +16,7 @@ FROM nginx:alpine AS runtime
 
 # nginx.conf.template uses ${BACKEND_URL} which is substituted at container
 # start by docker-entrypoint.sh — allows the same image to run locally
-# (BACKEND_URL=http://backend:8080) and on GCP Cloud Run (BACKEND_URL=https://...).
+# (BACKEND_URL=http://backend:8080) and on Azure Container Apps (BACKEND_URL=https://...).
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
 # Copy Angular production build
