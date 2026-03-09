@@ -12,8 +12,8 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  email = 'admin@mfb.com';
-  password = 'password123';
+  email = '';
+  password = '';
   error = '';
   loading = false;
 
@@ -26,7 +26,7 @@ export class LoginComponent {
     this.error = ''; this.loading = true;
     this.auth.login(this.email, this.password).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: () => { this.error = 'Invalid email or password. Try admin@mfb.com / password123'; this.loading = false; }
+      error: () => { this.error = 'Invalid email or password.'; this.loading = false; }
     });
   }
 }

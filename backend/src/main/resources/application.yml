@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
-    username: postgres
-    password: admin
+    # Override these via environment variables or application-local.yml (never commit real credentials)
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5

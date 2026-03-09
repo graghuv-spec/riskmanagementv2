@@ -4,7 +4,7 @@ import { forkJoin, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PortfolioService {
-  private readonly BASE = 'http://localhost:8080/api';
+  private readonly BASE = '/api';
 
   constructor(private http: HttpClient) {}
 

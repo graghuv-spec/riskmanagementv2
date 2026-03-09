@@ -7,7 +7,7 @@
     <form (ngSubmit)="login()" class="login-form" autocomplete="off">
       <div class="form-group">
         <label>Email Address</label>
-        <input type="email" [(ngModel)]="email" name="email" placeholder="admin@mfb.com" required>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email" required>
       </div>
       <div class="form-group">
         <label>Password</label>
@@ -19,6 +19,6 @@
         <span *ngIf="loading">Signing in...</span>
       </button>
     </form>
-    <p class="login-hint">💡 Default: admin&#64;mfb.com / password123</p>
+    <p class="login-hint">Contact your administrator if you need access.</p>
   </div>
 </div>

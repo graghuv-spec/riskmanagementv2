@@ -57,7 +57,7 @@ export class RiskResultComponent implements OnInit {
     const s = this.riskScore?.riskScore ?? 0;
     return this.drivers.map(d => ({
       ...d,
-      value: Math.round(s * (d.weight / 100) * (0.7 + Math.random() * 0.6))
+      value: Math.round(s * (d.weight / 100))
     }));
   }
 

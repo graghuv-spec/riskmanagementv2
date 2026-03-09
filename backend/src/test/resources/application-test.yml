@@ -1,24 +1,26 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
-    username: postgres
-    password: admin
+    # Separate schema keeps test data isolated from the main riskmanagement schema
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement_test}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 5
-      minimum-idle: 2
+      maximum-pool-size: 3
+      minimum-idle: 1
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: create-drop    # wipe and recreate schema on each test run
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: riskmanagement
+        default_schema: riskmanagement_test
   graphql:
     graphiql:
       enabled: false
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
+    org.hibernate.SQL: WARN
+    com.riskmanagement: DEBUG

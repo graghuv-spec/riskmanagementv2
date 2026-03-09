@@ -1,0 +1,21 @@
+# Compiled output
+build/
+bin/
+out/
+
+# Gradle cache
+.gradle/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Git
+.git
+.gitignore
+
+# Docs / CI — not needed in image
+README.md
+ARCHITECTURE.md
+.github/

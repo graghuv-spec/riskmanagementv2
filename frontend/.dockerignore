@@ -1,0 +1,29 @@
+# Installed packages — npm ci will re-install from package-lock.json
+node_modules/
+
+# Build output
+dist/
+.angular/
+
+# Test artefacts
+playwright-report/
+test-results/
+out-tsc/
+coverage/
+
+# E2E tests — not needed in production image
+e2e/
+*.spec.ts
+playwright.config.ts
+tsconfig.e2e.json
+tsconfig.spec.json
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore

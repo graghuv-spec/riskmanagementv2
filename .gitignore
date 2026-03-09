@@ -5,3 +5,25 @@ Thumbs.db
 # IDE
 .idea/
 *.iml
+.vscode/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/playwright-report/
+frontend/test-results/
+frontend/out-tsc/
+
+# Backend
+backend/build/
+backend/.gradle/
+backend/out/
+
+# Environment / secrets
+*.env
+.env
+application-local.yml
+
+# Local run logs
+logs/

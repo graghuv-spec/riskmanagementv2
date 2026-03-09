@@ -44,19 +44,16 @@ public class LoanGraphQLController {
 
     @MutationMapping
     public Loan updateLoan(@Argument Long id, @Argument("loan") LoanInput loanInput) {
-        Optional<Loan> existing = loanService.getLoanById(id);
-        if (existing.isPresent()) {
-            Loan loan = existing.get();
-            loan.setBorrowerId(loanInput.getBorrowerId());
-            loan.setInstitutionId(loanInput.getInstitutionId());
-            loan.setLoanAmount(loanInput.getLoanAmount());
-            loan.setInterestRate(loanInput.getInterestRate());
-            loan.setTenureMonths(loanInput.getTenureMonths());
-            loan.setDisbursementDate(loanInput.getDisbursementDate());
-            loan.setStatus(loanInput.getStatus());
-            return loanService.saveLoan(loan);
-        }
-        return null;
+        Loan loan = loanService.getLoanById(id)
+                .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
+        loan.setBorrowerId(loanInput.getBorrowerId());
+        loan.setInstitutionId(loanInput.getInstitutionId());
+        loan.setLoanAmount(loanInput.getLoanAmount());
+        loan.setInterestRate(loanInput.getInterestRate());
+        loan.setTenureMonths(loanInput.getTenureMonths());
+        loan.setDisbursementDate(loanInput.getDisbursementDate());
+        loan.setStatus(loanInput.getStatus());
+        return loanService.saveLoan(loan);
     }
 
     @MutationMapping

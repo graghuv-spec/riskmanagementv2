@@ -73,8 +73,7 @@ public class RiskCalculationService {
     }
 
     private double calculateRepaymentScore(Long loanId) {
-        List<Repayment> repayments = repaymentRepository.findAll(); // Simplified, should filter by loanId
-        // Simplified: if no past due, 100
+        List<Repayment> repayments = repaymentRepository.findByLoanId(loanId);
         long pastDue = repayments.stream().filter(r -> r.getDaysPastDue() > 0).count();
         return pastDue == 0 ? 100 : 50;
     }

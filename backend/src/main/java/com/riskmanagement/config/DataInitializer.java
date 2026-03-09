@@ -5,13 +5,16 @@ import com.riskmanagement.repository.*;
 import com.riskmanagement.service.RiskCalculationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
+@Profile("!test")   // never seed demo data when running integration tests
 public class DataInitializer {
 
     @Autowired private InstitutionRepository institutionRepository;
@@ -23,6 +26,8 @@ public class DataInitializer {
     @Autowired private PortfolioMetricsRepository portfolioMetricsRepository;
     @Autowired private AuditLogRepository auditLogRepository;
     @Autowired private RiskCalculationService riskCalculationService;
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @EventListener(ApplicationReadyEvent.class)
     public void seed() {
@@ -43,7 +48,7 @@ public class DataInitializer {
         admin.setName("Alice Admin");
         admin.setEmail("admin@mfb.com");
         admin.setRole("Admin");
-        admin.setPasswordHash("password123");
+        admin.setPasswordHash(passwordEncoder.encode("password123"));
         admin.setMfaEnabled(true);
         admin.setInstitutionId(instId);
         admin.setCreatedAt(LocalDateTime.now().minusMonths(11));
@@ -53,7 +58,7 @@ public class DataInitializer {
         officer.setName("Bob Loan Officer");
         officer.setEmail("loan.officer@mfb.com");
         officer.setRole("LoanOfficer");
-        officer.setPasswordHash("password123");
+        officer.setPasswordHash(passwordEncoder.encode("password123"));
         officer.setMfaEnabled(false);
         officer.setInstitutionId(instId);
         officer.setCreatedAt(LocalDateTime.now().minusMonths(10));

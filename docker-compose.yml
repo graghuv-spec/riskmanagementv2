@@ -1,4 +1,6 @@
 services:
+
+  # ── 1. Database ──────────────────────────────────────────────────────────────
   postgres:
     image: postgres:15
     environment:
@@ -7,14 +9,47 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
     ports:
-      - "5432:5432"
+      - "5432:5432"        # exposed so you can connect from a local DB client
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      # init.sql runs only on first start (empty data volume).
+      # It creates the "riskmanagement" schema.
+      # Spring Boot ddl-auto:update then creates the tables inside it.
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # ── 2. Backend (Spring Boot) ─────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"        # exposed for direct REST/GraphQL access and local dev
+    environment:
+      # !! IMPORTANT: inside Docker the hostname is the service name "postgres",
+      # NOT "localhost".  "localhost" inside a container refers to itself.
+      DB_URL: jdbc:postgresql://postgres:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
+      DB_USERNAME: postgres
+      DB_PASSWORD: admin   # override with a real secret in production
+    depends_on:
+      postgres:
+        condition: service_healthy   # wait until pg_isready passes
+
+  # ── 3. Frontend (Angular → nginx) ───────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"            # browse to http://localhost
+    depends_on:
+      - backend
+    # nginx.conf proxies /api/, /graphql, /graphiql → http://backend:8080
+    # "backend" resolves via Docker's internal DNS — no localhost needed.
 
 volumes:
   postgres_data:
