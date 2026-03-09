@@ -1,0 +1,32 @@
+type Loan {
+    loanId: ID!
+    borrowerId: ID
+    institutionId: ID
+    loanAmount: Float
+    interestRate: Float
+    tenureMonths: Int
+    disbursementDate: String
+    status: String
+    createdAt: String
+}
+
+type Query {
+    loans: [Loan]
+    loan(id: ID!): Loan
+}
+
+type Mutation {
+    createLoan(loan: LoanInput!): Loan
+    updateLoan(id: ID!, loan: LoanInput!): Loan
+    deleteLoan(id: ID!): Boolean
+}
+
+input LoanInput {
+    borrowerId: ID
+    institutionId: ID
+    loanAmount: Float
+    interestRate: Float
+    tenureMonths: Int
+    disbursementDate: String
+    status: String
+}
