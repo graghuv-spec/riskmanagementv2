@@ -1,0 +1,26 @@
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #38bdf8 100%);
+  padding: 0 24px; height: 60px; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(2,132,199,0.3);
+}
+.header-brand { display: flex; align-items: center; gap: 12px; }
+.header-icon { font-size: 24px; background: rgba(255,255,255,0.2); border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+.header-title { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: 0.3px; }
+.header-sub { font-size: 11px; color: rgba(255,255,255,0.75); }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-user-info { display: flex; align-items: center; gap: 10px; }
+.header-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.25); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px;
+}
+.header-name { font-size: 13px; font-weight: 600; color: #fff; }
+.header-role { font-size: 11px; color: rgba(255,255,255,0.75); }
+.btn-logout {
+  background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px; padding: 6px 14px; font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; transition: background 0.2s;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.25); }

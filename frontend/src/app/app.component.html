@@ -1,0 +1,15 @@
+<ng-container *ngIf="!isLoginPage && authService.isLoggedIn(); else plain">
+  <div class="app-shell">
+    <app-header></app-header>
+    <div class="app-body">
+      <app-sidebar></app-sidebar>
+      <main class="app-main">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #plain>
+  <router-outlet></router-outlet>
+</ng-template>

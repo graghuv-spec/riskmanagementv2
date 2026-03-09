@@ -1,0 +1,86 @@
+<div class="page-header">
+  <h1>Risk Assessment Result</h1>
+  <p>AI-powered risk analysis for the loan application</p>
+</div>
+
+<div *ngIf="riskScore" class="result-layout">
+
+  <!-- Score Card -->
+  <div class="card score-card">
+    <div class="score-ring-wrap">
+      <div class="score-ring" [style.border-color]="scoreColor">
+        <div class="score-num" [style.color]="scoreColor">{{ riskScore.riskScore | number:'1.0-0' }}</div>
+        <div class="score-label">Risk Score</div>
+      </div>
+    </div>
+    <div class="score-meta">
+      <div class="grade-badge" [ngClass]="gradeClass">Grade {{ riskScore.riskGrade }}</div>
+      <div class="score-detail">
+        <div class="detail-item">
+          <span class="detail-label">Probability of Default</span>
+          <span class="detail-val" [style.color]="scoreColor">{{ pdPercent }}%</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Recommended Limit</span>
+          <span class="detail-val">${{ riskScore.recommendedLimit | number:'1.0-0' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Model Version</span>
+          <span class="detail-val">{{ riskScore.modelVersion }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-right">
+    <!-- Key Risk Drivers -->
+    <div class="card">
+      <div class="section-title">Key Risk Drivers</div>
+      <div class="drivers-list">
+        <div *ngFor="let d of driverContributions" class="driver-row">
+          <span class="driver-icon">{{ d.icon }}</span>
+          <div class="driver-info">
+            <div class="driver-name">{{ d.label }} <span class="driver-weight">{{ d.weight }}%</span></div>
+            <div class="driver-bar-wrap">
+              <div class="driver-bar" [style.width.%]="d.value" [style.background]="scoreColor"></div>
+            </div>
+          </div>
+          <span class="driver-val">{{ d.value }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Explanation -->
+    <div class="card">
+      <div class="section-title">AI Explanation</div>
+      <p class="explanation-text">{{ explanation }}</p>
+      <div class="explanation-factors" *ngIf="loanData">
+        <div class="factor-chip">💰 Income: ${{ loanData.monthlyIncome?.toLocaleString() }}/mo</div>
+        <div class="factor-chip">🏠 Collateral: ${{ loanData.collateralValue?.toLocaleString() }}</div>
+        <div class="factor-chip">🏢 Sector: {{ loanData.businessSector }}</div>
+        <div class="factor-chip">📍 Location: {{ loanData.location }}</div>
+      </div>
+    </div>
+
+    <!-- Manual Override -->
+    <div class="card override-card">
+      <div class="section-title">Manual Override</div>
+      <p class="override-hint">Analyst can override the system score before saving.</p>
+      <div class="override-row">
+        <div class="form-group" style="flex:1; margin-bottom: 0">
+          <label>Override Score (0–100)</label>
+          <input type="number" [(ngModel)]="overrideScore" placeholder="Leave blank to keep system score" min="0" max="100">
+        </div>
+        <button class="btn-primary" (click)="saveWithOverride()" [disabled]="saving" style="margin-top: 22px">
+          {{ saving ? 'Saving...' : '💾 Save & Approve' }}
+        </button>
+      </div>
+      <div class="save-msg" *ngIf="saveMsg" [class.success]="saveMsg.startsWith('✓')">{{ saveMsg }}</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="result-actions">
+  <button class="btn-outline" (click)="newApplication()">← New Application</button>
+</div>

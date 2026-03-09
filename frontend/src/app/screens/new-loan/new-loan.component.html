@@ -1,0 +1,113 @@
+<div class="page-header">
+  <h1>New Loan Application</h1>
+  <p>Complete borrower and loan details, then generate the risk score</p>
+</div>
+
+<form (ngSubmit)="generate()" class="loan-form">
+  <div class="form-grid">
+
+    <!-- Borrower Details -->
+    <div class="card form-section">
+      <div class="section-title">Borrower Details</div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input [(ngModel)]="form.fullName" name="fullName" placeholder="e.g. John Kamau" required>
+        </div>
+        <div class="form-group">
+          <label>National ID *</label>
+          <input [(ngModel)]="form.nationalId" name="nationalId" placeholder="e.g. NID-2024-001">
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select [(ngModel)]="form.gender" name="gender">
+            <option>Male</option><option>Female</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Age *</label>
+          <input type="number" [(ngModel)]="form.age" name="age" placeholder="e.g. 35" min="18" max="80">
+        </div>
+        <div class="form-group">
+          <label>Location *</label>
+          <select [(ngModel)]="form.location" name="location">
+            <option value="">-- Select --</option>
+            <option *ngFor="let l of locations" [value]="l">{{ l }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Business Sector *</label>
+          <select [(ngModel)]="form.businessSector" name="businessSector">
+            <option *ngFor="let s of sectors" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial Inputs -->
+    <div class="card form-section">
+      <div class="section-title">Financial Information</div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Monthly Income (USD) *</label>
+          <input type="number" [(ngModel)]="form.monthlyIncome" name="monthlyIncome" placeholder="e.g. 4500" min="0">
+        </div>
+        <div class="form-group">
+          <label>Collateral Value (USD) *</label>
+          <input type="number" [(ngModel)]="form.collateralValue" name="collateralValue" placeholder="e.g. 20000" min="0">
+        </div>
+      </div>
+      <div class="ratio-indicator" *ngIf="collateralRatio > 0">
+        <span class="ratio-label">Collateral-to-Loan Ratio:</span>
+        <span class="ratio-value" [ngClass]="{
+          'ratio-good': collateralRatio >= 2,
+          'ratio-ok':   collateralRatio >= 1,
+          'ratio-low':  collateralRatio < 1
+        }">{{ collateralRatio }}x
+          <span class="ratio-tag" *ngIf="collateralRatio >= 2">Strong ✓</span>
+          <span class="ratio-tag" *ngIf="collateralRatio >= 1 && collateralRatio < 2">Adequate</span>
+          <span class="ratio-tag" *ngIf="collateralRatio < 1">Weak ⚠</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Loan Details -->
+    <div class="card form-section">
+      <div class="section-title">Loan Details</div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Loan Amount (USD) *</label>
+          <input type="number" [(ngModel)]="form.loanAmount" name="loanAmount" placeholder="e.g. 15000" min="100">
+        </div>
+        <div class="form-group">
+          <label>Interest Rate (%) *</label>
+          <input type="number" [(ngModel)]="form.interestRate" name="interestRate" placeholder="e.g. 14.5" min="0" max="100" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>Tenure (Months) *</label>
+          <input type="number" [(ngModel)]="form.tenureMonths" name="tenureMonths" placeholder="e.g. 24" min="1" max="120">
+        </div>
+        <div class="form-group">
+          <label>Disbursement Date</label>
+          <input type="date" [(ngModel)]="form.disbursementDate" name="disbursementDate">
+        </div>
+        <div class="form-group">
+          <label>Loan Status</label>
+          <select [(ngModel)]="form.status" name="status">
+            <option>Active</option><option>Closed</option><option>Defaulted</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-generate" [disabled]="loading">
+      <span *ngIf="!loading">🧮 Generate Risk Score</span>
+      <span *ngIf="loading">Calculating...</span>
+    </button>
+  </div>
+</form>

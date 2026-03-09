@@ -1,0 +1,78 @@
+<div class="page-header">
+  <h1>Dashboard</h1>
+  <p>Portfolio overview and risk analytics</p>
+</div>
+
+<div *ngIf="loading" class="loading-wrap"><div class="spinner"></div></div>
+
+<ng-container *ngIf="!loading">
+  <!-- Stat cards -->
+  <div class="grid-4" style="margin-bottom: 24px">
+    <div class="stat-card">
+      <div class="stat-label">Active Loans</div>
+      <div class="stat-value">{{ totalActive }}</div>
+      <div class="stat-sub">of {{ totalLoans }} total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Loan Book Value</div>
+      <div class="stat-value">${{ (totalValue / 1000).toFixed(0) }}K</div>
+      <div class="stat-sub">total disbursed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Portfolio at Risk 30d</div>
+      <div class="stat-value" [style.color]="par30 > 5 ? 'var(--red)' : 'var(--sky-dark)'">{{ par30 }}%</div>
+      <div class="stat-sub">PAR 30 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Default Forecast</div>
+      <div class="stat-value" [style.color]="defaultForecast > 10 ? 'var(--red)' : 'var(--yellow)'">{{ defaultForecast }}%</div>
+      <div class="stat-sub">avg probability of default</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid-2" style="margin-bottom: 24px">
+    <div class="card">
+      <div class="section-title">Sector Risk Heatmap</div>
+      <div style="height: 240px; position: relative">
+        <canvas #sectorChart></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title">Risk Grade Distribution</div>
+      <div style="height: 240px; position: relative">
+        <canvas #riskDistChart></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loans table -->
+  <div class="card">
+    <div class="section-title" style="margin-bottom: 12px">
+      Recent Loans
+      <a routerLink="/new-loan" class="btn-primary" style="margin-left: auto; font-size: 12px; padding: 6px 14px">+ New Loan</a>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Loan ID</th><th>Amount</th><th>Rate</th><th>Tenure</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of loans | slice:0:8">
+          <td>#{{ l.loanId }}</td>
+          <td>${{ l.loanAmount?.toLocaleString() }}</td>
+          <td>{{ l.interestRate }}%</td>
+          <td>{{ l.tenureMonths }}mo</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'badge-green': l.status === 'Active',
+              'badge-gray':  l.status === 'Closed',
+              'badge-red':   l.status === 'Defaulted'
+            }">{{ l.status }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>

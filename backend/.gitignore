@@ -1,0 +1,21 @@
+# Gradle build output
+build/
+bin/
+.gradle/
+
+# Logs
+*.log
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# macOS
+.DS_Store

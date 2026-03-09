@@ -29,7 +29,7 @@ public class LoanGraphQLController {
     }
 
     @MutationMapping
-    public Loan createLoan(@Argument LoanInput loanInput) {
+    public Loan createLoan(@Argument("loan") LoanInput loanInput) {
         Loan loan = new Loan();
         loan.setBorrowerId(loanInput.getBorrowerId());
         loan.setInstitutionId(loanInput.getInstitutionId());
@@ -43,7 +43,7 @@ public class LoanGraphQLController {
     }
 
     @MutationMapping
-    public Loan updateLoan(@Argument Long id, @Argument LoanInput loanInput) {
+    public Loan updateLoan(@Argument Long id, @Argument("loan") LoanInput loanInput) {
         Optional<Loan> existing = loanService.getLoanById(id);
         if (existing.isPresent()) {
             Loan loan = existing.get();

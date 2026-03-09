@@ -1,0 +1,21 @@
+<header class="header">
+  <div class="header-brand">
+    <div class="header-icon">⚡</div>
+    <div>
+      <div class="header-title">RiskManagement Pro</div>
+      <div class="header-sub">Enterprise Risk Assessment</div>
+    </div>
+  </div>
+  <div class="header-right" *ngIf="user">
+    <div class="header-user-info">
+      <div class="header-avatar">{{ user.name?.charAt(0)?.toUpperCase() }}</div>
+      <div>
+        <div class="header-name">{{ user.name }}</div>
+        <div class="header-role">{{ user.role }}</div>
+      </div>
+    </div>
+    <button class="btn-logout" (click)="logout()">
+      <span>↩</span> Logout
+    </button>
+  </div>
+</header>

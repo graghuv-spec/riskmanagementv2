@@ -1,0 +1,91 @@
+<div class="page-header">
+  <h1>Report Generator</h1>
+  <p>Export portfolio data, risk reports, and credit memos</p>
+</div>
+
+<div *ngIf="loading" class="loading-wrap"><div class="spinner"></div></div>
+
+<ng-container *ngIf="!loading">
+  <div class="reports-summary card" style="margin-bottom: 24px">
+    <div class="section-title">Portfolio Snapshot</div>
+    <div class="summary-stats">
+      <div class="sum-item"><span class="sum-label">Total Loans</span><span class="sum-val">{{ loans.length }}</span></div>
+      <div class="sum-item"><span class="sum-label">Active</span><span class="sum-val">{{ activeLoansCount }}</span></div>
+      <div class="sum-item"><span class="sum-label">Risk Scores</span><span class="sum-val">{{ riskScores.length }}</span></div>
+      <div class="sum-item"><span class="sum-label">Borrowers</span><span class="sum-val">{{ borrowers.length }}</span></div>
+    </div>
+  </div>
+
+  <div class="report-cards">
+
+    <div class="report-card card">
+      <div class="report-icon pdf">📊</div>
+      <div class="report-info">
+        <h3>Portfolio Risk Report</h3>
+        <p>Full PDF report with all loans, risk scores, grades and portfolio summary statistics.</p>
+        <ul>
+          <li>✓ Portfolio summary stats</li>
+          <li>✓ Loan-by-loan risk table</li>
+          <li>✓ Formatted, print-ready</li>
+        </ul>
+      </div>
+      <button class="btn-primary" (click)="downloadPDF()" [disabled]="generating === 'pdf'">
+        {{ generating === 'pdf' ? 'Generating...' : '⬇ Download PDF' }}
+      </button>
+    </div>
+
+    <div class="report-card card">
+      <div class="report-icon csv">📋</div>
+      <div class="report-info">
+        <h3>Export CSV</h3>
+        <p>Comma-separated file with all loan and risk score data for further analysis in Excel or BI tools.</p>
+        <ul>
+          <li>✓ All loan fields</li>
+          <li>✓ Risk scores & grades</li>
+          <li>✓ Borrower details</li>
+        </ul>
+      </div>
+      <button class="btn-secondary" (click)="downloadCSV()" [disabled]="generating === 'csv'">
+        {{ generating === 'csv' ? 'Exporting...' : '📥 Export CSV' }}
+      </button>
+    </div>
+
+    <div class="report-card card">
+      <div class="report-icon memo">📄</div>
+      <div class="report-info">
+        <h3>Credit Memo</h3>
+        <p>Formal credit memo for the most recent loan with borrower info, risk assessment, and lending decision.</p>
+        <ul>
+          <li>✓ Borrower profile</li>
+          <li>✓ Risk assessment</li>
+          <li>✓ Lending decision</li>
+        </ul>
+      </div>
+      <button class="btn-outline" (click)="generateCreditMemo()" [disabled]="generating === 'memo'">
+        {{ generating === 'memo' ? 'Generating...' : '📝 Generate Credit Memo' }}
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Data Preview -->
+  <div class="card" style="margin-top: 24px">
+    <div class="section-title">Loans Preview ({{ loans.length }} records)</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Loan ID</th><th>Amount</th><th>Status</th><th>Borrower</th><th>Risk Score</th><th>Grade</th><th>Prob. Default</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of loans | slice:0:10">
+          <td>#{{ l.loanId }}</td>
+          <td>${{ l.loanAmount?.toLocaleString() }}</td>
+          <td><span class="badge" [ngClass]="{'badge-green': l.status==='Active','badge-gray': l.status==='Closed','badge-red': l.status==='Defaulted'}">{{ l.status }}</span></td>
+          <td>{{ getBorrower(l.borrowerId)?.fullName ?? '-' }}</td>
+          <td>{{ getRiskScore(l.loanId)?.riskScore?.toFixed(0) ?? '-' }}</td>
+          <td><span class="badge" [ngClass]="{'badge-green': getRiskScore(l.loanId)?.riskGrade==='A','badge-blue': getRiskScore(l.loanId)?.riskGrade==='B','badge-yellow': getRiskScore(l.loanId)?.riskGrade==='C','badge-red': getRiskScore(l.loanId)?.riskGrade==='D'}">{{ getRiskScore(l.loanId)?.riskGrade ?? '-' }}</span></td>
+          <td>{{ getRiskScore(l.loanId)?.probabilityDefault ? ((getRiskScore(l.loanId)?.probabilityDefault)*100).toFixed(1) + '%' : '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
