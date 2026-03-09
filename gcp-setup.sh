@@ -12,7 +12,7 @@
 set -euo pipefail
 
 # ── Configuration — edit these before running ─────────────────────────────────
-PROJECT_ID="$(gcloud config get-value project 2>/dev/null)"
+PROJECT_ID="project-23ff0507-3fba-4c58-b06"
 REGION="us-central1"
 REGISTRY_REPO="riskmanagement"
 SQL_INSTANCE="riskmanagement-db"
@@ -26,11 +26,6 @@ RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC
 info()    { echo -e "${GREEN}[INFO]${NC}  $*"; }
 warn()    { echo -e "${YELLOW}[WARN]${NC}  $*"; }
 section() { echo ""; echo -e "${CYAN}══ $* ══${NC}"; }
-
-if [ -z "$PROJECT_ID" ]; then
-  echo -e "${RED}[ERROR]${NC} No GCP project set. Run: gcloud config set project YOUR_PROJECT_ID"
-  exit 1
-fi
 
 echo ""
 echo "══════════════════════════════════════════════════════"
