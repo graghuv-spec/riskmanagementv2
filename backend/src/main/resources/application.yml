@@ -11,6 +11,10 @@ spring:
     hikari:
       maximum-pool-size: 5
       minimum-idle: 2
+      # Ensures the riskmanagement schema exists before Hibernate runs DDL.
+      # Required for Cloud SQL (and any fresh PostgreSQL instance) where the
+      # schema is not pre-created.  The statement is idempotent.
+      connection-init-sql: "CREATE SCHEMA IF NOT EXISTS riskmanagement"
   jpa:
     hibernate:
       ddl-auto: update
