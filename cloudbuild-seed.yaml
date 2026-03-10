@@ -1,0 +1,50 @@
+steps:
+- name: 'postgres:15'
+  entrypoint: bash
+  args:
+  - -c
+  - |
+    set -e
+    echo ">>> Connecting to Cloud SQL public IP $_SQL_IP ..."
+
+    # BCrypt hash of 'password123' (cost=10, generated offline)
+    PW_HASH='$2b$10$L.2VqvYtR3Pc8JxLLH5HuOeuyM2DzNMJHLZNZDnksdZujryl0nHKG'
+
+    export PGPASSWORD=$_DB_PASSWORD
+
+    echo ">>> Ensuring schema exists..."
+    psql -h $_SQL_IP -U $_DB_USERNAME -d postgres \
+      -c "CREATE SCHEMA IF NOT EXISTS riskmanagement;"
+
+    echo ">>> Truncating existing seed data (ignore error if tables missing)..."
+    psql -h $_SQL_IP -U $_DB_USERNAME -d postgres \
+      -c "TRUNCATE riskmanagement.audit_logs, riskmanagement.portfolio_metrics, riskmanagement.risk_scores, riskmanagement.repayments, riskmanagement.loans, riskmanagement.borrowers, riskmanagement.users, riskmanagement.institutions RESTART IDENTITY CASCADE;" \
+      2>&1 || echo "(truncate skipped — tables may not exist yet)"
+
+    echo ">>> Inserting institution..."
+    psql -h $_SQL_IP -U $_DB_USERNAME -d postgres -v ON_ERROR_STOP=1 \
+      -c "INSERT INTO riskmanagement.institutions (name, license_number, contact_email, subscription_plan, created_at) VALUES ('MicroFinance Corp', 'MFC-2024-001', 'admin@mfc.com', 'Premium', NOW() - INTERVAL '12 months');"
+
+    echo ">>> Inserting admin user (admin@mfb.com / password123)..."
+    psql -h $_SQL_IP -U $_DB_USERNAME -d postgres -v ON_ERROR_STOP=1 \
+      -c "INSERT INTO riskmanagement.users (name, email, role, password_hash, mfa_enabled, institution_id, created_at) SELECT 'Alice Admin', 'admin@mfb.com', 'Admin', '$$PW_HASH', true, institution_id, NOW() - INTERVAL '11 months' FROM riskmanagement.institutions LIMIT 1;"
+
+    echo ">>> Inserting loan officer (loan.officer@mfb.com / password123)..."
+    psql -h $_SQL_IP -U $_DB_USERNAME -d postgres -v ON_ERROR_STOP=1 \
+      -c "INSERT INTO riskmanagement.users (name, email, role, password_hash, mfa_enabled, institution_id, created_at) SELECT 'Bob Loan Officer', 'loan.officer@mfb.com', 'LoanOfficer', '$$PW_HASH', false, institution_id, NOW() - INTERVAL '10 months' FROM riskmanagement.institutions LIMIT 1;"
+
+    echo ">>> Result:"
+    psql -h $_SQL_IP -U $_DB_USERNAME -d postgres \
+      -c "SELECT user_id, email, role FROM riskmanagement.users ORDER BY user_id;"
+
+    echo ">>> Done."
+
+substitutions:
+  _SQL_IP: "34.72.85.11"
+  _DB_USERNAME: postgres
+  _DB_PASSWORD: changeme123!
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: E2_HIGHCPU_8
+  substitutionOption: ALLOW_LOOSE
