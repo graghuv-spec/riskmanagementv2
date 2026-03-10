@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @Profile("!test")   // never seed demo data when running integration tests
@@ -31,16 +32,25 @@ public class DataInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void seed() {
-        if (institutionRepository.count() > 0) return;
+        // Guard: skip only when the admin user already exists.
+        // Checking the institution alone is fragile — a previous boot may have
+        // created the institution but crashed before saving users (partial seed).
+        if (userRepository.findByEmail("admin@mfb.com").isPresent()) return;
 
-        // Institution
-        Institution inst = new Institution();
-        inst.setName("MicroFinance Corp");
-        inst.setLicenseNumber("MFC-2024-001");
-        inst.setContactEmail("admin@mfc.com");
-        inst.setSubscriptionPlan("Premium");
-        inst.setCreatedAt(LocalDateTime.now().minusMonths(12));
-        inst = institutionRepository.save(inst);
+        // Institution — reuse an existing row if a partial seed left one behind.
+        Institution inst;
+        List<Institution> existing = institutionRepository.findAll();
+        if (!existing.isEmpty()) {
+            inst = existing.get(0);
+        } else {
+            inst = new Institution();
+            inst.setName("MicroFinance Corp");
+            inst.setLicenseNumber("MFC-2024-001");
+            inst.setContactEmail("admin@mfc.com");
+            inst.setSubscriptionPlan("Premium");
+            inst.setCreatedAt(LocalDateTime.now().minusMonths(12));
+            inst = institutionRepository.save(inst);
+        }
         Long instId = inst.getInstitutionId();
 
         // Users
