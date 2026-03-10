@@ -17,6 +17,8 @@
 #   _DB_URL            Full JDBC URL using Cloud SQL socket factory
 #   _DB_USERNAME       Database user, e.g. postgres
 #   _DB_PASSWORD       Database password  (use Secret Manager in production)
+#   _SERVICE_ACCOUNT   Cloud Run service account email with roles/cloudsql.client
+#                      e.g. rm-cloudrun-sa@PROJECT_ID.iam.gserviceaccount.com
 # ──────────────────────────────────────────────────────────────────────────────
 
 substitutions:
@@ -29,6 +31,7 @@ substitutions:
   _CLOUD_SQL_INSTANCE: project-23ff0507-3fba-4c58-b06:us-central1:riskmanagement-db
   _DB_URL:             jdbc:postgresql:///postgres?cloudSqlInstance=project-23ff0507-3fba-4c58-b06:us-central1:riskmanagement-db&socketFactory=com.google.cloud.sql.postgres.SocketFactory&currentSchema=riskmanagement
   _DB_PASSWORD:        changeme123!
+  _SERVICE_ACCOUNT:    rm-cloudrun-sa@project-23ff0507-3fba-4c58-b06.iam.gserviceaccount.com
 
 options:
   logging: CLOUD_LOGGING_ONLY
@@ -89,6 +92,7 @@ steps:
       - --min-instances=1
       - --add-cloudsql-instances=$_CLOUD_SQL_INSTANCE
       - --set-env-vars=DB_URL=$_DB_URL,DB_USERNAME=$_DB_USERNAME,DB_PASSWORD=$_DB_PASSWORD
+      - --service-account=$_SERVICE_ACCOUNT
 
   # ── 5. Retrieve backend URL ─────────────────────────────────────────────────
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
