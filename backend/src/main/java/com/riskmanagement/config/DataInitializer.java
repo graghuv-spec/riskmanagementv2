@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 @Profile("!test")   // never seed demo data when running integration tests
@@ -34,26 +33,29 @@ public class DataInitializer {
     @Transactional
     @EventListener(ApplicationReadyEvent.class)
     public void seed() {
-        // Guard: skip only when users already exist.
-        // Using count() avoids NonUniqueResultException if prior partial seeds
-        // left duplicate rows, and is safe even if the admin email check itself
-        // would throw due to duplicates.
-        if (userRepository.count() > 0) return;
+        // Guard: both demo user accounts already present means seed is complete.
+        if (userRepository.count() == 2) return;
 
-        // Institution — reuse an existing row if a partial seed left one behind.
-        Institution inst;
-        List<Institution> existing = institutionRepository.findAll();
-        if (!existing.isEmpty()) {
-            inst = existing.get(0);
-        } else {
-            inst = new Institution();
-            inst.setName("MicroFinance Corp");
-            inst.setLicenseNumber("MFC-2024-001");
-            inst.setContactEmail("admin@mfc.com");
-            inst.setSubscriptionPlan("Premium");
-            inst.setCreatedAt(LocalDateTime.now().minusMonths(12));
-            inst = institutionRepository.save(inst);
-        }
+        // Clean up any partial or duplicate data from a prior interrupted seed.
+        // This whole method is @Transactional: if interrupted by SIGTERM the
+        // deletes AND inserts both roll back, so the next boot retries cleanly.
+        auditLogRepository.deleteAll();
+        portfolioMetricsRepository.deleteAll();
+        riskScoreRepository.deleteAll();
+        repaymentRepository.deleteAll();
+        loanRepository.deleteAll();
+        borrowerRepository.deleteAll();
+        userRepository.deleteAll();
+        institutionRepository.deleteAll();
+
+        // Institution
+        Institution inst = new Institution();
+        inst.setName("MicroFinance Corp");
+        inst.setLicenseNumber("MFC-2024-001");
+        inst.setContactEmail("admin@mfc.com");
+        inst.setSubscriptionPlan("Premium");
+        inst.setCreatedAt(LocalDateTime.now().minusMonths(12));
+        inst = institutionRepository.save(inst);
         Long instId = inst.getInstitutionId();
 
         // Users
