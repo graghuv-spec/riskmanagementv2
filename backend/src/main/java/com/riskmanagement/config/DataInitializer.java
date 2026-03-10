@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,12 +31,14 @@ public class DataInitializer {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Transactional
     @EventListener(ApplicationReadyEvent.class)
     public void seed() {
-        // Guard: skip only when the admin user already exists.
-        // Checking the institution alone is fragile — a previous boot may have
-        // created the institution but crashed before saving users (partial seed).
-        if (userRepository.findByEmail("admin@mfb.com").isPresent()) return;
+        // Guard: skip only when users already exist.
+        // Using count() avoids NonUniqueResultException if prior partial seeds
+        // left duplicate rows, and is safe even if the admin email check itself
+        // would throw due to duplicates.
+        if (userRepository.count() > 0) return;
 
         // Institution — reuse an existing row if a partial seed left one behind.
         Institution inst;
