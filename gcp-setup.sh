@@ -27,6 +27,17 @@ info()    { echo -e "${GREEN}[INFO]${NC}  $*"; }
 warn()    { echo -e "${YELLOW}[WARN]${NC}  $*"; }
 section() { echo ""; echo -e "${CYAN}══ $* ══${NC}"; }
 
+if ! command -v gcloud &>/dev/null; then
+  echo -e "${RED}[ERROR]${NC} Google Cloud SDK (gcloud) not found. Install from: https://cloud.google.com/sdk/docs/install"
+  exit 1
+fi
+
+ACTIVE_ACCOUNT=$(gcloud auth list --filter=status:ACTIVE --format="value(account)" 2>/dev/null)
+if [ -z "$ACTIVE_ACCOUNT" ]; then
+  echo -e "${RED}[ERROR]${NC} Not logged in to gcloud. Run: gcloud auth login"
+  exit 1
+fi
+
 echo ""
 echo "══════════════════════════════════════════════════════"
 echo "  RiskManagement Pro — GCP Setup"
