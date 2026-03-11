@@ -27,3 +27,6 @@ application-local.yml
 
 # Local run logs
 logs/
+
+# Temporary local artifacts
+tmp/
