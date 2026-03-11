@@ -6,6 +6,8 @@ Docker-only local setup guide: see `DOCKER_LOCAL_RUNBOOK.md`.
 
 Kubernetes three-tier deployment guide: see `KUBERNETES_DEPLOYMENT.md`.
 
+AI-ready cloud deployment handoff guide (GCP/Azure/AWS): see `AI_CLOUD_DEPLOYMENT_PLAYBOOK.md`.
+
 One-command local bootstrap (PowerShell):
 
 ```powershell
@@ -22,6 +24,18 @@ Helm deploy (recommended for multi-environment):
 
 ```powershell
 .\scripts\helm-deploy.ps1 -Environment local
+```
+
+Cloud deploy with managed DB override:
+
+```powershell
+.\scripts\helm-deploy-cloud-managed.ps1 -Domain app.example.com -BackendRepository <registry>/riskmanagement-backend -FrontendRepository <registry>/riskmanagement-frontend -DbHost <managed-db-host> -DbUser <db-user> -DbPassword <db-password>
+```
+
+Google Cloud GKE deploy:
+
+```powershell
+.\scripts\gcp-gke-deploy.ps1 -ProjectId <project-id> -Region <region> -ClusterName riskmanagement-gke -CreateCluster -Autopilot -InstallIngressNginx -Domain app.example.com -BackendRepository <registry>/riskmanagement-backend -FrontendRepository <registry>/riskmanagement-frontend -DbHost <managed-db-host> -DbUser <db-user> -DbPassword <db-password> -EnableTls
 ```
 
 ---

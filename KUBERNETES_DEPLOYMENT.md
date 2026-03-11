@@ -66,6 +66,22 @@ Deploy cloud profile:
 .\scripts\helm-deploy.ps1 -Environment cloud
 ```
 
+Deploy cloud profile with managed database and domain-specific overrides:
+
+```powershell
+.\scripts\helm-deploy-cloud-managed.ps1 `
+	-Domain app.example.com `
+	-BackendRepository <registry>/riskmanagement-backend `
+	-BackendTag <tag> `
+	-FrontendRepository <registry>/riskmanagement-frontend `
+	-FrontendTag <tag> `
+	-DbHost <managed-db-host> `
+	-DbName <db-name> `
+	-DbUser <db-user> `
+	-DbPassword <db-password> `
+	-EnableTls
+```
+
 Destroy Helm release:
 
 ```powershell
@@ -123,3 +139,37 @@ To productionize further, next steps are:
 3. Add HPA and resource limits tuning
 4. Add TLS certificates on ingress
 5. Add CI/CD pipeline for image build and kubectl apply/helm release
+
+## GKE Deployment Path
+
+Use this when targeting Google Cloud GKE while keeping local setup unchanged.
+
+Prerequisites:
+
+- Google Cloud SDK installed and authenticated (`gcloud auth login`)
+- Active project set (`gcloud config set project <project-id>`)
+- Region set (`gcloud config set compute/region <region>`)
+- Backend and frontend images pushed to Artifact Registry or another registry
+- Managed PostgreSQL endpoint (Cloud SQL or external)
+
+One-command GKE deploy (creates cluster if requested, gets credentials, deploys Helm with managed DB):
+
+```powershell
+.\scripts\gcp-gke-deploy.ps1 `
+	-ProjectId <project-id> `
+	-Region <region> `
+	-ClusterName riskmanagement-gke `
+	-CreateCluster `
+	-Autopilot `
+	-InstallIngressNginx `
+	-Domain app.example.com `
+	-BackendRepository <region>-docker.pkg.dev/<project-id>/<repo>/riskmanagement-backend `
+	-BackendTag <tag> `
+	-FrontendRepository <region>-docker.pkg.dev/<project-id>/<repo>/riskmanagement-frontend `
+	-FrontendTag <tag> `
+	-DbHost <managed-db-host> `
+	-DbName <db-name> `
+	-DbUser <db-user> `
+	-DbPassword <db-password> `
+	-EnableTls
+```
