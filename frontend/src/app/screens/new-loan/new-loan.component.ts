@@ -17,24 +17,52 @@ export class NewLoanComponent {
 
   form: any = {
     fullName: '', nationalId: '', gender: 'Male', age: null,
-    location: '', businessSector: 'Technology',
+    location: '', businessSector: '',
     monthlyIncome: null, collateralValue: null,
     loanAmount: null, interestRate: null, tenureMonths: null,
     disbursementDate: new Date().toISOString().split('T')[0], status: 'Active'
   };
 
-  sectors = ['Technology','Finance','Agriculture','Retail','Manufacturing','Healthcare','Education'];
-  locations = ['Nairobi','Mombasa','Kampala','Dar es Salaam','Lusaka','Accra','Lagos'];
+  sectors: string[] = [];
+  locations: string[] = [];
 
   get collateralRatio(): number {
     if (!this.form.loanAmount || !this.form.collateralValue) return 0;
     return +(this.form.collateralValue / this.form.loanAmount).toFixed(2);
   }
 
-  constructor(private loanService: LoanService, private router: Router) {}
+  constructor(private loanService: LoanService, private router: Router) {
+    this.loadLookups();
+  }
+
+  private loadLookups() {
+    this.loanService.getBorrowerLookups().subscribe({
+      next: (lookups) => {
+        const sectors = Array.isArray(lookups?.sectors) ? lookups.sectors.filter(Boolean) : [];
+        const locations = Array.isArray(lookups?.locations) ? lookups.locations.filter(Boolean) : [];
+
+        this.sectors = sectors;
+        this.locations = locations;
+
+        if (!this.sectors.includes(this.form.businessSector)) {
+          this.form.businessSector = this.sectors[0] ?? '';
+        }
+        if (!this.locations.includes(this.form.location)) {
+          this.form.location = '';
+        }
+
+        if (!this.sectors.length || !this.locations.length) {
+          this.error = 'Reference data is missing. Please add borrowers with sector and location data first.';
+        }
+      },
+      error: () => {
+        this.error = 'Failed to load reference data from backend.';
+      }
+    });
+  }
 
   generate() {
-    const required = ['fullName','nationalId','age','location','monthlyIncome','collateralValue','loanAmount','interestRate','tenureMonths'];
+    const required = ['fullName','nationalId','age','location','businessSector','monthlyIncome','collateralValue','loanAmount','interestRate','tenureMonths'];
     if (required.some(k => !this.form[k])) { this.error = 'Please fill in all required fields.'; return; }
     this.error = ''; this.loading = true;
     this.loanService.calculateRiskScore(this.form).subscribe({

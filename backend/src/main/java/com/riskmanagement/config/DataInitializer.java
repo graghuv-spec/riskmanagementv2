@@ -84,8 +84,8 @@ public class DataInitializer {
         // Users
         AppProperties.Seed.DemoUser adminUser = seed.getAdminUser();
         User admin = new User();
-        admin.setName(StringUtils.hasText(adminUser.getName()) ? adminUser.getName() : "Admin User");
-        admin.setEmail(StringUtils.hasText(adminUser.getEmail()) ? adminUser.getEmail() : "admin@example.com");
+        admin.setName(adminUser.getName().trim());
+        admin.setEmail(adminUser.getEmail().trim());
         admin.setRole(adminUser.getRole());
         admin.setPasswordHash(passwordEncoder.encode(seed.getDefaultUserPassword()));
         admin.setMfaEnabled(adminUser.isMfaEnabled());
@@ -95,8 +95,8 @@ public class DataInitializer {
 
         AppProperties.Seed.DemoUser officerUser = seed.getOfficerUser();
         User officer = new User();
-        officer.setName(StringUtils.hasText(officerUser.getName()) ? officerUser.getName() : "Loan Officer");
-        officer.setEmail(StringUtils.hasText(officerUser.getEmail()) ? officerUser.getEmail() : "officer@example.com");
+        officer.setName(officerUser.getName().trim());
+        officer.setEmail(officerUser.getEmail().trim());
         officer.setRole(officerUser.getRole());
         officer.setPasswordHash(passwordEncoder.encode(seed.getDefaultUserPassword()));
         officer.setMfaEnabled(officerUser.isMfaEnabled());
@@ -218,7 +218,7 @@ public class DataInitializer {
             al.setEntityType(d[1]);
             al.setEntityId(Long.parseLong(d[2]));
             al.setTimestamp(LocalDateTime.now().minusDays((int) (Math.random() * seed.getAuditLookbackDays())));
-            al.setIpAddress(seed.getDefaultAuditIp());
+            al.setIpAddress(StringUtils.hasText(seed.getDefaultAuditIp()) ? seed.getDefaultAuditIp() : "unknown");
             auditLogRepository.save(al);
         }
     }

@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
     ports:
       - "5432:5432"        # exposed so you can connect from a local DB client
@@ -33,8 +33,8 @@ services:
       # !! IMPORTANT: inside Docker the hostname is the service name "postgres",
       # NOT "localhost".  "localhost" inside a container refers to itself.
       DB_URL: jdbc:postgresql://postgres:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
-      DB_USERNAME: postgres
-      DB_PASSWORD: admin   # override with a real secret in production
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy   # wait until pg_isready passes

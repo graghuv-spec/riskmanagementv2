@@ -1,10 +1,8 @@
 spring:
   datasource:
-    # Override DB_URL via environment variable when needed.
-    # The fallback below (sslmode=disable) is for local development.
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:admin}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
@@ -34,7 +32,7 @@ logging:
 # Comma-separated list of origin patterns.
 app:
   cors:
-    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:4200,http://localhost}
+    allowed-origins: ${ALLOWED_ORIGINS:*}
   risk:
     income-stability-weight: ${RISK_INCOME_STABILITY_WEIGHT:0.3}
     repayment-history-weight: ${RISK_REPAYMENT_HISTORY_WEIGHT:0.3}
@@ -57,23 +55,23 @@ app:
     grade-b-threshold: ${RISK_GRADE_B_THRESHOLD:60}
     grade-c-threshold: ${RISK_GRADE_C_THRESHOLD:40}
   seed:
-    enabled: ${SEED_ENABLED:true}
+    enabled: ${SEED_ENABLED:false}
     reset-before-seed: ${SEED_RESET_BEFORE_SEED:false}
-    expected-user-count: ${SEED_EXPECTED_USER_COUNT:2}
-    institution-name: ${SEED_INSTITUTION_NAME:MicroFinance Corp}
-    institution-license-number: ${SEED_INSTITUTION_LICENSE_NUMBER:MFC-2024-001}
-    institution-contact-email: ${SEED_INSTITUTION_CONTACT_EMAIL:admin@mfc.com}
-    institution-subscription-plan: ${SEED_INSTITUTION_SUBSCRIPTION_PLAN:Premium}
+    expected-user-count: ${SEED_EXPECTED_USER_COUNT:0}
+    institution-name: ${SEED_INSTITUTION_NAME:}
+    institution-license-number: ${SEED_INSTITUTION_LICENSE_NUMBER:}
+    institution-contact-email: ${SEED_INSTITUTION_CONTACT_EMAIL:}
+    institution-subscription-plan: ${SEED_INSTITUTION_SUBSCRIPTION_PLAN:}
     admin-user:
-      name: ${SEED_ADMIN_NAME:Alice Admin}
-      email: ${SEED_ADMIN_EMAIL:admin@mfb.com}
-      role: ${SEED_ADMIN_ROLE:Admin}
+      name: ${SEED_ADMIN_NAME:}
+      email: ${SEED_ADMIN_EMAIL:}
+      role: ${SEED_ADMIN_ROLE:}
       mfa-enabled: ${SEED_ADMIN_MFA_ENABLED:true}
     officer-user:
-      name: ${SEED_OFFICER_NAME:Bob Loan Officer}
-      email: ${SEED_OFFICER_EMAIL:loan.officer@mfb.com}
-      role: ${SEED_OFFICER_ROLE:LoanOfficer}
+      name: ${SEED_OFFICER_NAME:}
+      email: ${SEED_OFFICER_EMAIL:}
+      role: ${SEED_OFFICER_ROLE:}
       mfa-enabled: ${SEED_OFFICER_MFA_ENABLED:false}
-    default-user-password: ${SEED_DEFAULT_USER_PASSWORD:password123}
-    default-audit-ip: ${SEED_DEFAULT_AUDIT_IP:127.0.0.1}
+    default-user-password: ${SEED_DEFAULT_USER_PASSWORD:}
+    default-audit-ip: ${SEED_DEFAULT_AUDIT_IP:}
     audit-lookback-days: ${SEED_AUDIT_LOOKBACK_DAYS:30}

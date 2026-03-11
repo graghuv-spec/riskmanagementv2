@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/borrowers")
@@ -18,6 +20,14 @@ public class BorrowerController {
     @GetMapping
     public List<Borrower> getAllBorrowers() {
         return borrowerService.getAllBorrowers();
+    }
+
+    @GetMapping("/lookups")
+    public Map<String, List<String>> getBorrowerLookups() {
+        Map<String, List<String>> lookups = new HashMap<>();
+        lookups.put("sectors", borrowerService.getDistinctBusinessSectors());
+        lookups.put("locations", borrowerService.getDistinctLocations());
+        return lookups;
     }
 
     @GetMapping("/{id}")

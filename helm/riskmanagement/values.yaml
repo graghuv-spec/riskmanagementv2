@@ -10,9 +10,9 @@ postgres:
     tag: "15"
     pullPolicy: IfNotPresent
   auth:
-    username: postgres
-    password: admin
-    database: postgres
+    username: ""
+    password: ""
+    database: ""
   persistence:
     enabled: true
     size: 5Gi
@@ -32,7 +32,7 @@ backend:
     port: 8080
   env:
     dbUrl: ""
-    allowedOrigins: http://localhost,http://localhost:4200
+    allowedOrigins: "*"
     seedEnabled: "true"
     seedResetBeforeSeed: "false"
   resources: {}

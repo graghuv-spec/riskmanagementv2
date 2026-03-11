@@ -3,6 +3,7 @@ package com.riskmanagement.config;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 @ConfigurationProperties(prefix = "app")
@@ -53,10 +54,37 @@ public class AppProperties {
         if (seed.getExpectedUserCount() < 0) {
             throw new IllegalStateException("app.seed.expected-user-count must be >= 0");
         }
+        if (seed.isEnabled()) {
+            if (!StringUtils.hasText(seed.getInstitutionName())) {
+                throw new IllegalStateException("app.seed.institution-name must be set when seeding is enabled");
+            }
+            if (!StringUtils.hasText(seed.getInstitutionLicenseNumber())) {
+                throw new IllegalStateException("app.seed.institution-license-number must be set when seeding is enabled");
+            }
+            if (!StringUtils.hasText(seed.getInstitutionContactEmail())) {
+                throw new IllegalStateException("app.seed.institution-contact-email must be set when seeding is enabled");
+            }
+            if (!StringUtils.hasText(seed.getInstitutionSubscriptionPlan())) {
+                throw new IllegalStateException("app.seed.institution-subscription-plan must be set when seeding is enabled");
+            }
+            if (!StringUtils.hasText(seed.getAdminUser().getName())
+                    || !StringUtils.hasText(seed.getAdminUser().getEmail())
+                    || !StringUtils.hasText(seed.getAdminUser().getRole())) {
+                throw new IllegalStateException("app.seed.admin-user fields must be set when seeding is enabled");
+            }
+            if (!StringUtils.hasText(seed.getOfficerUser().getName())
+                    || !StringUtils.hasText(seed.getOfficerUser().getEmail())
+                    || !StringUtils.hasText(seed.getOfficerUser().getRole())) {
+                throw new IllegalStateException("app.seed.officer-user fields must be set when seeding is enabled");
+            }
+            if (!StringUtils.hasText(seed.getDefaultUserPassword())) {
+                throw new IllegalStateException("app.seed.default-user-password must be set when seeding is enabled");
+            }
+        }
     }
 
     public static class Cors {
-        private String allowedOrigins = "http://localhost:4200,http://localhost";
+        private String allowedOrigins = "*";
 
         public String getAllowedOrigins() {
             return allowedOrigins;
@@ -255,20 +283,20 @@ public class AppProperties {
     }
 
     public static class Seed {
-        private boolean enabled = true;
+        private boolean enabled = false;
         private boolean resetBeforeSeed = false;
-        private long expectedUserCount = 2;
+        private long expectedUserCount = 0;
 
-        private String institutionName = "MicroFinance Corp";
-        private String institutionLicenseNumber = "MFC-2024-001";
-        private String institutionContactEmail = "admin@mfc.com";
-        private String institutionSubscriptionPlan = "Premium";
+        private String institutionName = "";
+        private String institutionLicenseNumber = "";
+        private String institutionContactEmail = "";
+        private String institutionSubscriptionPlan = "";
 
-        private DemoUser adminUser = new DemoUser("Alice Admin", "admin@mfb.com", "Admin", true);
-        private DemoUser officerUser = new DemoUser("Bob Loan Officer", "loan.officer@mfb.com", "LoanOfficer", false);
+        private DemoUser adminUser = new DemoUser("", "", "", true);
+        private DemoUser officerUser = new DemoUser("", "", "", false);
 
-        private String defaultUserPassword = "password123";
-        private String defaultAuditIp = "127.0.0.1";
+        private String defaultUserPassword = "";
+        private String defaultAuditIp = "";
         private int auditLookbackDays = 30;
 
         public boolean isEnabled() {

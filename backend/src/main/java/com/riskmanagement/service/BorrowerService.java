@@ -22,6 +22,14 @@ public class BorrowerService {
         return borrowerRepository.findById(id);
     }
 
+    public List<String> getDistinctBusinessSectors() {
+        return borrowerRepository.findDistinctBusinessSectors();
+    }
+
+    public List<String> getDistinctLocations() {
+        return borrowerRepository.findDistinctLocations();
+    }
+
     public Borrower saveBorrower(Borrower borrower) {
         return borrowerRepository.save(borrower);
     }

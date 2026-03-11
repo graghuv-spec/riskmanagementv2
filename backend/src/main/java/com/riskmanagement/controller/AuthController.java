@@ -22,8 +22,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
-        if (userOpt.isEmpty() || !passwordEncoder.matches(request.getPassword(), userOpt.get().getPasswordHash())) {
+        String email = request.getEmail() == null ? "" : request.getEmail().trim();
+        String password = request.getPassword() == null ? "" : request.getPassword();
+
+        Optional<User> userOpt = userRepository.findByEmailIgnoreCase(email);
+        if (email.isBlank() || password.isBlank() || userOpt.isEmpty()
+                || !passwordEncoder.matches(password, userOpt.get().getPasswordHash())) {
             return ResponseEntity.status(401).body(Map.of("message", "Invalid email or password"));
         }
         User user = userOpt.get();
