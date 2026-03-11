@@ -502,7 +502,128 @@ helm rollback riskmanagement-cloud <revision> -n riskmanagement
 - Enable backups and PITR for managed PostgreSQL.
 - Enable WAF/rate limiting on ingress for internet traffic.
 
-## 10. Handover Artifacts To Share
+## 10. Database Change Guide (AI-ready)
+
+Use this section to decide whether a DB change is config-only or requires code changes.
+
+## 10.1 Decision matrix
+
+| Change type | Code change needed | What to update |
+|---|---|---|
+| PostgreSQL host/port/user/password change | No | Update DB URL/credentials in runtime config and Kubernetes secret values |
+| PostgreSQL schema/database name change | Usually no | Update DB URL query (`currentSchema`) and schema settings |
+| Managed PostgreSQL provider change (Cloud SQL to RDS/Azure PG) | No | Update endpoint/credentials/networking only |
+| PostgreSQL to different engine (MySQL/SQL Server) | Yes | Driver, dialect, dependencies, and possibly SQL behavior/migrations |
+
+## 10.2 Current configuration sources in this repo
+
+- Backend runtime DB env vars are consumed in `backend/src/main/resources/application.yml`.
+- Local developer override is in `backend/src/main/resources/application-local.yml`.
+- Kubernetes DB URL wiring is in `helm/riskmanagement/templates/backend-configmap.yaml`.
+- Kubernetes DB credentials secret mapping is in `helm/riskmanagement/templates/backend.yaml`.
+- Helm values knobs are in `helm/riskmanagement/values.yaml`.
+
+## 10.3 AI prompt: PostgreSQL endpoint/credential change (no code change)
+
+```text
+Update this repository for a PostgreSQL connection change without changing application code.
+
+Requirements:
+1) Keep PostgreSQL engine and existing schema model.
+2) Update only runtime configuration and deployment values.
+3) Validate backend startup and /api/loans health.
+4) Keep secrets out of git-tracked files.
+
+Inputs:
+- New DB host: <dbHost>
+- New DB port: 5432
+- DB name: <dbName>
+- DB user: <dbUser>
+- DB password: <dbPassword>
+- Schema: riskmanagement
+- Deployment target: local | kubernetes
+
+Execution:
+- Local: update application-local.yml DB URL/username/password.
+- Kubernetes: run scripts/helm-deploy-cloud-managed.ps1 with new DB inputs.
+- Validate with backend logs and /api/loans endpoint.
+
+Output:
+- List files changed
+- Final runtime DB URL pattern (mask secrets)
+- Validation results
+```
+
+## 10.4 AI prompt: database engine change (code + config)
+
+```text
+Migrate this project database engine from PostgreSQL to <targetEngine>.
+
+Requirements:
+1) Update Spring datasource driver and Hibernate dialect.
+2) Update build dependencies.
+3) Review schema/migration compatibility and SQL differences.
+4) Update Helm/runtime settings and validate startup.
+
+Deliverables:
+- Code changes required
+- Config changes required
+- Risks and incompatibilities found
+- Test/validation evidence
+```
+
+## 10.5 Ready-to-run example (fill placeholders)
+
+Use this as a copy/paste starting point for your current cloud deployment pattern.
+
+```powershell
+.\scripts\helm-deploy-cloud-managed.ps1 `
+  -Domain 34-133-238-34.nip.io `
+  -BackendRepository <registry>/riskmanagement-backend `
+  -BackendTag <tag> `
+  -FrontendRepository <registry>/riskmanagement-frontend `
+  -FrontendTag <tag> `
+  -DbHost <managed-postgres-host> `
+  -DbPort 5432 `
+  -DbName postgres `
+  -DbUser postgres `
+  -DbPassword <db-password-from-secret-manager> `
+  -Namespace riskmanagement `
+  -ReleaseName riskmanagement-cloud `
+  -EnableTls
+```
+
+Validation commands:
+
+```powershell
+kubectl -n riskmanagement get deploy,pods,svc,ingress
+kubectl -n riskmanagement get certificate
+curl -I https://34-133-238-34.nip.io/
+curl -I https://34-133-238-34.nip.io/api/loans
+```
+
+AI prompt with placeholders:
+
+```text
+Deploy RiskManagement Pro using managed PostgreSQL and existing Helm scripts.
+
+Use these values:
+- Domain: 34-133-238-34.nip.io
+- Backend image: <registry>/riskmanagement-backend:<tag>
+- Frontend image: <registry>/riskmanagement-frontend:<tag>
+- DB host: <managed-postgres-host>
+- DB name: postgres
+- DB user: postgres
+- DB password: <db-password-from-secret-manager>
+- Namespace: riskmanagement
+- Release: riskmanagement-cloud
+
+Run scripts/helm-deploy-cloud-managed.ps1 with -EnableTls.
+Then validate ingress, certificate readiness, and HTTP 200 for / and /api/loans.
+If any check fails, troubleshoot and continue until healthy.
+```
+
+## 11. Handover Artifacts To Share
 
 Share this list with the person or AI doing deployment:
 
