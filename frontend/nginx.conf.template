@@ -10,13 +10,7 @@ server {
 
     # ── Proxy: REST API ───────────────────────────────────────────────────────
     # BACKEND_URL is injected at container start via docker-entrypoint.sh.
-    # Local/Docker  : http://backend:8080
-    # GCP Cloud Run : https://<service>-<hash>-uc.a.run.app
-    # Azure Cont.App: https://<backend-app>.<env>.azurecontainerapps.io
-    #
-    # NOTE: proxy_set_header Host $proxy_host is required for Cloud Run.
-    # Cloud Run routes requests by the Host/:authority header.  Using $host
-    # (the frontend domain) would route the request to the wrong service.
+    # Local/Docker default: http://backend:8080
     location /api/ {
         proxy_pass         ${BACKEND_URL}/api/;
         proxy_http_version 1.1;

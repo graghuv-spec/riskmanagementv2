@@ -2,6 +2,14 @@
 
 Enterprise risk assessment platform for microfinance institutions — Java 21 Spring Boot backend, PostgreSQL, GraphQL API, and Angular 17 frontend.
 
+Docker-only local setup guide: see `DOCKER_LOCAL_RUNBOOK.md`.
+
+One-command local bootstrap (PowerShell):
+
+```powershell
+.\scripts\ai-bootstrap-local.ps1
+```
+
 ---
 
 ## Table of Contents

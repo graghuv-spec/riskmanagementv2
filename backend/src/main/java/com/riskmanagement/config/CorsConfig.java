@@ -8,12 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
-    // Set ALLOWED_ORIGINS env var in production (comma-separated list of origin patterns).
-    // For Azure Container Apps, include the specific app URL, e.g.:
-    //   https://my-frontend.livelyforest-abc123.eastus.azurecontainerapps.io
-    // For Azure App Service, include the app URL, e.g.:
-    //   https://my-frontend.azurewebsites.net
-    @Value("${app.cors.allowed-origins:http://localhost:4200,http://localhost,https://*.azurewebsites.net,https://*.azurecontainerapps.io}")
+    // Set ALLOWED_ORIGINS env var as a comma-separated list of origin patterns.
+    @Value("${app.cors.allowed-origins:http://localhost:4200,http://localhost}")
     private String allowedOriginsEnv;
 
     @Override
