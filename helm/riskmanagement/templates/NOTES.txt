@@ -1,0 +1,10 @@
+1. Get services:
+   kubectl get svc -n {{ .Release.Namespace }}
+
+2. If using NodePort:
+   kubectl get svc {{ include "riskmanagement.frontendName" . }} -n {{ .Release.Namespace }}
+
+3. If using Ingress, add DNS for host(s):
+{{- range .Values.ingress.hosts }}
+   - {{ .host }}
+{{- end }}

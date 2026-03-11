@@ -4,10 +4,24 @@ Enterprise risk assessment platform for microfinance institutions — Java 21 Sp
 
 Docker-only local setup guide: see `DOCKER_LOCAL_RUNBOOK.md`.
 
+Kubernetes three-tier deployment guide: see `KUBERNETES_DEPLOYMENT.md`.
+
 One-command local bootstrap (PowerShell):
 
 ```powershell
 .\scripts\ai-bootstrap-local.ps1
+```
+
+Kubernetes deploy script (local overlay):
+
+```powershell
+.\scripts\k8s-deploy.ps1 -Overlay local
+```
+
+Helm deploy (recommended for multi-environment):
+
+```powershell
+.\scripts\helm-deploy.ps1 -Environment local
 ```
 
 ---

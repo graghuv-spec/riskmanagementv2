@@ -1,0 +1,17 @@
+frontend:
+  service:
+    type: NodePort
+    port: 80
+
+backend:
+  image:
+    repository: riskmanagementv2-backend
+    tag: latest
+
+frontend:
+  image:
+    repository: riskmanagementv2-frontend
+    tag: latest
+
+ingress:
+  enabled: false

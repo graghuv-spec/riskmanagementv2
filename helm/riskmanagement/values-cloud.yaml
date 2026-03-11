@@ -1,0 +1,27 @@
+postgres:
+  auth:
+    password: change-me
+
+backend:
+  replicaCount: 2
+  image:
+    repository: your-registry/riskmanagement-backend
+    tag: latest
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: your-registry/riskmanagement-frontend
+    tag: latest
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+  hosts:
+    - host: riskmanagement.example.com
+      paths:
+        - path: /
+          pathType: Prefix
