@@ -2,7 +2,9 @@ param(
   [ValidateSet("local", "cloud")]
   [string]$Environment = "local",
   [string]$Namespace = "riskmanagement",
-  [string]$ReleaseName = "riskmanagement"
+  [string]$ReleaseName = "riskmanagement",
+  [string]$ExtraValuesFile = "",
+  [switch]$ManagedDatabase
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,11 +27,28 @@ if (-not (Test-Path $valuesFile)) {
   Fail "Values file not found: $valuesFile"
 }
 
+if ($ExtraValuesFile -and -not (Test-Path $ExtraValuesFile)) {
+  Fail "Extra values file not found: $ExtraValuesFile"
+}
+
 Info "Deploying release '$ReleaseName' to namespace '$Namespace' with environment '$Environment'"
-helm upgrade --install $ReleaseName helm/riskmanagement -n $Namespace --create-namespace -f helm/riskmanagement/values.yaml -f $valuesFile
+$helmArgs = @(
+  "upgrade", "--install", $ReleaseName, "helm/riskmanagement",
+  "-n", $Namespace, "--create-namespace",
+  "-f", "helm/riskmanagement/values.yaml",
+  "-f", $valuesFile
+)
+
+if ($ExtraValuesFile) {
+  $helmArgs += @("-f", $ExtraValuesFile)
+}
+
+& helm @helmArgs
 
 Info "Waiting for tier rollouts"
-kubectl -n $Namespace rollout status deployment/$ReleaseName-riskmanagement-postgres --timeout=180s
+if (-not $ManagedDatabase) {
+  kubectl -n $Namespace rollout status deployment/$ReleaseName-riskmanagement-postgres --timeout=180s
+}
 kubectl -n $Namespace rollout status deployment/$ReleaseName-riskmanagement-backend --timeout=300s
 kubectl -n $Namespace rollout status deployment/$ReleaseName-riskmanagement-frontend --timeout=180s
 

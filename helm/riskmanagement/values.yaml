@@ -27,6 +27,10 @@ backend:
     repository: riskmanagementv2-backend
     tag: latest
     pullPolicy: IfNotPresent
+  dbCredentials:
+    existingSecretName: ""
+    usernameKey: POSTGRES_USER
+    passwordKey: POSTGRES_PASSWORD
   service:
     type: ClusterIP
     port: 8080

@@ -33,13 +33,13 @@ spec:
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "riskmanagement.postgresName" . }}-secret
-                  key: POSTGRES_USER
+                  name: {{ default (printf "%s-secret" (include "riskmanagement.postgresName" .)) .Values.backend.dbCredentials.existingSecretName }}
+                  key: {{ .Values.backend.dbCredentials.usernameKey }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "riskmanagement.postgresName" . }}-secret
-                  key: POSTGRES_PASSWORD
+                  name: {{ default (printf "%s-secret" (include "riskmanagement.postgresName" .)) .Values.backend.dbCredentials.existingSecretName }}
+                  key: {{ .Values.backend.dbCredentials.passwordKey }}
           readinessProbe:
             httpGet:
               path: /api/loans

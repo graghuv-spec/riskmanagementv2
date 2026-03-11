@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "riskmanagement.labels" . | nindent 4 }}
 data:
-  DB_URL: {{ default (printf "jdbc:postgresql://%s:%v/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement" (include "riskmanagement.postgresName" .) .Values.postgres.service.port) .Values.backend.env.dbUrl | quote }}
+  DB_URL: {{ if .Values.backend.env.dbUrl }}{{ .Values.backend.env.dbUrl | quote }}{{ else if .Values.postgres.enabled }}{{ printf "jdbc:postgresql://%s:%v/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement" (include "riskmanagement.postgresName" .) .Values.postgres.service.port | quote }}{{ else }}{{ required "Set backend.env.dbUrl when postgres.enabled=false" .Values.backend.env.dbUrl | quote }}{{ end }}
   ALLOWED_ORIGINS: {{ .Values.backend.env.allowedOrigins | quote }}
   SEED_ENABLED: {{ .Values.backend.env.seedEnabled | quote }}
   SEED_RESET_BEFORE_SEED: {{ .Values.backend.env.seedResetBeforeSeed | quote }}
