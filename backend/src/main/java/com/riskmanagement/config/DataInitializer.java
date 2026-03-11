@@ -10,6 +10,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,54 +28,78 @@ public class DataInitializer {
     @Autowired private PortfolioMetricsRepository portfolioMetricsRepository;
     @Autowired private AuditLogRepository auditLogRepository;
     @Autowired private RiskCalculationService riskCalculationService;
+    @Autowired private AppProperties appProperties;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Transactional
     @EventListener(ApplicationReadyEvent.class)
     public void seed() {
+        AppProperties.Seed seed = appProperties.getSeed();
+
+        if (!seed.isEnabled()) {
+            return;
+        }
+
         // Guard: both demo user accounts already present means seed is complete.
-        if (userRepository.count() == 2) return;
+        if (userRepository.count() == seed.getExpectedUserCount()) return;
+
+        boolean hasExistingData = institutionRepository.count() > 0
+                || borrowerRepository.count() > 0
+                || loanRepository.count() > 0
+                || repaymentRepository.count() > 0
+                || riskScoreRepository.count() > 0
+                || portfolioMetricsRepository.count() > 0
+                || auditLogRepository.count() > 0;
+
+        if (hasExistingData && !seed.isResetBeforeSeed()) {
+            // Safety-first default: avoid destructive deletes unless explicitly requested.
+            return;
+        }
 
         // Clean up any partial or duplicate data from a prior interrupted seed.
         // This whole method is @Transactional: if interrupted by SIGTERM the
         // deletes AND inserts both roll back, so the next boot retries cleanly.
-        auditLogRepository.deleteAll();
-        portfolioMetricsRepository.deleteAll();
-        riskScoreRepository.deleteAll();
-        repaymentRepository.deleteAll();
-        loanRepository.deleteAll();
-        borrowerRepository.deleteAll();
-        userRepository.deleteAll();
-        institutionRepository.deleteAll();
+        if (seed.isResetBeforeSeed()) {
+            auditLogRepository.deleteAll();
+            portfolioMetricsRepository.deleteAll();
+            riskScoreRepository.deleteAll();
+            repaymentRepository.deleteAll();
+            loanRepository.deleteAll();
+            borrowerRepository.deleteAll();
+            userRepository.deleteAll();
+            institutionRepository.deleteAll();
+        }
 
         // Institution
         Institution inst = new Institution();
-        inst.setName("MicroFinance Corp");
-        inst.setLicenseNumber("MFC-2024-001");
-        inst.setContactEmail("admin@mfc.com");
-        inst.setSubscriptionPlan("Premium");
+        inst.setName(seed.getInstitutionName());
+        inst.setLicenseNumber(seed.getInstitutionLicenseNumber());
+        inst.setContactEmail(seed.getInstitutionContactEmail());
+        inst.setSubscriptionPlan(seed.getInstitutionSubscriptionPlan());
         inst.setCreatedAt(LocalDateTime.now().minusMonths(12));
         inst = institutionRepository.save(inst);
         Long instId = inst.getInstitutionId();
 
         // Users
+        AppProperties.Seed.DemoUser adminUser = seed.getAdminUser();
         User admin = new User();
-        admin.setName("Alice Admin");
-        admin.setEmail("admin@mfb.com");
-        admin.setRole("Admin");
-        admin.setPasswordHash(passwordEncoder.encode("password123"));
-        admin.setMfaEnabled(true);
+        admin.setName(StringUtils.hasText(adminUser.getName()) ? adminUser.getName() : "Admin User");
+        admin.setEmail(StringUtils.hasText(adminUser.getEmail()) ? adminUser.getEmail() : "admin@example.com");
+        admin.setRole(adminUser.getRole());
+        admin.setPasswordHash(passwordEncoder.encode(seed.getDefaultUserPassword()));
+        admin.setMfaEnabled(adminUser.isMfaEnabled());
         admin.setInstitutionId(instId);
         admin.setCreatedAt(LocalDateTime.now().minusMonths(11));
         userRepository.save(admin);
 
+        AppProperties.Seed.DemoUser officerUser = seed.getOfficerUser();
         User officer = new User();
-        officer.setName("Bob Loan Officer");
-        officer.setEmail("loan.officer@mfb.com");
-        officer.setRole("LoanOfficer");
-        officer.setPasswordHash(passwordEncoder.encode("password123"));
-        officer.setMfaEnabled(false);
+        officer.setName(StringUtils.hasText(officerUser.getName()) ? officerUser.getName() : "Loan Officer");
+        officer.setEmail(StringUtils.hasText(officerUser.getEmail()) ? officerUser.getEmail() : "officer@example.com");
+        officer.setRole(officerUser.getRole());
+        officer.setPasswordHash(passwordEncoder.encode(seed.getDefaultUserPassword()));
+        officer.setMfaEnabled(officerUser.isMfaEnabled());
         officer.setInstitutionId(instId);
         officer.setCreatedAt(LocalDateTime.now().minusMonths(10));
         userRepository.save(officer);
@@ -192,8 +217,8 @@ public class DataInitializer {
             al.setAction(d[0]);
             al.setEntityType(d[1]);
             al.setEntityId(Long.parseLong(d[2]));
-            al.setTimestamp(LocalDateTime.now().minusDays((int)(Math.random() * 30)));
-            al.setIpAddress("127.0.0.1"); // demo/seed data placeholder
+            al.setTimestamp(LocalDateTime.now().minusDays((int) (Math.random() * seed.getAuditLookbackDays())));
+            al.setIpAddress(seed.getDefaultAuditIp());
             auditLogRepository.save(al);
         }
     }

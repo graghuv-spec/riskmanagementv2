@@ -35,3 +35,45 @@ logging:
 app:
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:http://localhost:4200,http://localhost}
+  risk:
+    income-stability-weight: ${RISK_INCOME_STABILITY_WEIGHT:0.3}
+    repayment-history-weight: ${RISK_REPAYMENT_HISTORY_WEIGHT:0.3}
+    collateral-ratio-weight: ${RISK_COLLATERAL_RATIO_WEIGHT:0.2}
+    sector-risk-weight: ${RISK_SECTOR_RISK_WEIGHT:0.1}
+    location-risk-weight: ${RISK_LOCATION_RISK_WEIGHT:0.1}
+    min-score: ${RISK_MIN_SCORE:0}
+    max-score: ${RISK_MAX_SCORE:100}
+    pd-divisor: ${RISK_PD_DIVISOR:10}
+    pd-offset: ${RISK_PD_OFFSET:5}
+    recommended-limit-income-multiplier: ${RISK_RECOMMENDED_LIMIT_INCOME_MULTIPLIER:0.5}
+    model-version: ${RISK_MODEL_VERSION:Rule-Based v1}
+    explanation-json: '${RISK_EXPLANATION_JSON:{"method":"rule-based"}}'
+    sector-technology-score: ${RISK_SECTOR_TECHNOLOGY_SCORE:90}
+    sector-finance-score: ${RISK_SECTOR_FINANCE_SCORE:80}
+    sector-agriculture-score: ${RISK_SECTOR_AGRICULTURE_SCORE:60}
+    sector-default-score: ${RISK_SECTOR_DEFAULT_SCORE:70}
+    default-regional-score: ${RISK_DEFAULT_REGIONAL_SCORE:75}
+    grade-a-threshold: ${RISK_GRADE_A_THRESHOLD:80}
+    grade-b-threshold: ${RISK_GRADE_B_THRESHOLD:60}
+    grade-c-threshold: ${RISK_GRADE_C_THRESHOLD:40}
+  seed:
+    enabled: ${SEED_ENABLED:true}
+    reset-before-seed: ${SEED_RESET_BEFORE_SEED:false}
+    expected-user-count: ${SEED_EXPECTED_USER_COUNT:2}
+    institution-name: ${SEED_INSTITUTION_NAME:MicroFinance Corp}
+    institution-license-number: ${SEED_INSTITUTION_LICENSE_NUMBER:MFC-2024-001}
+    institution-contact-email: ${SEED_INSTITUTION_CONTACT_EMAIL:admin@mfc.com}
+    institution-subscription-plan: ${SEED_INSTITUTION_SUBSCRIPTION_PLAN:Premium}
+    admin-user:
+      name: ${SEED_ADMIN_NAME:Alice Admin}
+      email: ${SEED_ADMIN_EMAIL:admin@mfb.com}
+      role: ${SEED_ADMIN_ROLE:Admin}
+      mfa-enabled: ${SEED_ADMIN_MFA_ENABLED:true}
+    officer-user:
+      name: ${SEED_OFFICER_NAME:Bob Loan Officer}
+      email: ${SEED_OFFICER_EMAIL:loan.officer@mfb.com}
+      role: ${SEED_OFFICER_ROLE:LoanOfficer}
+      mfa-enabled: ${SEED_OFFICER_MFA_ENABLED:false}
+    default-user-password: ${SEED_DEFAULT_USER_PASSWORD:password123}
+    default-audit-ip: ${SEED_DEFAULT_AUDIT_IP:127.0.0.1}
+    audit-lookback-days: ${SEED_AUDIT_LOOKBACK_DAYS:30}
