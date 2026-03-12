@@ -13,26 +13,28 @@ spring:
       connection-init-sql: "CREATE SCHEMA IF NOT EXISTS riskmanagement"
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      # Production-safe default. Override for local/dev via env or profile config.
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+    show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: riskmanagement
   graphql:
     graphiql:
-      enabled: true
+      enabled: ${GRAPHIQL_ENABLED:false}
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.tool.schema: DEBUG
+    org.hibernate.SQL: ${HIBERNATE_SQL_LOG_LEVEL:WARN}
+    org.hibernate.tool.schema: ${HIBERNATE_SCHEMA_LOG_LEVEL:WARN}
 
 # CORS allowed origins. Override via ALLOWED_ORIGINS env var when needed.
 # Comma-separated list of origin patterns.
 app:
   cors:
-    allowed-origins: ${ALLOWED_ORIGINS:*}
+    # Use explicit origins by default; override with comma-separated list.
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:4200}
   risk:
     income-stability-weight: ${RISK_INCOME_STABILITY_WEIGHT:0.3}
     repayment-history-weight: ${RISK_REPAYMENT_HISTORY_WEIGHT:0.3}

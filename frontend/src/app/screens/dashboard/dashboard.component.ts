@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PortfolioService } from '../../core/services/portfolio.service';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private viewReady = false;
   private sectorChart: any; private riskChart: any;
 
-  constructor(private ps: PortfolioService) {}
+  constructor(private ps: PortfolioService, private router: Router) {}
 
   ngOnInit() {
     this.ps.getDashboardData().subscribe({
@@ -110,5 +110,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
       });
     }, 50);
+  }
+
+  goToNewLoan() {
+    this.router.navigate(['/new-loan']);
   }
 }

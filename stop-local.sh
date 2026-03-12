@@ -10,8 +10,8 @@ info()  { echo -e "${GREEN}[INFO]${NC}  $*"; }
 error() { echo -e "${RED}[ERROR]${NC} $*"; }
 
 if [ ! -f "$PID_FILE" ]; then
-  error "No PID file found at $PID_FILE. Is the backend running?"
-  exit 1
+  info "No PID file found at $PID_FILE. Backend is already stopped."
+  exit 0
 fi
 
 PID=$(cat "$PID_FILE")
@@ -21,6 +21,6 @@ if kill -0 "$PID" 2>/dev/null; then
   info "Backend (PID $PID) stopped."
   rm -f "$PID_FILE"
 else
-  error "Process $PID is not running."
+  info "Process $PID is not running. Removing stale PID file."
   rm -f "$PID_FILE"
 fi

@@ -13,6 +13,13 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 LOG_DIR="$ROOT/logs"
 
+DB_HOST="${LOCAL_DB_HOST:-localhost}"
+DB_PORT="${LOCAL_DB_PORT:-5432}"
+DB_NAME="${LOCAL_DB_NAME:-postgres}"
+DB_USER="${LOCAL_DB_USERNAME:-postgres}"
+DB_PASSWORD="${LOCAL_DB_PASSWORD:-}"
+DB_SCHEMA="${LOCAL_DB_SCHEMA:-riskmanagement}"
+
 # ── Colors ────────────────────────────────────────────────────────────────────
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; NC='\033[0m'
 info()  { echo -e "${GREEN}[INFO]${NC}  $*"; }
@@ -84,7 +91,7 @@ info "Checking prerequisites..."
 command -v java >/dev/null 2>&1 || error "Java not found. Install JDK 21 and add it to PATH."
 command -v node >/dev/null 2>&1 || error "Node.js not found. Install Node 20 and add it to PATH."
 command -v npm  >/dev/null 2>&1 || error "npm not found."
-command -v psql >/dev/null 2>&1 || warn  "psql not on PATH – ensure PostgreSQL is running on localhost:5432."
+command -v curl >/dev/null 2>&1 || error "curl not found. Install curl and retry."
 
 JAVA_VER=$(java -version 2>&1 | head -1 | grep -oP '(?<=version ")[\d]+')
 NODE_VER=$(node --version | grep -oP '^\d+')
@@ -93,6 +100,28 @@ NODE_VER=$(node --version | grep -oP '^\d+')
 [[ "$NODE_VER" -ge 20 ]] || error "Node 20+ required (found Node $NODE_VER)."
 
 info "Java $JAVA_VER  |  Node $NODE_VER  –  OK"
+
+echo ""
+if command -v psql >/dev/null 2>&1; then
+  info "Checking local PostgreSQL connection on ${DB_HOST}:${DB_PORT}..."
+  if ! PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1" >/dev/null 2>&1; then
+    error "Cannot connect to PostgreSQL as ${DB_USER}@${DB_HOST}:${DB_PORT}/${DB_NAME}. Set LOCAL_DB_* vars and retry."
+  fi
+
+  info "Ensuring schema ${DB_SCHEMA} exists..."
+  PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "CREATE SCHEMA IF NOT EXISTS ${DB_SCHEMA};" >/dev/null
+else
+  warn "psql not found. Skipping DB pre-checks; backend startup health check will validate connectivity."
+fi
+
+export LOCAL_DB_HOST="$DB_HOST"
+export LOCAL_DB_PORT="$DB_PORT"
+export LOCAL_DB_NAME="$DB_NAME"
+export LOCAL_DB_USERNAME="$DB_USER"
+export LOCAL_DB_SCHEMA="$DB_SCHEMA"
+if [ -n "$DB_PASSWORD" ]; then
+  export LOCAL_DB_PASSWORD="$DB_PASSWORD"
+fi
 
 # ── Stop any existing processes on our ports ──────────────────────────────────
 echo ""
@@ -121,7 +150,7 @@ echo ""
 info "Starting Spring Boot backend (logs → logs/backend.log)..."
 
 cd "$ROOT/backend"
-./gradlew bootRun --no-daemon > "$LOG_DIR/backend.log" 2>&1 &
+./gradlew bootRun --no-daemon --args='--spring.profiles.active=local' > "$LOG_DIR/backend.log" 2>&1 &
 BACKEND_PID=$!
 echo "$BACKEND_PID" > "$LOG_DIR/backend.pid"
 info "Backend PID $BACKEND_PID"

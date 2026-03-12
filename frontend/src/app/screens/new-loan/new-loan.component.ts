@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 import { LoanService } from '../../core/services/loan.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-new-loan',
@@ -14,6 +17,7 @@ import { LoanService } from '../../core/services/loan.service';
 export class NewLoanComponent {
   loading = false;
   error = '';
+  lookupWarning = '';
 
   form: any = {
     fullName: '', nationalId: '', gender: 'Male', age: null,
@@ -31,11 +35,12 @@ export class NewLoanComponent {
     return +(this.form.collateralValue / this.form.loanAmount).toFixed(2);
   }
 
-  constructor(private loanService: LoanService, private router: Router) {
+  constructor(private loanService: LoanService, private auth: AuthService, private router: Router) {
     this.loadLookups();
   }
 
   private loadLookups() {
+    this.lookupWarning = '';
     this.loanService.getBorrowerLookups().subscribe({
       next: (lookups) => {
         const sectors = Array.isArray(lookups?.sectors) ? lookups.sectors.filter(Boolean) : [];
@@ -52,7 +57,7 @@ export class NewLoanComponent {
         }
 
         if (!this.sectors.length || !this.locations.length) {
-          this.error = 'Reference data is missing. Please add borrowers with sector and location data first.';
+          this.lookupWarning = 'Lookup data is limited. You can still continue by entering sector/location manually.';
         }
       },
       error: () => {
@@ -61,15 +66,73 @@ export class NewLoanComponent {
     });
   }
 
+  get useLocationSelect(): boolean {
+    return this.locations.length > 0;
+  }
+
+  get useSectorSelect(): boolean {
+    return this.sectors.length > 0;
+  }
+
   generate() {
+    if (this.loading) return;
+
     const required = ['fullName','nationalId','age','location','businessSector','monthlyIncome','collateralValue','loanAmount','interestRate','tenureMonths'];
-    if (required.some(k => !this.form[k])) { this.error = 'Please fill in all required fields.'; return; }
+    const hasMissing = required.some((key) => {
+      const value = this.form[key];
+      if (value === null || value === undefined) return true;
+      if (typeof value === 'string') return !value.trim();
+      return false;
+    });
+
+    if (hasMissing) { this.error = 'Please fill in all required fields.'; return; }
     this.error = ''; this.loading = true;
-    this.loanService.calculateRiskScore(this.form).subscribe({
+
+    const payload = {
+      ...this.form,
+      age: Number(this.form.age),
+      monthlyIncome: Number(this.form.monthlyIncome),
+      collateralValue: Number(this.form.collateralValue),
+      loanAmount: Number(this.form.loanAmount),
+      interestRate: Number(this.form.interestRate),
+      tenureMonths: Number(this.form.tenureMonths)
+    };
+
+    this.loanService.calculateRiskScore(payload).pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe({
       next: (result) => {
-        this.router.navigate(['/risk-result'], { state: { riskScore: result, loanData: { ...this.form } } });
+        const navState = { riskScore: result, loanData: { ...this.form } };
+        // Keep latest generated result so Risk Result can recover if router state is lost.
+        sessionStorage.setItem('rm_latest_risk_result', JSON.stringify(navState));
+        this.router.navigate(['/risk-result'], { state: navState });
       },
-      error: () => { this.error = 'Failed to calculate risk score. Is the backend running?'; this.loading = false; }
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 401 || err.status === 403) {
+          this.error = 'Session expired or unauthorized. Redirecting to login...';
+          this.auth.logout();
+          setTimeout(() => {
+            this.router.navigate(['/login'], {
+              queryParams: { returnUrl: '/new-loan', reason: 'session-expired' }
+            });
+          }, 800);
+          return;
+        }
+
+        if (err.status >= 500) {
+          this.error = 'Server error while calculating risk score. Please try again.';
+          return;
+        }
+
+        if (err.status === 0) {
+          this.error = 'Cannot reach backend service. Check backend startup and network.';
+          return;
+        }
+
+        this.error = 'Unable to generate risk score. Please review inputs and try again.';
+      }
     });
   }
 }

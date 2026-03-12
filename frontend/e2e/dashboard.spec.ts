@@ -17,7 +17,7 @@ test.describe('Dashboard', () => {
 
   test('displays the four KPI stat cards', async ({ page }) => {
     // Cards typically show active loans, total loans, portfolio value, PAR30
-    const cards = page.locator('.stat-card, .kpi-card, [class*="stat"], [class*="kpi"]');
+    const cards = page.locator('.stat-card');
     await expect(cards.first()).toBeVisible({ timeout: 15_000 });
     await expect(cards).toHaveCount(4);
   });
@@ -25,7 +25,7 @@ test.describe('Dashboard', () => {
   test('shows non-zero total portfolio value', async ({ page }) => {
     // Wait for data to load (loading spinner disappears)
     await page.waitForSelector('.loading, .spinner', { state: 'hidden', timeout: 15_000 }).catch(() => {});
-    const valueCard = page.locator('.stat-card, .kpi-card').filter({ hasText: /portfolio|value|KES|loan/i }).first();
+    const valueCard = page.locator('.stat-card').filter({ hasText: /loan book value/i }).first();
     await expect(valueCard).toBeVisible({ timeout: 15_000 });
   });
 
@@ -41,9 +41,9 @@ test.describe('Dashboard', () => {
   });
 
   test('"New Loan" action link navigates to /new-loan', async ({ page }) => {
-    const newLoanLink = page.getByRole('link', { name: /new loan/i }).first();
-    await expect(newLoanLink).toBeVisible({ timeout: 10_000 });
-    await newLoanLink.click();
+    const newLoanButton = page.getByRole('button', { name: /new loan/i }).first();
+    await expect(newLoanButton).toBeVisible({ timeout: 10_000 });
+    await newLoanButton.click();
     await expect(page).toHaveURL(/\/new-loan/);
   });
 

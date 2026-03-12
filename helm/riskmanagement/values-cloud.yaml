@@ -16,6 +16,7 @@ backend:
     usernameKey: POSTGRES_USER
     passwordKey: POSTGRES_PASSWORD
   env:
+    springProfilesActive: "prod"
     # Uses existing Postgres service as external DB source for this release.
     dbUrl: jdbc:postgresql://riskmanagement-riskmanagement-postgres.riskmanagement.svc.cluster.local:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
     allowedOrigins: "*"

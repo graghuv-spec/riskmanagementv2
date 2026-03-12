@@ -19,16 +19,28 @@ export async function loginViaUI(page: Page): Promise<void> {
  * to verify the login flow itself can skip the round-trip.
  */
 export async function loginViaStorage(page: Page): Promise<void> {
-  await page.goto('/login');          // navigate once to load the origin
-  await page.evaluate(([email]) => {
+  const loginResponse = await page.request.post('/api/auth/login', {
+    data: { email: TEST_EMAIL, password: TEST_PASSWORD }
+  });
+
+  if (!loginResponse.ok()) {
+    throw new Error(`Storage login failed: ${loginResponse.status()}`);
+  }
+
+  const loginUser = await loginResponse.json();
+
+  await page.goto('/login');
+  await page.evaluate((user) => {
     localStorage.setItem('rm_user', JSON.stringify({
-      userId: 1,
-      name: 'Alice Admin',
-      email,
-      role: 'Admin',
-      institutionId: 1,
+      userId: user.userId,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      institutionId: user.institutionId,
+      token: user.token,
+      tokenType: user.tokenType,
     }));
-  }, [TEST_EMAIL]);
+  }, loginUser);
   await page.goto('/dashboard');
 }
 
@@ -36,5 +48,6 @@ export async function loginViaStorage(page: Page): Promise<void> {
  * Clears auth state from localStorage.
  */
 export async function logout(page: Page): Promise<void> {
+  await page.goto('/login');
   await page.evaluate(() => localStorage.removeItem('rm_user'));
 }

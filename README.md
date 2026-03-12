@@ -4,14 +4,65 @@ Enterprise risk assessment platform for microfinance institutions — Java 21 Sp
 
 Docker-only local setup guide: see `DOCKER_LOCAL_RUNBOOK.md`.
 
+Native local startup guide (no Docker): see `STARTUP_NATIVE.md`.
+
+Docker local startup guide (compose-only): see `STARTUP_DOCKER.md`.
+
+Easy command quick reference (local + docker start/stop): see `EASY_COMMANDS.md`.
+
 Kubernetes three-tier deployment guide: see `KUBERNETES_DEPLOYMENT.md`.
 
 AI-ready cloud deployment handoff guide (GCP/Azure/AWS): see `AI_CLOUD_DEPLOYMENT_PLAYBOOK.md`.
 
-One-command local bootstrap (PowerShell):
+## Choose one startup mode
+
+### Native mode (no Docker)
+
+Use this when developers do not have Docker. Backend, frontend, and PostgreSQL run on the host.
+
+Windows:
 
 ```powershell
-.\scripts\ai-bootstrap-local.ps1
+.\scripts\native-start.ps1 -DbUser <db-user> -DbPassword <db-password>
+```
+
+Linux/macOS:
+
+```bash
+# Optional overrides when your DB is not default localhost/postgres
+export LOCAL_DB_HOST=localhost
+export LOCAL_DB_PORT=5432
+export LOCAL_DB_NAME=postgres
+export LOCAL_DB_USERNAME=postgres
+export LOCAL_DB_PASSWORD=<db-password>
+./scripts/native-start.sh
+```
+
+### Docker mode (compose-only)
+
+Use this when you want all services in containers.
+
+Windows:
+
+```powershell
+.\scripts\docker-start.ps1
+```
+
+Linux/macOS:
+
+```bash
+./scripts/docker-start.sh
+```
+
+### Easy shell helper (Linux/macOS/Git Bash)
+
+Use one script for all start/stop actions:
+
+```bash
+./easy.sh local-start
+./easy.sh local-stop
+./easy.sh docker-start
+./easy.sh docker-stop
 ```
 
 Kubernetes deploy script (local overlay):
@@ -44,7 +95,7 @@ Google Cloud GKE deploy:
 
 - [Architecture](#architecture)
 - [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
+- [Startup Modes](#startup-modes)
 - [Database Setup](#database-setup)
 - [Local Configuration](#local-configuration)
 - [Backend](#backend)
@@ -113,21 +164,28 @@ ng version   # Angular CLI: 17.x.x
 
 ---
 
-### 4. Docker Desktop
+### 4. PostgreSQL 15 (required for native mode)
 
-Used to run PostgreSQL locally via Docker Compose.
+Native mode requires a local PostgreSQL instance running on localhost:5432.
+
+Verify:
+```bash
+psql --version
+```
+
+### 5. Docker Desktop (optional, Docker mode only)
+
+Install Docker only if you plan to use compose startup mode.
 
 - Download: https://www.docker.com/products/docker-desktop
 
 Verify:
 ```bash
-docker -v          # Docker version 24+
-docker compose version   # Docker Compose version v2+
+docker -v
+docker compose version
 ```
 
----
-
-### 5. Git
+### 6. Git
 
 ```bash
 git --version   # git version 2.x.x
@@ -135,37 +193,105 @@ git --version   # git version 2.x.x
 
 ---
 
-## Quick Start
+## Startup Modes
 
-```bash
-# 1. Clone the repository
-git clone <repo-url>
-cd riskmanagementv2
+Pick one mode and do not mix commands between modes.
 
-# 2. Start PostgreSQL
-docker compose up -d
+### Mode A: Native (no Docker)
 
-# 3. Configure local credentials (first time only)
-#    Edit backend/src/main/resources/application-local.yml
-#    (see Local Configuration section)
+Requirements:
 
-# 4. Start backend  (new terminal)
-cd backend
-./gradlew bootRun
+1. Java 21+
+2. Node 20+
+3. PostgreSQL running locally
 
-# 5. Install frontend deps and start  (new terminal)
-cd frontend
-npm install
-npm start
+Windows:
+
+```powershell
+.\scripts\native-start.ps1
 ```
 
-Open http://localhost:4200 in your browser.
+Linux/macOS:
+
+```bash
+./scripts/native-start.sh
+```
+
+Stop native mode:
+
+Windows:
+
+```powershell
+.\scripts\native-stop.ps1
+```
+
+Linux/macOS:
+
+```bash
+./scripts/native-stop.sh
+```
+
+### Mode B: Docker (compose-only)
+
+Requirements:
+
+1. Docker Desktop
+
+Windows:
+
+```powershell
+.\scripts\docker-start.ps1
+```
+
+Linux/macOS:
+
+```bash
+./scripts/docker-start.sh
+```
+
+Stop Docker mode:
+
+Windows:
+
+```powershell
+.\scripts\docker-stop.ps1
+```
+
+Linux/macOS:
+
+```bash
+./scripts/docker-stop.sh
+```
+
+Open http://localhost:4200 for native mode, or http://localhost for Docker mode.
 
 ---
 
 ## Database Setup
 
-### Option A — Docker Compose (recommended)
+### Option A — Native mode local PostgreSQL (recommended)
+
+For strict no-Docker startup, install PostgreSQL locally and ensure it is running.
+
+```sql
+CREATE SCHEMA IF NOT EXISTS riskmanagement;
+```
+
+Default local connection values:
+
+| Setting           | Value      |
+|-------------------|------------|
+| Host              | localhost  |
+| Port              | 5432       |
+| Database          | postgres   |
+| Username          | postgres   |
+| Password          | admin      |
+
+Then run native mode scripts from the Startup Modes section.
+
+---
+
+### Option B — Docker Compose
 
 A `docker-compose.yml` at the project root starts a PostgreSQL 15 instance with persistent storage.
 
@@ -203,15 +329,7 @@ docker compose down -v
 
 ---
 
-### Option B — Existing Local PostgreSQL
-
-If you already have PostgreSQL running locally, skip Docker and just create the schema:
-
-```sql
-CREATE SCHEMA IF NOT EXISTS riskmanagement;
-```
-
-Then update `application-local.yml` with your host/port/password (see next section).
+Docker mode is optional and fully separate from native mode.
 
 ---
 
@@ -239,6 +357,36 @@ spring:
 
 All other settings (`ddl-auto`, logging, pool size) are inherited from `application.yml`.
 
+Native startup scripts also support these environment variables:
+
+- `LOCAL_DB_HOST`
+- `LOCAL_DB_PORT`
+- `LOCAL_DB_NAME`
+- `LOCAL_DB_SCHEMA`
+- `LOCAL_DB_USERNAME`
+- `LOCAL_DB_PASSWORD`
+
+### Production Profile (deterministic cloud runtime)
+
+Cloud deployments should run with Spring profile `prod`.
+
+The Helm chart now sets `SPRING_PROFILES_ACTIVE` via values:
+
+- Base values: `backend.env.springProfilesActive: local`
+- Cloud values: `backend.env.springProfilesActive: prod`
+
+Required production env vars:
+
+- `DB_URL`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+- `ALLOWED_ORIGINS` (comma-separated)
+- `JWT_SECRET` (minimum 32 characters recommended)
+
+Optional production env vars:
+
+- `JWT_TTL_HOURS` (default `8`)
+
 ---
 
 ## Backend
@@ -247,7 +395,7 @@ All other settings (`ddl-auto`, logging, pool size) are inherited from `applicat
 
 ```bash
 cd backend
-./gradlew bootRun
+./gradlew bootRun --args='--spring.profiles.active=local'
 ```
 
 The server starts on **http://localhost:8080**.

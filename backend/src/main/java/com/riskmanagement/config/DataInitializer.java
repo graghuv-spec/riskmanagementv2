@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 @Component
 @Profile("!test")   // never seed demo data when running integration tests
 public class DataInitializer {
+
+    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
 
     @Autowired private InstitutionRepository institutionRepository;
     @Autowired private UserRepository userRepository;
@@ -37,12 +41,20 @@ public class DataInitializer {
     public void seed() {
         AppProperties.Seed seed = appProperties.getSeed();
 
+        log.info("DataInitializer: seed.enabled={}, resetBeforeSeed={}, expectedUserCount={}",
+                seed.isEnabled(), seed.isResetBeforeSeed(), seed.getExpectedUserCount());
+
         if (!seed.isEnabled()) {
+            log.info("DataInitializer: seeding skipped because app.seed.enabled=false");
             return;
         }
 
         // Guard: both demo user accounts already present means seed is complete.
-        if (userRepository.count() == seed.getExpectedUserCount()) return;
+        long currentUsers = userRepository.count();
+        if (currentUsers == seed.getExpectedUserCount()) {
+            log.info("DataInitializer: seeding skipped because user count already matches expected count ({})", currentUsers);
+            return;
+        }
 
         boolean hasExistingData = institutionRepository.count() > 0
                 || borrowerRepository.count() > 0
@@ -54,6 +66,7 @@ public class DataInitializer {
 
         if (hasExistingData && !seed.isResetBeforeSeed()) {
             // Safety-first default: avoid destructive deletes unless explicitly requested.
+            log.warn("DataInitializer: existing data found and resetBeforeSeed=false, skipping destructive seed");
             return;
         }
 
@@ -61,6 +74,7 @@ public class DataInitializer {
         // This whole method is @Transactional: if interrupted by SIGTERM the
         // deletes AND inserts both roll back, so the next boot retries cleanly.
         if (seed.isResetBeforeSeed()) {
+            log.info("DataInitializer: resetBeforeSeed=true, deleting existing demo/domain data");
             auditLogRepository.deleteAll();
             portfolioMetricsRepository.deleteAll();
             riskScoreRepository.deleteAll();
@@ -103,6 +117,10 @@ public class DataInitializer {
         officer.setInstitutionId(instId);
         officer.setCreatedAt(LocalDateTime.now().minusMonths(10));
         userRepository.save(officer);
+
+        log.info("DataInitializer: seeded users adminEmail={} officerEmail={} defaultPasswordLength={}",
+            adminUser.getEmail(), officerUser.getEmail(),
+            seed.getDefaultUserPassword() == null ? 0 : seed.getDefaultUserPassword().length());
 
         // Borrowers
         String[][] borrowerData = {

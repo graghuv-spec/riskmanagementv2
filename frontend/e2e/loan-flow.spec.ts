@@ -7,6 +7,41 @@ import { loginViaStorage } from './helpers/auth.helper';
 
 test.describe('Loan Application Flow', () => {
 
+  async function fillRequiredLoanFields(page: any) {
+    await page.locator('input[name="fullName"], input[placeholder*="name" i]').first().fill('Test Borrower');
+    await page.locator('input[name="nationalId"], input[placeholder*="id" i]').first().fill('NID-TEST-001');
+    await page.locator('input[name="age"], input[placeholder*="age" i]').first().fill('35');
+    await page.locator('input[name="monthlyIncome"], input[placeholder*="income" i]').first().fill('3000');
+    await page.locator('input[name="collateralValue"], input[placeholder*="collateral" i]').first().fill('20000');
+    await page.locator('input[name="loanAmount"], input[placeholder*="amount" i]').first().fill('10000');
+    await page.locator('input[name="interestRate"], input[placeholder*="interest" i]').first().fill('12');
+    await page.locator('input[name="tenureMonths"], input[placeholder*="tenure" i]').first().fill('24');
+
+    const locationSelect = page.locator('select[name="location"]');
+    if (await locationSelect.count() > 0) {
+      const locationOptions = await locationSelect.locator('option').count();
+      if (locationOptions > 1) {
+        await locationSelect.selectOption({ index: 1 });
+      } else {
+        await page.locator('input[name="location"]').first().fill('Nairobi');
+      }
+    } else {
+      await page.locator('input[name="location"]').first().fill('Nairobi');
+    }
+
+    const sectorSelect = page.locator('select[name="businessSector"]');
+    if (await sectorSelect.count() > 0) {
+      const sectorOptions = await sectorSelect.locator('option').count();
+      if (sectorOptions > 1) {
+        await sectorSelect.selectOption({ index: 1 });
+      } else {
+        await page.locator('input[name="businessSector"]').first().fill('Retail');
+      }
+    } else {
+      await page.locator('input[name="businessSector"]').first().fill('Retail');
+    }
+  }
+
   test.beforeEach(async ({ page }) => {
     await loginViaStorage(page);
     await page.goto('/new-loan');
@@ -39,27 +74,32 @@ test.describe('Loan Application Flow', () => {
   });
 
   test('submitting a complete form calculates risk score and navigates to /risk-result', async ({ page }) => {
-    // Fill all required fields
-    await page.locator('input[name="fullName"], input[placeholder*="name" i]').first().fill('Test Borrower');
-    await page.locator('input[name="nationalId"], input[placeholder*="id" i]').first().fill('NID-TEST-001');
-    await page.locator('input[name="age"], input[placeholder*="age" i]').first().fill('35');
-    await page.locator('input[name="monthlyIncome"], input[placeholder*="income" i]').first().fill('3000');
-    await page.locator('input[name="collateralValue"], input[placeholder*="collateral" i]').first().fill('20000');
-    await page.locator('input[name="loanAmount"], input[placeholder*="amount" i]').first().fill('10000');
-    await page.locator('input[name="interestRate"], input[placeholder*="interest" i]').first().fill('12');
-    await page.locator('input[name="tenureMonths"], input[placeholder*="tenure" i]').first().fill('24');
-
-    // Location select — pick the first non-empty option if a select exists
-    const locationSelect = page.locator('select[name="location"]');
-    if (await locationSelect.count() > 0) {
-      await locationSelect.selectOption({ index: 1 });
-    }
+    await fillRequiredLoanFields(page);
 
     const submitBtn = page.getByRole('button', { name: /generate|assess|calculate|submit/i });
     await submitBtn.click();
 
     // Should navigate to /risk-result
     await expect(page).toHaveURL(/\/risk-result/, { timeout: 20_000 });
+  });
+
+  test('invalid token redirects to login with session-expired reason', async ({ page }) => {
+    await fillRequiredLoanFields(page);
+
+    await page.evaluate(() => {
+      const raw = localStorage.getItem('rm_user');
+      if (!raw) return;
+      const user = JSON.parse(raw);
+      user.token = 'invalid-token';
+      localStorage.setItem('rm_user', JSON.stringify(user));
+    });
+
+    const submitBtn = page.getByRole('button', { name: /generate|assess|calculate|submit/i });
+    await submitBtn.click();
+
+    await expect(page).toHaveURL(/\/login\?/, { timeout: 10_000 });
+    await expect(page).toHaveURL(/reason=session-expired/, { timeout: 10_000 });
+    await expect(page.locator('.error-msg')).toContainText(/session expired/i, { timeout: 10_000 });
   });
 
   // -------------------------------------------------------------------------

@@ -24,7 +24,7 @@ public class LoanGraphQLController {
     }
 
     @QueryMapping
-    public Optional<Loan> loan(@Argument Long id) {
+    public Optional<Loan> loan(@Argument("id") Long id) {
         return loanService.getLoanById(id);
     }
 
@@ -43,7 +43,7 @@ public class LoanGraphQLController {
     }
 
     @MutationMapping
-    public Loan updateLoan(@Argument Long id, @Argument("loan") LoanInput loanInput) {
+    public Loan updateLoan(@Argument("id") Long id, @Argument("loan") LoanInput loanInput) {
         Loan loan = loanService.getLoanById(id)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
         loan.setBorrowerId(loanInput.getBorrowerId());
@@ -57,7 +57,7 @@ public class LoanGraphQLController {
     }
 
     @MutationMapping
-    public Boolean deleteLoan(@Argument Long id) {
+    public Boolean deleteLoan(@Argument("id") Long id) {
         if (loanService.getLoanById(id).isPresent()) {
             loanService.deleteLoan(id);
             return true;
