@@ -1,6 +1,9 @@
 package com.riskmanagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Entity
@@ -11,16 +14,24 @@ public class Repayment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long repaymentId;
 
+    @NotNull(message = "loanId is required")
     private Long loanId;
 
+    @NotNull(message = "dueDate is required")
     private LocalDate dueDate;
 
     private LocalDate paymentDate;
 
+    @NotNull(message = "amountDue is required")
+    @DecimalMin(value = "0.0", message = "amountDue must be 0 or greater")
     private Double amountDue;
 
+    @NotNull(message = "amountPaid is required")
+    @DecimalMin(value = "0.0", message = "amountPaid must be 0 or greater")
     private Double amountPaid;
 
+    @NotNull(message = "daysPastDue is required")
+    @PositiveOrZero(message = "daysPastDue must be 0 or greater")
     private Integer daysPastDue;
 
     // Getters and Setters

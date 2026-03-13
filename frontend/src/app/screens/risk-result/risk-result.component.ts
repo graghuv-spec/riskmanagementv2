@@ -31,6 +31,28 @@ export class RiskResultComponent implements OnInit {
 
   constructor(private router: Router, private loanService: LoanService, private auth: AuthService) {}
 
+  private extractApiError(err: HttpErrorResponse): string | null {
+    const apiError = err.error;
+    if (!apiError) return null;
+
+    if (typeof apiError === 'string' && apiError.trim()) {
+      return apiError.trim();
+    }
+
+    if (apiError.message && typeof apiError.message === 'string') {
+      return apiError.message;
+    }
+
+    if (apiError.errors && typeof apiError.errors === 'object') {
+      const first = Object.values(apiError.errors)[0];
+      if (typeof first === 'string' && first.trim()) {
+        return first;
+      }
+    }
+
+    return null;
+  }
+
   ngOnInit() {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras?.state ?? history.state;
@@ -99,6 +121,12 @@ export class RiskResultComponent implements OnInit {
     const scoreToSave = this.overrideScore ?? this.riskScore.riskScore;
     const user = this.auth.getUser();
     const institutionId = user?.institutionId ?? null;
+
+    if (!institutionId) {
+      this.saveMsg = '✗ Missing institution context. Please sign in again and retry.';
+      return;
+    }
+
     const now = this.toApiDateTime(new Date().toISOString());
 
     const borrowerPayload = {
@@ -150,6 +178,12 @@ export class RiskResultComponent implements OnInit {
           this.saveMsg = '✗ Session expired. Please login and try saving again.';
           return;
         }
+
+        if (err.status === 400 || err.status === 409) {
+          this.saveMsg = `✗ ${this.extractApiError(err) ?? 'Validation failed while saving borrower, loan, or risk score.'}`;
+          return;
+        }
+
         this.saveMsg = '✗ Failed to save complete flow. Please try again.';
       }
     });

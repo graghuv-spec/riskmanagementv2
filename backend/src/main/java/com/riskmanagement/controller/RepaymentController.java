@@ -2,6 +2,7 @@ package com.riskmanagement.controller;
 
 import com.riskmanagement.model.Repayment;
 import com.riskmanagement.service.RepaymentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class RepaymentController {
     }
 
     @PostMapping
-    public Repayment create(@RequestBody Repayment r) {
+    public Repayment create(@Valid @RequestBody Repayment r) {
         return repaymentService.saveRepayment(r);
     }
 }

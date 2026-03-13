@@ -30,6 +30,7 @@ public class LoanGraphQLController {
 
     @MutationMapping
     public Loan createLoan(@Argument("loan") LoanInput loanInput) {
+        validateLoanInput(loanInput);
         Loan loan = new Loan();
         loan.setBorrowerId(loanInput.getBorrowerId());
         loan.setInstitutionId(loanInput.getInstitutionId());
@@ -44,6 +45,7 @@ public class LoanGraphQLController {
 
     @MutationMapping
     public Loan updateLoan(@Argument("id") Long id, @Argument("loan") LoanInput loanInput) {
+        validateLoanInput(loanInput);
         Loan loan = loanService.getLoanById(id)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
         loan.setBorrowerId(loanInput.getBorrowerId());
@@ -63,6 +65,30 @@ public class LoanGraphQLController {
             return true;
         }
         return false;
+    }
+
+    private void validateLoanInput(LoanInput loanInput) {
+        if (loanInput == null) {
+            throw new IllegalArgumentException("loan is required");
+        }
+        if (loanInput.getBorrowerId() == null) {
+            throw new IllegalArgumentException("borrowerId is required");
+        }
+        if (loanInput.getInstitutionId() == null) {
+            throw new IllegalArgumentException("institutionId is required");
+        }
+        if (loanInput.getLoanAmount() == null || loanInput.getLoanAmount() <= 0) {
+            throw new IllegalArgumentException("loanAmount must be greater than 0");
+        }
+        if (loanInput.getInterestRate() == null || loanInput.getInterestRate() < 0) {
+            throw new IllegalArgumentException("interestRate must be 0 or greater");
+        }
+        if (loanInput.getTenureMonths() == null || loanInput.getTenureMonths() <= 0) {
+            throw new IllegalArgumentException("tenureMonths must be greater than 0");
+        }
+        if (loanInput.getStatus() == null || loanInput.getStatus().isBlank()) {
+            throw new IllegalArgumentException("status is required");
+        }
     }
 
     // Input class

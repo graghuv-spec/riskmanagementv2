@@ -2,6 +2,7 @@ package com.riskmanagement.controller;
 
 import com.riskmanagement.model.Loan;
 import com.riskmanagement.service.LoanService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class LoanController {
     }
 
     @PostMapping
-    public Loan createLoan(@RequestBody Loan loan) {
+    public Loan createLoan(@Valid @RequestBody Loan loan) {
         return loanService.saveLoan(loan);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Loan> updateLoan(@PathVariable Long id, @RequestBody Loan loan) {
+    public ResponseEntity<Loan> updateLoan(@PathVariable Long id, @Valid @RequestBody Loan loan) {
         if (!loanService.getLoanById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }

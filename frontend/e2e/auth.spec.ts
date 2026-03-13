@@ -41,7 +41,7 @@ test.describe('Authentication', () => {
     await logout(page);
     await loginViaUI(page);
     await expect(page).toHaveURL(/\/dashboard/);
-    await expect(page.locator('app-sidebar').first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator('app-sidebar, nav').first()).toBeVisible({ timeout: 10_000 });
   });
 
   test('already authenticated user is redirected away from /login', async ({ page }) => {

@@ -1,6 +1,8 @@
 package com.riskmanagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,12 +13,17 @@ public class Institution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long institutionId;
 
+    @NotBlank(message = "name is required")
     private String name;
 
+    @NotBlank(message = "licenseNumber is required")
     private String licenseNumber;
 
+    @NotBlank(message = "contactEmail is required")
+    @Email(message = "contactEmail must be valid")
     private String contactEmail;
 
+    @NotBlank(message = "subscriptionPlan is required")
     private String subscriptionPlan;
 
     private LocalDateTime createdAt;

@@ -39,6 +39,28 @@ export class NewLoanComponent {
     this.loadLookups();
   }
 
+  private extractApiError(err: HttpErrorResponse): string | null {
+    const apiError = err.error;
+    if (!apiError) return null;
+
+    if (typeof apiError === 'string' && apiError.trim()) {
+      return apiError.trim();
+    }
+
+    if (apiError.message && typeof apiError.message === 'string') {
+      return apiError.message;
+    }
+
+    if (apiError.errors && typeof apiError.errors === 'object') {
+      const first = Object.values(apiError.errors)[0];
+      if (typeof first === 'string' && first.trim()) {
+        return first;
+      }
+    }
+
+    return null;
+  }
+
   private loadLookups() {
     this.lookupWarning = '';
     this.loanService.getBorrowerLookups().subscribe({
@@ -121,6 +143,11 @@ export class NewLoanComponent {
           return;
         }
 
+        if (err.status === 400) {
+          this.error = this.extractApiError(err) ?? 'Request validation failed. Please review your inputs and try again.';
+          return;
+        }
+
         if (err.status >= 500) {
           this.error = 'Server error while calculating risk score. Please try again.';
           return;
@@ -131,7 +158,7 @@ export class NewLoanComponent {
           return;
         }
 
-        this.error = 'Unable to generate risk score. Please review inputs and try again.';
+        this.error = this.extractApiError(err) ?? 'Unable to generate risk score. Please review inputs and try again.';
       }
     });
   }

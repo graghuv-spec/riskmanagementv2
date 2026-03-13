@@ -1,6 +1,11 @@
 package com.riskmanagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,22 +16,34 @@ public class Borrower {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long borrowerId;
 
+    @NotNull(message = "institutionId is required")
     private Long institutionId;
 
+    @NotBlank(message = "fullName is required")
     private String fullName;
 
+    @NotBlank(message = "nationalId is required")
     private String nationalId;
 
+    @NotBlank(message = "gender is required")
     private String gender;
 
+    @NotNull(message = "age is required")
+    @Min(value = 18, message = "age must be at least 18")
     private Integer age;
 
+    @NotBlank(message = "location is required")
     private String location;
 
+    @NotBlank(message = "businessSector is required")
     private String businessSector;
 
+    @NotNull(message = "monthlyIncome is required")
+    @Positive(message = "monthlyIncome must be greater than 0")
     private Double monthlyIncome;
 
+    @NotNull(message = "collateralValue is required")
+    @DecimalMin(value = "0.0", message = "collateralValue must be 0 or greater")
     private Double collateralValue;
 
     private LocalDateTime createdAt;

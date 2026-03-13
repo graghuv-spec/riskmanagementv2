@@ -2,6 +2,7 @@ package com.riskmanagement.controller;
 
 import com.riskmanagement.model.PortfolioMetrics;
 import com.riskmanagement.service.PortfolioMetricsService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class PortfolioMetricsController {
     }
 
     @PostMapping
-    public PortfolioMetrics create(@RequestBody PortfolioMetrics m) {
+    public PortfolioMetrics create(@Valid @RequestBody PortfolioMetrics m) {
         return portfolioMetricsService.savePortfolioMetrics(m);
     }
 }
