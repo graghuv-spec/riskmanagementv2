@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   totalValue = 0;
   par30 = 0;
   defaultForecast = '0';
+  riskScoreByLoanId: Map<number, any> = new Map();
 
   private dataReady = false;
   private viewReady = false;
@@ -46,6 +47,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           ? riskScores.reduce((s: number, r: any) => s + (r.probabilityDefault || 0), 0) / riskScores.length
           : this.metrics?.forecastDefaultRate ?? 0;
         this.defaultForecast = (avgPd * 100).toFixed(1);
+
+        // Build riskScore lookup map by loanId for the table
+        this.riskScoreByLoanId = new Map(
+          riskScores.filter((r: any) => r.loanId != null).map((r: any) => [r.loanId, r])
+        );
 
         // Build sector map using borrower data
         const borrowerMap: any = {};

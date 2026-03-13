@@ -1,14 +1,19 @@
 package com.riskmanagement.controller;
 
 import com.riskmanagement.model.Loan;
+import com.riskmanagement.model.RiskScore;
+import com.riskmanagement.repository.RiskScoreRepository;
 import com.riskmanagement.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +22,9 @@ public class LoanGraphQLController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private RiskScoreRepository riskScoreRepository;
 
     @QueryMapping
     public List<Loan> loans() {
@@ -37,7 +45,7 @@ public class LoanGraphQLController {
         loan.setLoanAmount(loanInput.getLoanAmount());
         loan.setInterestRate(loanInput.getInterestRate());
         loan.setTenureMonths(loanInput.getTenureMonths());
-        loan.setDisbursementDate(loanInput.getDisbursementDate());
+        loan.setDisbursementDate(parseDateTime(loanInput.getDisbursementDate()));
         loan.setStatus(loanInput.getStatus());
         loan.setCreatedAt(LocalDateTime.now());
         return loanService.saveLoan(loan);
@@ -53,7 +61,7 @@ public class LoanGraphQLController {
         loan.setLoanAmount(loanInput.getLoanAmount());
         loan.setInterestRate(loanInput.getInterestRate());
         loan.setTenureMonths(loanInput.getTenureMonths());
-        loan.setDisbursementDate(loanInput.getDisbursementDate());
+        loan.setDisbursementDate(parseDateTime(loanInput.getDisbursementDate()));
         loan.setStatus(loanInput.getStatus());
         return loanService.saveLoan(loan);
     }
@@ -65,6 +73,25 @@ public class LoanGraphQLController {
             return true;
         }
         return false;
+    }
+
+    @SchemaMapping(typeName = "Loan", field = "riskScore")
+    public RiskScore riskScore(Loan loan) {
+        if (loan.getLoanId() == null) return null;
+        return riskScoreRepository.findByLoanId(loan.getLoanId()).orElse(null);
+    }
+
+    private LocalDateTime parseDateTime(String value) {
+        if (value == null || value.isBlank()) return null;
+        String trimmed = value.trim();
+        try {
+            if (trimmed.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                return LocalDateTime.parse(trimmed + "T00:00:00");
+            }
+            return LocalDateTime.parse(trimmed, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("disbursementDate must be a valid ISO date (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS): " + trimmed);
+        }
     }
 
     private void validateLoanInput(LoanInput loanInput) {
@@ -98,7 +125,7 @@ public class LoanGraphQLController {
         private Double loanAmount;
         private Double interestRate;
         private Integer tenureMonths;
-        private LocalDateTime disbursementDate;
+        private String disbursementDate;
         private String status;
 
         // getters and setters
@@ -142,11 +169,11 @@ public class LoanGraphQLController {
             this.tenureMonths = tenureMonths;
         }
 
-        public LocalDateTime getDisbursementDate() {
+        public String getDisbursementDate() {
             return disbursementDate;
         }
 
-        public void setDisbursementDate(LocalDateTime disbursementDate) {
+        public void setDisbursementDate(String disbursementDate) {
             this.disbursementDate = disbursementDate;
         }
 

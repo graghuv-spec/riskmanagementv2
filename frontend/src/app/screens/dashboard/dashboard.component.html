@@ -55,7 +55,7 @@
     <table class="data-table">
       <thead>
         <tr>
-          <th>Loan ID</th><th>Amount</th><th>Rate</th><th>Tenure</th><th>Status</th>
+          <th>Loan ID</th><th>Amount</th><th>Rate</th><th>Tenure</th><th>Status</th><th>Risk Score</th><th>Grade</th>
         </tr>
       </thead>
       <tbody>
@@ -70,6 +70,27 @@
               'badge-gray':  l.status === 'Closed',
               'badge-red':   l.status === 'Defaulted'
             }">{{ l.status }}</span>
+          </td>
+          <td>
+            <ng-container *ngIf="riskScoreByLoanId.get(l.loanId) as rs; else noScore">
+              <span [style.color]="rs.riskScore >= 80 ? 'var(--green)' : rs.riskScore >= 60 ? 'var(--sky-dark)' : rs.riskScore >= 40 ? 'var(--yellow)' : 'var(--red)'">
+                {{ rs.riskScore | number:'1.0-1' }}
+              </span>
+            </ng-container>
+            <ng-template #noScore><span class="stat-sub">—</span></ng-template>
+          </td>
+          <td>
+            <ng-container *ngIf="riskScoreByLoanId.get(l.loanId) as rs">
+              <span class="badge" [ngClass]="{
+                'badge-green': rs.riskGrade === 'A',
+                'badge-blue':  rs.riskGrade === 'B',
+                'badge-yellow':rs.riskGrade === 'C',
+                'badge-red':   rs.riskGrade === 'D'
+              }">{{ rs.riskGrade ?? '—' }}</span>
+            </ng-container>
+            <ng-container *ngIf="!riskScoreByLoanId.get(l.loanId)">
+              <span class="stat-sub">—</span>
+            </ng-container>
           </td>
         </tr>
       </tbody>

@@ -210,11 +210,30 @@ jobs:
           SPRING_PROFILES_ACTIVE: default
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
           DB_USERNAME: ${{ env.DB_USERNAME }}
+          DB_URL: jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
+          JPA_DDL_AUTO: update
+          SEED_ENABLED: "true"
+          SEED_RESET_BEFORE_SEED: "true"
+          SEED_EXPECTED_USER_COUNT: "2"
+          SEED_INSTITUTION_NAME: MFB Demo
+          SEED_INSTITUTION_LICENSE_NUMBER: LIC-MFB-001
+          SEED_INSTITUTION_CONTACT_EMAIL: admin@mfb.com
+          SEED_INSTITUTION_SUBSCRIPTION_PLAN: Standard
+          SEED_ADMIN_NAME: Admin User
+          SEED_ADMIN_EMAIL: admin@mfb.com
+          SEED_ADMIN_ROLE: ADMIN
+          SEED_ADMIN_MFA_ENABLED: "false"
+          SEED_OFFICER_NAME: Officer User
+          SEED_OFFICER_EMAIL: officer@mfb.com
+          SEED_OFFICER_ROLE: OFFICER
+          SEED_OFFICER_MFA_ENABLED: "false"
+          SEED_DEFAULT_USER_PASSWORD: password123
+          SEED_DEFAULT_AUDIT_IP: "127.0.0.1"
 
       - name: Wait for backend to be ready (port 8080)
         run: |
           for i in $(seq 1 40); do
-            if curl -sf http://localhost:8080/api/loans > /dev/null 2>&1; then
+            if curl -s http://localhost:8080/api/loans > /dev/null 2>&1; then
               echo "Backend is up after ${i} attempts."; exit 0
             fi
             echo "  attempt $i — sleeping 5s"; sleep 5
