@@ -2,11 +2,14 @@ package com.riskmanagement.controller;
 
 import com.riskmanagement.model.Borrower;
 import com.riskmanagement.service.BorrowerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/borrowers")
@@ -20,6 +23,14 @@ public class BorrowerController {
         return borrowerService.getAllBorrowers();
     }
 
+    @GetMapping("/lookups")
+    public Map<String, List<String>> getBorrowerLookups() {
+        Map<String, List<String>> lookups = new HashMap<>();
+        lookups.put("sectors", borrowerService.getDistinctBusinessSectors());
+        lookups.put("locations", borrowerService.getDistinctLocations());
+        return lookups;
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Borrower> getBorrowerById(@PathVariable Long id) {
         return borrowerService.getBorrowerById(id)
@@ -28,12 +39,12 @@ public class BorrowerController {
     }
 
     @PostMapping
-    public Borrower createBorrower(@RequestBody Borrower borrower) {
+    public Borrower createBorrower(@Valid @RequestBody Borrower borrower) {
         return borrowerService.saveBorrower(borrower);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Borrower> updateBorrower(@PathVariable Long id, @RequestBody Borrower borrower) {
+    public ResponseEntity<Borrower> updateBorrower(@PathVariable Long id, @Valid @RequestBody Borrower borrower) {
         if (!borrowerService.getBorrowerById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }

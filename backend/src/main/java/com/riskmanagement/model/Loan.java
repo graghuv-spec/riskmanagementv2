@@ -1,6 +1,10 @@
 package com.riskmanagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,18 +15,27 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loanId;
 
+    @NotNull(message = "borrowerId is required")
     private Long borrowerId;
 
+    @NotNull(message = "institutionId is required")
     private Long institutionId;
 
+    @NotNull(message = "loanAmount is required")
+    @Positive(message = "loanAmount must be greater than 0")
     private Double loanAmount;
 
+    @NotNull(message = "interestRate is required")
+    @DecimalMin(value = "0.0", message = "interestRate must be 0 or greater")
     private Double interestRate;
 
+    @NotNull(message = "tenureMonths is required")
+    @Positive(message = "tenureMonths must be greater than 0")
     private Integer tenureMonths;
 
     private LocalDateTime disbursementDate;
 
+    @NotBlank(message = "status is required")
     private String status; // Active, Closed, Defaulted
 
     private LocalDateTime createdAt;

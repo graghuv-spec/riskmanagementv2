@@ -1,5 +1,6 @@
 package com.riskmanagement.service;
 
+import com.riskmanagement.config.AppProperties;
 import com.riskmanagement.model.Borrower;
 import com.riskmanagement.model.Loan;
 import com.riskmanagement.model.Repayment;
@@ -14,17 +15,20 @@ import java.util.List;
 @Service
 public class RiskCalculationService {
 
-    @Autowired
-    private RepaymentRepository repaymentRepository;
+    private final RepaymentRepository repaymentRepository;
+    private final AppProperties appProperties;
 
-    // Weights
-    private static final double INCOME_STABILITY_WEIGHT = 0.3;
-    private static final double REPAYMENT_HISTORY_WEIGHT = 0.3;
-    private static final double COLLATERAL_RATIO_WEIGHT = 0.2;
-    private static final double SECTOR_RISK_WEIGHT = 0.1;
-    private static final double LOCATION_RISK_WEIGHT = 0.1;
+    @Autowired
+    public RiskCalculationService(RepaymentRepository repaymentRepository, AppProperties appProperties) {
+        this.repaymentRepository = repaymentRepository;
+        this.appProperties = appProperties;
+    }
 
     public RiskScore calculateRiskScore(Loan loan, Borrower borrower) {
+        AppProperties.Risk risk = appProperties.getRisk();
+        double maxScore = risk.getMaxScore();
+        double minScore = risk.getMinScore();
+
         // Calculate individual scores (simplified)
         double incomeScore = calculateIncomeScore(borrower.getMonthlyIncome());
         double repaymentScore = calculateRepaymentScore(loan.getLoanId());
@@ -33,23 +37,25 @@ public class RiskCalculationService {
         double regionalScore = calculateRegionalScore(borrower.getLocation());
 
         // Calculate risk score
-        double riskScore = (INCOME_STABILITY_WEIGHT * incomeScore) +
-                           (REPAYMENT_HISTORY_WEIGHT * repaymentScore) +
-                           (COLLATERAL_RATIO_WEIGHT * collateralScore) +
-                           (SECTOR_RISK_WEIGHT * sectorRiskScore) +
-                           (LOCATION_RISK_WEIGHT * regionalScore);
+        double riskScore = (risk.getIncomeStabilityWeight() * incomeScore) +
+                           (risk.getRepaymentHistoryWeight() * repaymentScore) +
+                           (risk.getCollateralRatioWeight() * collateralScore) +
+                           (risk.getSectorRiskWeight() * sectorRiskScore) +
+                           (risk.getLocationRiskWeight() * regionalScore);
 
         // Scale to 0-100
-        riskScore = Math.min(100, Math.max(0, riskScore));
+        riskScore = Math.min(maxScore, Math.max(minScore, riskScore));
 
         // Probability of default (simplified)
-        double pd = 1 / (1 + Math.exp(- (riskScore / 10 - 5))); // Logistic
+        double pd = 1 / (1 + Math.exp(- (riskScore / risk.getPdDivisor() - risk.getPdOffset()))); // Logistic
 
         // Risk grade
         String riskGrade = getRiskGrade(riskScore);
 
         // Recommended limit (simplified)
-        double recommendedLimit = borrower.getMonthlyIncome() * 0.5 * (riskScore / 100);
+        double recommendedLimit = borrower.getMonthlyIncome()
+                * risk.getRecommendedLimitIncomeMultiplier()
+            * (riskScore / maxScore);
 
         RiskScore riskScoreEntity = new RiskScore();
         riskScoreEntity.setLoanId(loan.getLoanId());
@@ -57,8 +63,8 @@ public class RiskCalculationService {
         riskScoreEntity.setProbabilityDefault(pd);
         riskScoreEntity.setRiskGrade(riskGrade);
         riskScoreEntity.setRecommendedLimit(recommendedLimit);
-        riskScoreEntity.setModelVersion("Rule-Based v1");
-        riskScoreEntity.setExplanationJson("{\"method\": \"rule-based\"}");
+        riskScoreEntity.setModelVersion(risk.getModelVersion());
+        riskScoreEntity.setExplanationJson(risk.getExplanationJson());
         riskScoreEntity.setCreatedAt(LocalDateTime.now());
 
         return riskScoreEntity;
@@ -87,24 +93,31 @@ public class RiskCalculationService {
     }
 
     private double calculateSectorRiskScore(String sector) {
-        // Simplified: some sectors riskier
+        AppProperties.Risk risk = appProperties.getRisk();
+        if (sector == null) {
+            return risk.getSectorDefaultScore();
+        }
+
+        // Simplified: some sectors are riskier.
         switch (sector.toLowerCase()) {
-            case "technology": return 90;
-            case "finance": return 80;
-            case "agriculture": return 60;
-            default: return 70;
+            case "technology": return risk.getSectorTechnologyScore();
+            case "finance": return risk.getSectorFinanceScore();
+            case "agriculture": return risk.getSectorAgricultureScore();
+            default: return risk.getSectorDefaultScore();
         }
     }
 
     private double calculateRegionalScore(String location) {
-        // Simplified
-        return 75; // Average
+        // Simplified: use configurable average regional score.
+        return appProperties.getRisk().getDefaultRegionalScore();
     }
 
     private String getRiskGrade(double score) {
-        if (score >= 80) return "A";
-        if (score >= 60) return "B";
-        if (score >= 40) return "C";
+        AppProperties.Risk risk = appProperties.getRisk();
+
+        if (score >= risk.getGradeAThreshold()) return "A";
+        if (score >= risk.getGradeBThreshold()) return "B";
+        if (score >= risk.getGradeCThreshold()) return "C";
         return "D";
     }
 }

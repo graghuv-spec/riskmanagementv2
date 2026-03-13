@@ -1,5 +1,6 @@
 package com.riskmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ public class User {
 
     private String role; // Admin, LoanOfficer, RiskManager, Auditor
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
 
     private Boolean mfaEnabled;

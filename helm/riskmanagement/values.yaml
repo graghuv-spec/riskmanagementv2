@@ -1,0 +1,67 @@
+nameOverride: ""
+fullnameOverride: ""
+
+imagePullSecrets: []
+
+postgres:
+  enabled: true
+  image:
+    repository: postgres
+    tag: "15"
+    pullPolicy: IfNotPresent
+  auth:
+    username: ""
+    password: ""
+    database: ""
+  persistence:
+    enabled: true
+    size: 5Gi
+    storageClassName: ""
+  service:
+    port: 5432
+  resources: {}
+
+backend:
+  replicaCount: 1
+  image:
+    repository: riskmanagementv2-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  dbCredentials:
+    existingSecretName: ""
+    usernameKey: POSTGRES_USER
+    passwordKey: POSTGRES_PASSWORD
+  service:
+    type: ClusterIP
+    port: 8080
+  env:
+    springProfilesActive: "local"
+    dbUrl: ""
+    allowedOrigins: "*"
+    seedEnabled: "true"
+    seedResetBeforeSeed: "false"
+  resources: {}
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: riskmanagementv2-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+  env:
+    backendUrl: ""
+  resources: {}
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: riskmanagement.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

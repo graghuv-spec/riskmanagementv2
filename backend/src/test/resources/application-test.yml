@@ -8,6 +8,7 @@ spring:
     hikari:
       maximum-pool-size: 3
       minimum-idle: 1
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS riskmanagement_test
   jpa:
     hibernate:
       ddl-auto: create-drop    # wipe and recreate schema on each test run
@@ -16,6 +17,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: riskmanagement_test
+        hbm2ddl.create_namespaces: true
   graphql:
     graphiql:
       enabled: false

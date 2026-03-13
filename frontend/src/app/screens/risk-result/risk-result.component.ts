@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { finalize, switchMap } from 'rxjs/operators';
 import { LoanService } from '../../core/services/loan.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-risk-result',
@@ -26,13 +29,49 @@ export class RiskResultComponent implements OnInit {
     { label: 'Location Risk',     weight: 10, icon: '📍' }
   ];
 
-  constructor(private router: Router, private loanService: LoanService) {}
+  constructor(private router: Router, private loanService: LoanService, private auth: AuthService) {}
+
+  private extractApiError(err: HttpErrorResponse): string | null {
+    const apiError = err.error;
+    if (!apiError) return null;
+
+    if (typeof apiError === 'string' && apiError.trim()) {
+      return apiError.trim();
+    }
+
+    if (apiError.message && typeof apiError.message === 'string') {
+      return apiError.message;
+    }
+
+    if (apiError.errors && typeof apiError.errors === 'object') {
+      const first = Object.values(apiError.errors)[0];
+      if (typeof first === 'string' && first.trim()) {
+        return first;
+      }
+    }
+
+    return null;
+  }
 
   ngOnInit() {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras?.state ?? history.state;
     this.riskScore = state?.['riskScore'];
     this.loanData = state?.['loanData'];
+
+    if (!this.riskScore) {
+      const raw = sessionStorage.getItem('rm_latest_risk_result');
+      if (raw) {
+        try {
+          const cached = JSON.parse(raw);
+          this.riskScore = cached?.riskScore ?? null;
+          this.loanData = cached?.loanData ?? null;
+        } catch {
+          // Ignore malformed cache and continue to guarded redirect.
+        }
+      }
+    }
+
     if (!this.riskScore) this.router.navigate(['/new-loan']);
   }
 
@@ -69,31 +108,95 @@ export class RiskResultComponent implements OnInit {
   }
 
   saveWithOverride() {
-    if (!this.loanData) return;
+    if (!this.loanData || !this.riskScore || this.saving) return;
+
+    if (this.overrideScore !== null && (this.overrideScore < 0 || this.overrideScore > 100)) {
+      this.saveMsg = '✗ Override score must be between 0 and 100.';
+      return;
+    }
+
+    this.saveMsg = '';
     this.saving = true;
-    this.loanService.createLoan({
-      loanAmount: this.loanData.loanAmount,
-      interestRate: this.loanData.interestRate,
-      tenureMonths: this.loanData.tenureMonths,
-      status: this.loanData.status,
-      disbursementDate: this.loanData.disbursementDate,
-      createdAt: new Date().toISOString()
-    }).subscribe({
-      next: (savedLoan) => {
+
+    const scoreToSave = this.overrideScore ?? this.riskScore.riskScore;
+    const user = this.auth.getUser();
+    const institutionId = user?.institutionId ?? null;
+
+    if (!institutionId) {
+      this.saveMsg = '✗ Missing institution context. Please sign in again and retry.';
+      return;
+    }
+
+    const now = this.toApiDateTime(new Date().toISOString());
+
+    const borrowerPayload = {
+      fullName: this.loanData.fullName,
+      nationalId: this.loanData.nationalId,
+      gender: this.loanData.gender,
+      age: Number(this.loanData.age),
+      location: this.loanData.location,
+      businessSector: this.loanData.businessSector,
+      monthlyIncome: Number(this.loanData.monthlyIncome),
+      collateralValue: Number(this.loanData.collateralValue),
+      institutionId,
+      createdAt: now
+    };
+
+    this.loanService.createBorrower(borrowerPayload).pipe(
+      switchMap((savedBorrower) => {
+        const loanPayload = {
+          borrowerId: savedBorrower?.borrowerId ?? null,
+          institutionId,
+          loanAmount: Number(this.loanData.loanAmount),
+          interestRate: Number(this.loanData.interestRate),
+          tenureMonths: Number(this.loanData.tenureMonths),
+          status: this.loanData.status,
+          disbursementDate: this.toApiDateTime(this.loanData.disbursementDate),
+          createdAt: now
+        };
+        return this.loanService.createLoan(loanPayload);
+      }),
+      switchMap((savedLoan) => {
         const rs = {
           ...this.riskScore,
           loanId: savedLoan.loanId,
-          riskScore: this.overrideScore ?? this.riskScore.riskScore,
-          riskGrade: this.getGrade(this.overrideScore ?? this.riskScore.riskScore),
-          createdAt: new Date().toISOString()
+          riskScore: scoreToSave,
+          riskGrade: this.getGrade(scoreToSave),
+          createdAt: now
         };
-        this.loanService.saveRiskScore(rs).subscribe({
-          next: () => { this.saveMsg = '✓ Loan and risk score saved successfully!'; this.saving = false; },
-          error: () => { this.saveMsg = '✗ Failed to save. Try again.'; this.saving = false; }
-        });
+        return this.loanService.saveRiskScore(rs);
+      }),
+      finalize(() => {
+        this.saving = false;
+      })
+    ).subscribe({
+      next: () => {
+        this.saveMsg = '✓ Borrower, loan and risk score saved successfully!';
       },
-      error: () => { this.saveMsg = '✗ Failed to save loan.'; this.saving = false; }
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 401 || err.status === 403) {
+          this.saveMsg = '✗ Session expired. Please login and try saving again.';
+          return;
+        }
+
+        if (err.status === 400 || err.status === 409) {
+          this.saveMsg = `✗ ${this.extractApiError(err) ?? 'Validation failed while saving borrower, loan, or risk score.'}`;
+          return;
+        }
+
+        this.saveMsg = '✗ Failed to save complete flow. Please try again.';
+      }
     });
+  }
+
+  private toApiDateTime(value: string | null | undefined): string | null {
+    if (!value) return null;
+    const trimmed = String(value).trim();
+    if (!trimmed) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      return `${trimmed}T00:00:00`;
+    }
+    return trimmed.endsWith('Z') ? trimmed.slice(0, 19) : trimmed;
   }
 
   getGrade(s: number): string {

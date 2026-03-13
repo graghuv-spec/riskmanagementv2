@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: riskmanagement
+labels:
+  - pairs:
+      app.kubernetes.io/name: riskmanagementv2
+resources:
+  - namespace.yaml
+  - postgres-configmap.yaml
+  - postgres-secret.yaml
+  - postgres-pvc.yaml
+  - postgres-deployment.yaml
+  - backend-configmap.yaml
+  - backend-deployment.yaml
+  - frontend-configmap.yaml
+  - frontend-deployment.yaml
+images:
+  - name: riskmanagementv2-backend
+    newTag: latest
+  - name: riskmanagementv2-frontend
+    newTag: latest

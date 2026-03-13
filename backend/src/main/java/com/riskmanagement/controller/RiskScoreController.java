@@ -5,6 +5,12 @@ import com.riskmanagement.model.Loan;
 import com.riskmanagement.model.RiskScore;
 import com.riskmanagement.service.RiskCalculationService;
 import com.riskmanagement.service.RiskScoreService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +40,12 @@ public class RiskScoreController {
     }
 
     @PostMapping
-    public RiskScore createRiskScore(@RequestBody RiskScore riskScore) {
+    public RiskScore createRiskScore(@Valid @RequestBody RiskScore riskScore) {
         return riskScoreService.saveRiskScore(riskScore);
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<RiskScore> calculateRiskScore(@RequestBody CalculateRiskRequest request) {
+    public ResponseEntity<RiskScore> calculateRiskScore(@Valid @RequestBody CalculateRiskRequest request) {
         Borrower borrower = new Borrower();
         borrower.setFullName(request.getFullName());
         borrower.setNationalId(request.getNationalId());
@@ -61,7 +67,7 @@ public class RiskScoreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RiskScore> updateRiskScore(@PathVariable Long id, @RequestBody RiskScore riskScore) {
+    public ResponseEntity<RiskScore> updateRiskScore(@PathVariable Long id, @Valid @RequestBody RiskScore riskScore) {
         if (!riskScoreService.getRiskScoreById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -79,17 +85,35 @@ public class RiskScoreController {
     }
 
     public static class CalculateRiskRequest {
+        @NotBlank(message = "fullName is required")
         private String fullName;
+        @NotBlank(message = "nationalId is required")
         private String nationalId;
+        @NotBlank(message = "gender is required")
         private String gender;
+        @NotNull(message = "age is required")
+        @Min(value = 18, message = "age must be at least 18")
         private Integer age;
+        @NotBlank(message = "location is required")
         private String location;
+        @NotBlank(message = "businessSector is required")
         private String businessSector;
+        @NotNull(message = "monthlyIncome is required")
+        @Positive(message = "monthlyIncome must be greater than 0")
         private Double monthlyIncome;
+        @NotNull(message = "collateralValue is required")
+        @DecimalMin(value = "0.0", message = "collateralValue must be 0 or greater")
         private Double collateralValue;
+        @NotNull(message = "loanAmount is required")
+        @Positive(message = "loanAmount must be greater than 0")
         private Double loanAmount;
+        @NotNull(message = "interestRate is required")
+        @DecimalMin(value = "0.0", message = "interestRate must be 0 or greater")
         private Double interestRate;
+        @NotNull(message = "tenureMonths is required")
+        @Positive(message = "tenureMonths must be greater than 0")
         private Integer tenureMonths;
+        @NotBlank(message = "status is required")
         private String status;
 
         public String getFullName() { return fullName; }

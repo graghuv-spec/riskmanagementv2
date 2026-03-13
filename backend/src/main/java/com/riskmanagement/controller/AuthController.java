@@ -2,6 +2,7 @@ package com.riskmanagement.controller;
 
 import com.riskmanagement.model.User;
 import com.riskmanagement.repository.UserRepository;
+import com.riskmanagement.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,21 +19,31 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private JwtService jwtService;
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
-        if (userOpt.isEmpty() || !passwordEncoder.matches(request.getPassword(), userOpt.get().getPasswordHash())) {
+        String email = request.getEmail() == null ? "" : request.getEmail().trim();
+        String password = request.getPassword() == null ? "" : request.getPassword();
+
+        Optional<User> userOpt = userRepository.findByEmailIgnoreCase(email);
+        if (email.isBlank() || password.isBlank() || userOpt.isEmpty()
+                || !passwordEncoder.matches(password, userOpt.get().getPasswordHash())) {
             return ResponseEntity.status(401).body(Map.of("message", "Invalid email or password"));
         }
         User user = userOpt.get();
+        String token = jwtService.generateToken(user);
         Map<String, Object> response = new HashMap<>();
         response.put("userId", user.getUserId());
         response.put("name", user.getName());
         response.put("email", user.getEmail());
         response.put("role", user.getRole());
         response.put("institutionId", user.getInstitutionId());
+        response.put("token", token);
+        response.put("tokenType", "Bearer");
         return ResponseEntity.ok(response);
     }
 

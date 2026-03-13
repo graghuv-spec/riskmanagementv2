@@ -1,6 +1,10 @@
 package com.riskmanagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,14 +15,24 @@ public class RiskScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long riskId;
 
+    @NotNull(message = "loanId is required")
     private Long loanId;
 
+    @NotNull(message = "riskScore is required")
+    @DecimalMin(value = "0.0", message = "riskScore must be at least 0")
+    @DecimalMax(value = "100.0", message = "riskScore must be at most 100")
     private Double riskScore; // 0-100
 
+    @NotNull(message = "probabilityDefault is required")
+    @DecimalMin(value = "0.0", message = "probabilityDefault must be at least 0")
+    @DecimalMax(value = "1.0", message = "probabilityDefault must be at most 1")
     private Double probabilityDefault;
 
+    @NotBlank(message = "riskGrade is required")
     private String riskGrade; // A/B/C/D
 
+    @NotNull(message = "recommendedLimit is required")
+    @DecimalMin(value = "0.0", message = "recommendedLimit must be 0 or greater")
     private Double recommendedLimit;
 
     private String modelVersion;

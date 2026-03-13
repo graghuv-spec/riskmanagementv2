@@ -9,7 +9,11 @@ export class LoanService {
   constructor(private http: HttpClient) {}
 
   getLoans(): Observable<any[]> { return this.http.get<any[]>(`${this.BASE}/loans`); }
+  getBorrowerLookups(): Observable<{ sectors: string[]; locations: string[] }> {
+    return this.http.get<{ sectors: string[]; locations: string[] }>(`${this.BASE}/borrowers/lookups`);
+  }
   getLoan(id: number): Observable<any> { return this.http.get<any>(`${this.BASE}/loans/${id}`); }
+  createBorrower(borrower: any): Observable<any> { return this.http.post<any>(`${this.BASE}/borrowers`, borrower); }
   createLoan(loan: any): Observable<any> { return this.http.post<any>(`${this.BASE}/loans`, loan); }
   updateLoan(id: number, loan: any): Observable<any> { return this.http.put<any>(`${this.BASE}/loans/${id}`, loan); }
 

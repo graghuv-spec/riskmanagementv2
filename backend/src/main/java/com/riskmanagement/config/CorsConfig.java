@@ -1,23 +1,34 @@
 package com.riskmanagement.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
-    // Set ALLOWED_ORIGINS env var as a comma-separated list of origin patterns.
-    @Value("${app.cors.allowed-origins:http://localhost:4200,http://localhost}")
-    private String allowedOriginsEnv;
+    private final AppProperties appProperties;
+
+    public CorsConfig(AppProperties appProperties) {
+        this.appProperties = appProperties;
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        String configured = appProperties.getCors().getAllowedOrigins();
+        String[] origins = Arrays.stream(configured.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .toArray(String[]::new);
+
+        boolean wildcard = origins.length == 0 || (origins.length == 1 && "*".equals(origins[0]));
+
         registry.addMapping("/api/**")
-                .allowedOriginPatterns(allowedOriginsEnv.split(","))
+            .allowedOriginPatterns(wildcard ? new String[]{"*"} : origins)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true);
+            .allowCredentials(!wildcard);
     }
 }

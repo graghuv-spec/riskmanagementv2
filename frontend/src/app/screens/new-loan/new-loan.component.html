@@ -3,7 +3,7 @@
   <p>Complete borrower and loan details, then generate the risk score</p>
 </div>
 
-<form (ngSubmit)="generate()" class="loan-form">
+<form (ngSubmit)="generate()" class="loan-form" novalidate>
   <div class="form-grid">
 
     <!-- Borrower Details -->
@@ -30,16 +30,19 @@
         </div>
         <div class="form-group">
           <label>Location *</label>
-          <select [(ngModel)]="form.location" name="location">
+          <select *ngIf="useLocationSelect" [(ngModel)]="form.location" name="location">
             <option value="">-- Select --</option>
             <option *ngFor="let l of locations" [value]="l">{{ l }}</option>
           </select>
+          <input *ngIf="!useLocationSelect" [(ngModel)]="form.location" name="location" placeholder="e.g. Nairobi">
         </div>
         <div class="form-group">
           <label>Business Sector *</label>
-          <select [(ngModel)]="form.businessSector" name="businessSector">
+          <select *ngIf="useSectorSelect" [(ngModel)]="form.businessSector" name="businessSector">
+            <option value="">-- Select --</option>
             <option *ngFor="let s of sectors" [value]="s">{{ s }}</option>
           </select>
+          <input *ngIf="!useSectorSelect" [(ngModel)]="form.businessSector" name="businessSector" placeholder="e.g. Retail">
         </div>
       </div>
     </div>
@@ -103,6 +106,7 @@
   </div>
 
   <div class="error-msg" *ngIf="error">{{ error }}</div>
+  <div class="warn-msg" *ngIf="lookupWarning">{{ lookupWarning }}</div>
 
   <div class="form-actions">
     <button type="submit" class="btn-generate" [disabled]="loading">

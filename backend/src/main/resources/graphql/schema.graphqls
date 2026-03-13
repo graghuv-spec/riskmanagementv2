@@ -1,3 +1,15 @@
+type RiskScore {
+    riskId: ID
+    loanId: ID
+    riskScore: Float
+    probabilityDefault: Float
+    riskGrade: String
+    recommendedLimit: Float
+    modelVersion: String
+    explanationJson: String
+    createdAt: String
+}
+
 type Loan {
     loanId: ID!
     borrowerId: ID
@@ -8,6 +20,7 @@ type Loan {
     disbursementDate: String
     status: String
     createdAt: String
+    riskScore: RiskScore
 }
 
 type Query {

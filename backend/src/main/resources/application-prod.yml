@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  graphql:
+    graphiql:
+      enabled: false
+
+logging:
+  level:
+    org.hibernate.SQL: WARN
+    org.hibernate.tool.schema: WARN
+
+app:
+  cors:
+    # Must be set per deployment (comma-separated allowed origins)
+    allowed-origins: ${ALLOWED_ORIGINS}
+  auth:
+    jwt-secret: ${JWT_SECRET}
+    jwt-ttl-hours: ${JWT_TTL_HOURS:8}

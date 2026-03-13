@@ -1,0 +1,45 @@
+postgres:
+  enabled: false
+  auth:
+    username: postgres
+    password: admin
+    database: postgres
+
+backend:
+  replicaCount: 2
+  image:
+    repository: riskmanagementv2-backend
+    tag: latest
+  dbCredentials:
+    # Existing secret in target cluster with DB auth keys.
+    existingSecretName: riskmanagement-db-credentials
+    usernameKey: POSTGRES_USER
+    passwordKey: POSTGRES_PASSWORD
+  env:
+    springProfilesActive: "prod"
+    # Uses existing Postgres service as external DB source for this release.
+    dbUrl: jdbc:postgresql://riskmanagement-riskmanagement-postgres.riskmanagement.svc.cluster.local:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
+    allowedOrigins: "*"
+    seedEnabled: "false"
+    seedResetBeforeSeed: "false"
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: riskmanagementv2-frontend
+    tag: latest
+  env:
+    backendUrl: http://riskmanagement-cloud-riskmanagement-backend.riskmanagement.svc.cluster.local:8080
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+  hosts:
+    - host: 192-168-29-222.nip.io
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
