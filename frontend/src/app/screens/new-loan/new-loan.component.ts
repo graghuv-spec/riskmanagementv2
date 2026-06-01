@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { finalize } from 'rxjs/operators';
-import { LoanService } from '../../core/services/loan.service';
+import { finalize, map, switchMap, tap, timeout } from 'rxjs/operators';
+import { Subscription, TimeoutError } from 'rxjs';
+import { BorrowerProfile, LoanService } from '../../core/services/loan.service';
 import { AuthService } from '../../core/services/auth.service';
+import { BorrowerContextService } from '../../core/services/borrower-context.service';
 
 @Component({
   selector: 'app-new-loan',
@@ -18,10 +20,14 @@ export class NewLoanComponent {
   loading = false;
   error = '';
   lookupWarning = '';
+  profileWarning = '';
+  borrowerDetailsReadonly = true;
+  financialDetailsReadonly = true;
+  private borrowerId: number | null = null;
 
   form: any = {
     fullName: '', nationalId: '', gender: 'Male', age: null,
-    location: '', businessSector: '',
+    location: '', businessSector: 'Agriculture',
     monthlyIncome: null, collateralValue: null,
     loanAmount: null, interestRate: null, tenureMonths: null,
     disbursementDate: new Date().toISOString().split('T')[0], status: 'Active'
@@ -35,8 +41,28 @@ export class NewLoanComponent {
     return +(this.form.collateralValue / this.form.loanAmount).toFixed(2);
   }
 
-  constructor(private loanService: LoanService, private auth: AuthService, private router: Router) {
+  constructor(private loanService: LoanService, private auth: AuthService, private router: Router, private borrowerContext: BorrowerContextService) {
     this.loadLookups();
+    this.loadBorrowerFromContext();
+  }
+
+  private loadBorrowerFromContext() {
+    const borrower = this.borrowerContext.getSelectedBorrower();
+    if (!borrower) {
+      this.router.navigate(['/borrower-hub']);
+      return;
+    }
+    this.borrowerId = borrower.borrowerId;
+    this.form.fullName = borrower.fullName ?? '';
+    this.form.nationalId = borrower.nationalId ?? '';
+    this.form.gender = borrower.gender ?? 'Male';
+    this.form.age = borrower.age ?? null;
+    this.form.location = borrower.location ?? '';
+    this.form.businessSector = borrower.businessSector ?? '';
+    this.form.monthlyIncome = borrower.monthlyIncome ?? null;
+    this.form.collateralValue = borrower.collateralValue ?? null;
+    this.borrowerDetailsReadonly = true;
+    this.financialDetailsReadonly = true;
   }
 
   private loadLookups() {
@@ -53,7 +79,7 @@ export class NewLoanComponent {
           this.form.businessSector = this.sectors[0] ?? '';
         }
         if (!this.locations.includes(this.form.location)) {
-          this.form.location = '';
+          this.form.location = this.locations[0] ?? '';
         }
 
         if (!this.sectors.length || !this.locations.length) {
@@ -77,15 +103,30 @@ export class NewLoanComponent {
   generate() {
     if (this.loading) return;
 
-    const required = ['fullName','nationalId','age','location','businessSector','monthlyIncome','collateralValue','loanAmount','interestRate','tenureMonths'];
-    const hasMissing = required.some((key) => {
+    if (!this.borrowerId) {
+      this.error = 'Borrower profile is required before creating a loan.';
+      return;
+    }
+
+    this.form.location = this.normalizeLocation(this.form.location);
+
+    const required: Array<{ key: string; label: string }> = [
+      { key: 'loanAmount', label: 'Loan Amount' },
+      { key: 'interestRate', label: 'Interest Rate' },
+      { key: 'tenureMonths', label: 'Tenure Months' }
+    ];
+
+    const missing = required.filter(({ key }) => {
       const value = this.form[key];
       if (value === null || value === undefined) return true;
       if (typeof value === 'string') return !value.trim();
       return false;
     });
 
-    if (hasMissing) { this.error = 'Please fill in all required fields.'; return; }
+    if (missing.length) {
+      this.error = `Please fill required fields: ${missing.map((m) => m.label).join(', ')}.`;
+      return;
+    }
     this.error = ''; this.loading = true;
 
     const payload = {
@@ -98,18 +139,97 @@ export class NewLoanComponent {
       tenureMonths: Number(this.form.tenureMonths)
     };
 
+    const user = this.auth.getUser();
+    const now = this.toApiDateTime(new Date().toISOString());
+
     this.loanService.calculateRiskScore(payload).pipe(
+      tap((result) => console.log('[generate] 1/3 calculateRiskScore response:', result)),
+      switchMap((result) => {
+        const loanPayload = {
+          borrowerId: this.borrowerId,
+          institutionId: user?.institutionId ?? null,
+          loanAmount: payload.loanAmount,
+          interestRate: payload.interestRate,
+          tenureMonths: payload.tenureMonths,
+          status: payload.status,
+          disbursementDate: this.toApiDateTime(payload.disbursementDate),
+          createdAt: now
+        };
+
+        return this.loanService.createLoan(loanPayload).pipe(
+          tap((savedLoan) => console.log('[generate] 2/3 createLoan response:', savedLoan)),
+          switchMap((savedLoan) => {
+            const riskPayload = {
+              ...result,
+              loanId: savedLoan?.loanId,
+              createdAt: now
+            };
+
+            return this.loanService.saveRiskScore(riskPayload).pipe(
+              tap((savedRisk) => console.log('[generate] 3/3 saveRiskScore response:', savedRisk)),
+              map((savedRisk) => ({
+                riskScore: savedRisk,
+                loanData: {
+                  ...this.form,
+                  borrowerId: this.borrowerId,
+                  loanId: savedLoan?.loanId,
+                  autoSaved: true
+                }
+              }))
+            );
+          })
+        );
+      }),
+      timeout(30000),
       finalize(() => {
         this.loading = false;
       })
     ).subscribe({
-      next: (result) => {
-        const navState = { riskScore: result, loanData: { ...this.form } };
-        // Keep latest generated result so Risk Result can recover if router state is lost.
-        sessionStorage.setItem('rm_latest_risk_result', JSON.stringify(navState));
-        this.router.navigate(['/risk-result'], { state: navState });
+      next: (navState) => {
+        const riskId = navState?.riskScore?.riskId;
+        if (!riskId) {
+          this.error = 'Risk score was calculated but could not be saved. Please try again.';
+          return;
+        }
+        try {
+          sessionStorage.setItem('rm_latest_risk_result', JSON.stringify(navState));
+        } catch {
+          // sessionStorage may be unavailable; navigation can still proceed via state + queryParam.
+        }
+        console.warn('[generate] All 3 steps done. Navigating to /risk-result?riskId=' + riskId);
+
+        // Monitor router events during this navigation
+        const routerSub: Subscription = this.router.events.subscribe(event => {
+          if (event instanceof NavigationStart) {
+            console.warn('[router] NavigationStart →', event.url);
+          } else if (event instanceof NavigationEnd) {
+            console.warn('[router] NavigationEnd →', event.urlAfterRedirects);
+            routerSub.unsubscribe();
+          } else if (event instanceof NavigationCancel) {
+            console.error('[router] NavigationCancel →', event.url, 'Reason:', event.reason);
+            routerSub.unsubscribe();
+          } else if (event instanceof NavigationError) {
+            console.error('[router] NavigationError →', event.url, 'Error:', event.error);
+            routerSub.unsubscribe();
+          }
+        });
+
+        this.router.navigate(['/risk-result'], {
+          state: navState,
+          queryParams: { riskId }
+        }).then(
+          (success) => console.warn('[generate] router.navigate() resolved:', success),
+          (err) => console.error('[generate] router.navigate() rejected:', err)
+        );
       },
-      error: (err: HttpErrorResponse) => {
+      error: (err: HttpErrorResponse | TimeoutError) => {
+        console.error('[generate] error:', err);
+
+        if (err instanceof TimeoutError) {
+          this.error = 'Request timed out. Please check your connection and try again.';
+          return;
+        }
+
         if (err.status === 401 || err.status === 403) {
           this.error = 'Session expired or unauthorized. Redirecting to login...';
           this.auth.logout();
@@ -134,5 +254,31 @@ export class NewLoanComponent {
         this.error = 'Unable to generate risk score. Please review inputs and try again.';
       }
     });
+  }
+
+  private toApiDateTime(value: string | null | undefined): string | null {
+    if (!value) return null;
+    const trimmed = String(value).trim();
+    if (!trimmed) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      return `${trimmed}T00:00:00`;
+    }
+    return trimmed.endsWith('Z') ? trimmed.slice(0, 19) : trimmed;
+  }
+
+  private normalizeLocation(value: string | null | undefined): string {
+    if (!value) return '';
+    const normalized = String(value).trim().toLowerCase();
+    if (!normalized) return '';
+
+    const aliases: Record<string, string> = {
+      mamosa: 'Mombasa',
+      mombassa: 'Mombasa',
+      kampalla: 'Kampala',
+      nairobii: 'Nairobi'
+    };
+
+    if (aliases[normalized]) return aliases[normalized];
+    return String(value).trim();
   }
 }

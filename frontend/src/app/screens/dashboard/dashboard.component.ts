@@ -5,6 +5,8 @@ import { PortfolioService } from '../../core/services/portfolio.service';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
+import { BorrowerContextService } from '../../core/services/borrower-context.service';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -31,46 +33,64 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private viewReady = false;
   private sectorChart: any; private riskChart: any;
 
-  constructor(private ps: PortfolioService, private router: Router) {}
+  constructor(private ps: PortfolioService, private router: Router, private borrowerContext: BorrowerContextService) {}
 
   ngOnInit() {
-    this.ps.getDashboardData().subscribe({
-      next: ({ loans, borrowers, riskScores, metrics }) => {
-        this.loans = loans; this.riskScores = riskScores;
-        this.metrics = metrics?.[0] ?? null;
-        this.totalLoans = loans.length;
-        this.totalActive = loans.filter((l: any) => l.status === 'Active').length;
-        this.totalValue = loans.reduce((s: number, l: any) => s + (l.loanAmount || 0), 0);
-        this.par30 = this.metrics?.par30 ?? 0;
-        const avgPd = riskScores.length
-          ? riskScores.reduce((s: number, r: any) => s + (r.probabilityDefault || 0), 0) / riskScores.length
-          : this.metrics?.forecastDefaultRate ?? 0;
-        this.defaultForecast = (avgPd * 100).toFixed(1);
+    const borrower = this.borrowerContext.getSelectedBorrower();
+    if (!borrower) {
+      this.router.navigate(['/borrower-hub']);
+      return;
+    }
+    this.ps.getLoansByBorrower(borrower.borrowerId).subscribe(loans => {
+      this.loans = loans;
+      this.totalLoans = loans.length;
+      this.totalActive = loans.filter((l: any) => l.status === 'Active').length;
+      this.totalValue = loans.reduce((s: number, l: any) => s + (l.loanAmount || 0), 0);
+      // Fetch risk scores for these loans
+      this.ps.getDashboardData().subscribe({
+        next: ({ loans, borrowers, riskScores, metrics }) => {
+          this.riskScores = riskScores;
+          const riskByLoanId = new Map<number, any>();
+          riskScores.forEach((r: any) => riskByLoanId.set(r.loanId, r));
+          this.loans = loans.map((l: any) => ({
+            ...l,
+            risk: riskByLoanId.get(l.loanId) ?? null
+          }));
+          this.metrics = metrics?.[0] ?? null;
+          this.totalLoans = loans.length;
+          this.totalActive = loans.filter((l: any) => l.status === 'Active').length;
+          this.totalValue = loans.reduce((s: number, l: any) => s + (l.loanAmount || 0), 0);
+          this.par30 = this.metrics?.par30 ?? 0;
+          const avgPd = riskScores.length
+            ? riskScores.reduce((s: number, r: any) => s + (r.probabilityDefault || 0), 0) / riskScores.length
+            : this.metrics?.forecastDefaultRate ?? 0;
+          this.defaultForecast = (avgPd * 100).toFixed(1);
 
-        // Build sector map using borrower data
-        const borrowerMap: any = {};
-        borrowers.forEach((b: any) => borrowerMap[b.borrowerId] = b);
+          // Build sector map using borrower data
+          const borrowerMap: any = {};
+          borrowers.forEach((b: any) => borrowerMap[b.borrowerId] = b);
 
-        const sectorScores: any = {};
-        loans.forEach((l: any) => {
-          const borrower = borrowerMap[l.borrowerId];
-          const sector = borrower?.businessSector ?? 'Unknown';
-          const rs = riskScores.find((r: any) => r.loanId === l.loanId);
-          if (rs) {
-            if (!sectorScores[sector]) sectorScores[sector] = { total: 0, count: 0 };
-            sectorScores[sector].total += rs.riskScore || 0;
-            sectorScores[sector].count++;
-          }
-        });
+          const sectorScores: any = {};
+          loans.forEach((l: any) => {
+            const borrower = borrowerMap[l.borrowerId];
+            const sector = borrower?.businessSector ?? 'Unknown';
+            const rs = riskScores.find((r: any) => r.loanId === l.loanId);
+            if (rs) {
+              if (!sectorScores[sector]) sectorScores[sector] = { total: 0, count: 0 };
+              sectorScores[sector].total += rs.riskScore || 0;
+              sectorScores[sector].count++;
+            }
+          });
 
-        const gradeMap: any = { A: 0, B: 0, C: 0, D: 0 };
-        riskScores.forEach((r: any) => { if (r.riskGrade) gradeMap[r.riskGrade]++; });
+          const gradeMap: any = { A: 0, B: 0, C: 0, D: 0 };
+          riskScores.forEach((r: any) => { if (r.riskGrade) gradeMap[r.riskGrade]++; });
 
-        this.loading = false;
-        this.dataReady = true;
-        if (this.viewReady) this.buildCharts(sectorScores, gradeMap);
-        else { (this as any)._sectorScores = sectorScores; (this as any)._gradeMap = gradeMap; }
-      }
+          this.loading = false;
+          this.dataReady = true;
+          if (this.viewReady) this.buildCharts(sectorScores, gradeMap);
+          else { (this as any)._sectorScores = sectorScores; (this as any)._gradeMap = gradeMap; }
+        }
+      });
     });
   }
 

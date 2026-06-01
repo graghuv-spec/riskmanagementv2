@@ -17,7 +17,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: riskmanagement_test
-        hbm2ddl.create_namespaces: true
+        # Avoid schema-level create/drop noise at shutdown; schema is prepared by connection-init-sql.
+        hbm2ddl.create_namespaces: false
   graphql:
     graphiql:
       enabled: false

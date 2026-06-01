@@ -11,6 +11,8 @@ public class Borrower {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long borrowerId;
 
+    private Long userId;
+
     private Long institutionId;
 
     private String fullName;
@@ -29,6 +31,8 @@ public class Borrower {
 
     private Double collateralValue;
 
+    private Integer creditScore;
+
     private LocalDateTime createdAt;
 
     // Getters and Setters
@@ -38,6 +42,14 @@ public class Borrower {
 
     public void setBorrowerId(Long borrowerId) {
         this.borrowerId = borrowerId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getInstitutionId() {
@@ -110,6 +122,14 @@ public class Borrower {
 
     public void setCollateralValue(Double collateralValue) {
         this.collateralValue = collateralValue;
+    }
+
+    public Integer getCreditScore() {
+        return creditScore;
+    }
+
+    public void setCreditScore(Integer creditScore) {
+        this.creditScore = creditScore;
     }
 
     public LocalDateTime getCreatedAt() {

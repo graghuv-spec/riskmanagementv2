@@ -55,7 +55,7 @@
     <table class="data-table">
       <thead>
         <tr>
-          <th>Loan ID</th><th>Amount</th><th>Rate</th><th>Tenure</th><th>Status</th>
+          <th>Loan ID</th><th>Amount</th><th>Rate</th><th>Tenure</th><th>Risk Score</th><th>Grade</th><th>Prob. Default</th><th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -64,6 +64,9 @@
           <td>${{ l.loanAmount?.toLocaleString() }}</td>
           <td>{{ l.interestRate }}%</td>
           <td>{{ l.tenureMonths }}mo</td>
+          <td>{{ l.risk?.riskScore != null ? (l.risk.riskScore | number:'1.0-0') : '-' }}</td>
+          <td>{{ l.risk?.riskGrade ?? '-' }}</td>
+          <td>{{ l.risk?.probabilityDefault != null ? ((l.risk.probabilityDefault * 100) | number:'1.0-1') + '%' : '-' }}</td>
           <td>
             <span class="badge" [ngClass]="{
               'badge-green': l.status === 'Active',

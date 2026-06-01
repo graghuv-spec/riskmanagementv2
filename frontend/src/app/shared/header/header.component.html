@@ -12,6 +12,7 @@
       <div>
         <div class="header-name">{{ user.name }}</div>
         <div class="header-role">{{ user.role }}</div>
+        <div *ngIf="selectedBorrower" class="header-borrower">Viewing: <strong>{{ selectedBorrower.fullName }}</strong> (ID: {{ selectedBorrower.nationalId }})</div>
       </div>
     </div>
     <button class="btn-logout" (click)="logout()">

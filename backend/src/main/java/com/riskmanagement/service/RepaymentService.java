@@ -22,6 +22,11 @@ public class RepaymentService {
         return repaymentRepository.findById(id);
     }
 
+
+    public List<Repayment> getRepaymentsByLoanId(Long loanId) {
+        return repaymentRepository.findByLoanId(loanId);
+    }
+
     public Repayment saveRepayment(Repayment repayment) {
         return repaymentRepository.save(repayment);
     }

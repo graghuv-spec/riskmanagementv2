@@ -22,6 +22,11 @@ public class RiskScoreService {
         return riskScoreRepository.findById(id);
     }
 
+
+    public List<RiskScore> getRiskScoresByLoanId(Long loanId) {
+        return riskScoreRepository.findByLoanId(loanId);
+    }
+
     public RiskScore saveRiskScore(RiskScore riskScore) {
         return riskScoreRepository.save(riskScore);
     }

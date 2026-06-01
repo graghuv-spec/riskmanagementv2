@@ -1,0 +1,39 @@
+<div class="borrower-hub">
+  <h2>Borrower Hub</h2>
+  <input type="text" [(ngModel)]="searchQuery" placeholder="Search by name or ID" />
+  <button (click)="loadBorrowers()">Search</button>
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="error">{{ error }}</div>
+  <table *ngIf="borrowers.length">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>National ID</th>
+        <th>Sector</th>
+        <th>Location</th>
+        <th>Credit Score</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let b of borrowers">
+        <td>{{ b.fullName }}</td>
+        <td>{{ b.nationalId }}</td>
+        <td>{{ b.businessSector }}</td>
+        <td>{{ b.location }}</td>
+        <td>
+          <span *ngIf="b.creditScore">{{ b.creditScore }}</span>
+          <span *ngIf="!b.creditScore">-</span>
+          <span *ngIf="isAdmin">
+            <input type="number" min="300" max="850" [value]="b.creditScore" (change)="updateCreditScore(b, $event.target.value)" />
+          </span>
+        </td>
+        <td>
+          <button (click)="selectBorrower(b)">Select</button>
+          <!-- Add Edit button for admin -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!borrowers.length && !loading">No borrowers found.</div>
+</div>

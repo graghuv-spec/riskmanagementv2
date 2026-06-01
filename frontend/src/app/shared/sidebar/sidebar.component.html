@@ -8,4 +8,8 @@
       <span class="nav-label">{{ item.label }}</span>
     </a>
   </nav>
+  <div *ngIf="selectedBorrower" class="borrower-context">
+    <div>Viewing: <strong>{{ selectedBorrower.fullName }}</strong> (ID: {{ selectedBorrower.nationalId }})</div>
+    <button (click)="changeBorrower()">Change Borrower</button>
+  </div>
 </aside>

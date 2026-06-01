@@ -35,6 +35,22 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/postgres?stringtype=unspecified&sslmode=disable&currentSchema=riskmanagement
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-admin}
+      SEED_ENABLED: "true"
+      SEED_RESET_BEFORE_SEED: "true"
+      SEED_EXPECTED_USER_COUNT: 2
+      SEED_INSTITUTION_NAME: RiskPro MFI
+      SEED_INSTITUTION_LICENSE_NUMBER: MFI-2024-001
+      SEED_INSTITUTION_CONTACT_EMAIL: info@riskpro.com
+      SEED_INSTITUTION_SUBSCRIPTION_PLAN: Enterprise
+      SEED_ADMIN_NAME: Admin User
+      SEED_ADMIN_EMAIL: admin@riskpro.com
+      SEED_ADMIN_ROLE: Admin
+      SEED_ADMIN_MFA_ENABLED: "true"
+      SEED_OFFICER_NAME: Agent User
+      SEED_OFFICER_EMAIL: agent@riskpro.com
+      SEED_OFFICER_ROLE: Agent
+      SEED_OFFICER_MFA_ENABLED: "false"
+      SEED_DEFAULT_USER_PASSWORD: Password1
     depends_on:
       postgres:
         condition: service_healthy   # wait until pg_isready passes

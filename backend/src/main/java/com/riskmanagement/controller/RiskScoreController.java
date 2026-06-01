@@ -5,6 +5,8 @@ import com.riskmanagement.model.Loan;
 import com.riskmanagement.model.RiskScore;
 import com.riskmanagement.service.RiskCalculationService;
 import com.riskmanagement.service.RiskScoreService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/risk-scores")
 public class RiskScoreController {
+
+    private static final Logger log = LoggerFactory.getLogger(RiskScoreController.class);
 
     @Autowired
     private RiskScoreService riskScoreService;
@@ -28,18 +32,33 @@ public class RiskScoreController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RiskScore> getRiskScoreById(@PathVariable Long id) {
+        log.info("[GET /api/risk-scores/{}] Fetching risk score", id);
         return riskScoreService.getRiskScoreById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(score -> {
+                    log.info("[GET /api/risk-scores/{}] Found: score={}, grade={}",
+                            id, score.getRiskScore(), score.getRiskGrade());
+                    return ResponseEntity.ok(score);
+                })
+                .orElseGet(() -> {
+                    log.warn("[GET /api/risk-scores/{}] Not found", id);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @PostMapping
     public RiskScore createRiskScore(@RequestBody RiskScore riskScore) {
-        return riskScoreService.saveRiskScore(riskScore);
+        log.info("[POST /api/risk-scores] Saving risk score for loanId={}", riskScore.getLoanId());
+        RiskScore saved = riskScoreService.saveRiskScore(riskScore);
+        log.info("[POST /api/risk-scores] Saved riskId={}, riskScore={}, riskGrade={}",
+                saved.getRiskId(), saved.getRiskScore(), saved.getRiskGrade());
+        return saved;
     }
 
     @PostMapping("/calculate")
     public ResponseEntity<RiskScore> calculateRiskScore(@RequestBody CalculateRiskRequest request) {
+        log.info("[POST /api/risk-scores/calculate] name={}, sector={}, loanAmount={}, income={}",
+                request.getFullName(), request.getBusinessSector(),
+                request.getLoanAmount(), request.getMonthlyIncome());
         Borrower borrower = new Borrower();
         borrower.setFullName(request.getFullName());
         borrower.setNationalId(request.getNationalId());
@@ -57,6 +76,9 @@ public class RiskScoreController {
         loan.setStatus(request.getStatus());
 
         RiskScore result = riskCalculationService.calculateRiskScore(loan, borrower);
+        log.info("[POST /api/risk-scores/calculate] Result: score={}, grade={}, pd={}, limit={}",
+                result.getRiskScore(), result.getRiskGrade(),
+                result.getProbabilityDefault(), result.getRecommendedLimit());
         return ResponseEntity.ok(result);
     }
 

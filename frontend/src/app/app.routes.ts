@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { borrowerContextGuard } from './core/guards/borrower-context.guard';
 
 export const routes: Routes = [
   {
@@ -8,12 +9,12 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate: [authGuard],
+    canActivate: [authGuard, borrowerContextGuard],
     loadComponent: () => import('./screens/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
     path: 'new-loan',
-    canActivate: [authGuard],
+    canActivate: [authGuard, borrowerContextGuard],
     loadComponent: () => import('./screens/new-loan/new-loan.component').then(m => m.NewLoanComponent)
   },
   {
@@ -23,14 +24,19 @@ export const routes: Routes = [
   },
   {
     path: 'portfolio',
-    canActivate: [authGuard],
+    canActivate: [authGuard, borrowerContextGuard],
     loadComponent: () => import('./screens/portfolio-analytics/portfolio-analytics.component').then(m => m.PortfolioAnalyticsComponent)
   },
   {
     path: 'reports',
-    canActivate: [authGuard],
+    canActivate: [authGuard, borrowerContextGuard],
     loadComponent: () => import('./screens/report-generator/report-generator.component').then(m => m.ReportGeneratorComponent)
   },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: '/dashboard' }
+  {
+    path: 'borrower-hub',
+    canActivate: [authGuard],
+    loadComponent: () => import('./screens/borrower-hub/borrower-hub.component').then(m => m.BorrowerHubComponent)
+  },
+  { path: '', redirectTo: '/borrower-hub', pathMatch: 'full' },
+  { path: '**', redirectTo: '/borrower-hub' }
 ];

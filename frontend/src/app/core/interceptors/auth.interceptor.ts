@@ -6,7 +6,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   try {
     const user = JSON.parse(raw) as { token?: string };
-    if (!user?.token || !req.url.startsWith('/api')) {
+    const protectedPath = req.url.startsWith('/api') || req.url.startsWith('/graphql');
+    if (!user?.token || !protectedPath) {
       return next(req);
     }
     return next(req.clone({

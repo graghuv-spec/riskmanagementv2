@@ -1,3 +1,32 @@
+type RiskScore {
+    riskId: ID!
+    loanId: ID
+    riskScore: Float
+    probabilityDefault: Float
+    riskGrade: String
+    recommendedLimit: Float
+    modelVersion: String
+    explanationJson: String
+    createdAt: String
+}
+type Repayment {
+    repaymentId: ID!
+    loanId: ID
+    dueDate: String
+    paymentDate: String
+    amountDue: Float
+    amountPaid: Float
+    daysPastDue: Int
+}
+
+input RepaymentInput {
+    loanId: ID
+    dueDate: String
+    paymentDate: String
+    amountDue: Float
+    amountPaid: Float
+    daysPastDue: Int
+}
 type Loan {
     loanId: ID!
     borrowerId: ID
@@ -10,15 +39,116 @@ type Loan {
     createdAt: String
 }
 
+type User {
+    userId: ID!
+    email: String!
+    password: String
+    role: String
+    createdAt: String
+}
+
+input UserInput {
+    email: String!
+    password: String
+    role: String
+}
+
+# --- Borrower Entity ---
+type Borrower {
+    borrowerId: ID!
+    userId: ID
+    institutionId: ID
+    fullName: String
+    nationalId: String
+    gender: String
+    age: Int
+    location: String
+    businessSector: String
+    monthlyIncome: Float
+    collateralValue: Float
+    creditScore: Int
+    createdAt: String
+}
+
+input BorrowerInput {
+    userId: ID
+    institutionId: ID
+    fullName: String
+    nationalId: String
+    gender: String
+    age: Int
+    location: String
+    businessSector: String
+    monthlyIncome: Float
+    collateralValue: Float
+    creditScore: Int
+}
+
 type Query {
     loans: [Loan]
+
     loan(id: ID!): Loan
+
+    # Borrower queries
+    borrowers: [Borrower]
+    borrower(id: ID!): Borrower
+    searchBorrowers(query: String!): [Borrower]
+    borrowerLookups: BorrowerLookups
+    myBorrowerProfile: Borrower
+
+    # User queries
+    users: [User]
+    user(id: ID!): User
+    userByEmail(email: String!): User
+    # Repayment queries
+    repayments: [Repayment]
+    repayment(id: ID!): Repayment
+    repaymentsByLoan(loanId: ID!): [Repayment]
+    # RiskScore queries
+    riskScores: [RiskScore]
+    riskScore(id: ID!): RiskScore
+    riskScoresByLoan(loanId: ID!): [RiskScore]
+}
+
+# Lookups for sectors/locations
+type BorrowerLookups {
+    sectors: [String]
+    locations: [String]
 }
 
 type Mutation {
     createLoan(loan: LoanInput!): Loan
     updateLoan(id: ID!, loan: LoanInput!): Loan
     deleteLoan(id: ID!): Boolean
+
+    # Borrower mutations
+    createBorrower(borrower: BorrowerInput!): Borrower
+    updateBorrower(id: ID!, borrower: BorrowerInput!): Borrower
+    deleteBorrower(id: ID!): Boolean
+    updateCreditScore(id: ID!, creditScore: Int!): Borrower
+
+    # User mutations
+    createUser(user: UserInput!): User
+    updateUser(id: ID!, user: UserInput!): User
+    deleteUser(id: ID!): Boolean
+    # Repayment mutations
+    createRepayment(repayment: RepaymentInput!): Repayment
+    updateRepayment(id: ID!, repayment: RepaymentInput!): Repayment
+    deleteRepayment(id: ID!): Boolean
+    # RiskScore mutations
+    createRiskScore(riskScore: RiskScoreInput!): RiskScore
+    updateRiskScore(id: ID!, riskScore: RiskScoreInput!): RiskScore
+    deleteRiskScore(id: ID!): Boolean
+}
+
+input RiskScoreInput {
+     loanId: ID
+     riskScore: Float
+     probabilityDefault: Float
+     riskGrade: String
+     recommendedLimit: Float
+     modelVersion: String
+     explanationJson: String
 }
 
 input LoanInput {

@@ -10,6 +10,19 @@ import java.util.Optional;
 
 @Service
 public class BorrowerService {
+    public List<Borrower> searchBorrowers(String query) {
+        return borrowerRepository.findByFullNameContainingIgnoreCaseOrNationalIdContainingIgnoreCase(query, query);
+    }
+
+    public Optional<Borrower> updateCreditScore(Long borrowerId, Integer creditScore) {
+        Optional<Borrower> borrowerOpt = borrowerRepository.findById(borrowerId);
+        if (borrowerOpt.isPresent()) {
+            Borrower borrower = borrowerOpt.get();
+            borrower.setCreditScore(creditScore);
+            borrowerRepository.save(borrower);
+        }
+        return borrowerOpt;
+    }
 
     @Autowired
     private BorrowerRepository borrowerRepository;
@@ -20,6 +33,14 @@ public class BorrowerService {
 
     public Optional<Borrower> getBorrowerById(Long id) {
         return borrowerRepository.findById(id);
+    }
+
+    public Optional<Borrower> getLatestBorrowerProfile(Long userId, Long institutionId) {
+        return borrowerRepository.findTopByUserIdAndInstitutionIdOrderByCreatedAtDesc(userId, institutionId);
+    }
+
+    public boolean borrowerBelongsToUser(Long borrowerId, Long userId, Long institutionId) {
+        return borrowerRepository.existsByBorrowerIdAndUserIdAndInstitutionId(borrowerId, userId, institutionId);
     }
 
     public List<String> getDistinctBusinessSectors() {

@@ -9,6 +9,11 @@ import java.util.List;
 
 @Repository
 public interface BorrowerRepository extends JpaRepository<Borrower, Long> {
+		List<Borrower> findByFullNameContainingIgnoreCaseOrNationalIdContainingIgnoreCase(String name, String nationalId);
+	java.util.Optional<Borrower> findTopByUserIdAndInstitutionIdOrderByCreatedAtDesc(Long userId, Long institutionId);
+
+	boolean existsByBorrowerIdAndUserIdAndInstitutionId(Long borrowerId, Long userId, Long institutionId);
+
 	@Query("select distinct b.businessSector from Borrower b where b.businessSector is not null and b.businessSector <> '' order by b.businessSector")
 	List<String> findDistinctBusinessSectors();
 

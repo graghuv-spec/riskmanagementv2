@@ -12,37 +12,37 @@
       <div class="grid-2">
         <div class="form-group">
           <label>Full Name *</label>
-          <input [(ngModel)]="form.fullName" name="fullName" placeholder="e.g. John Kamau" required>
+          <input [(ngModel)]="form.fullName" name="fullName" placeholder="e.g. John Kamau" [disabled]="borrowerDetailsReadonly" required>
         </div>
         <div class="form-group">
           <label>National ID *</label>
-          <input [(ngModel)]="form.nationalId" name="nationalId" placeholder="e.g. NID-2024-001">
+          <input [(ngModel)]="form.nationalId" name="nationalId" placeholder="e.g. NID-2024-001" [disabled]="borrowerDetailsReadonly">
         </div>
         <div class="form-group">
           <label>Gender</label>
-          <select [(ngModel)]="form.gender" name="gender">
+          <select [(ngModel)]="form.gender" name="gender" [disabled]="borrowerDetailsReadonly">
             <option>Male</option><option>Female</option><option>Other</option>
           </select>
         </div>
         <div class="form-group">
           <label>Age *</label>
-          <input type="number" [(ngModel)]="form.age" name="age" placeholder="e.g. 35" min="18" max="80">
+          <input type="number" [(ngModel)]="form.age" name="age" placeholder="e.g. 35" min="18" max="80" [disabled]="borrowerDetailsReadonly">
         </div>
         <div class="form-group">
           <label>Location *</label>
-          <select *ngIf="useLocationSelect" [(ngModel)]="form.location" name="location">
+          <select *ngIf="useLocationSelect" [(ngModel)]="form.location" name="location" [disabled]="borrowerDetailsReadonly">
             <option value="">-- Select --</option>
             <option *ngFor="let l of locations" [value]="l">{{ l }}</option>
           </select>
-          <input *ngIf="!useLocationSelect" [(ngModel)]="form.location" name="location" placeholder="e.g. Nairobi">
+          <input *ngIf="!useLocationSelect" [(ngModel)]="form.location" name="location" placeholder="e.g. Nairobi" [disabled]="borrowerDetailsReadonly">
         </div>
         <div class="form-group">
           <label>Business Sector *</label>
-          <select *ngIf="useSectorSelect" [(ngModel)]="form.businessSector" name="businessSector">
+          <select *ngIf="useSectorSelect" [(ngModel)]="form.businessSector" name="businessSector" [disabled]="borrowerDetailsReadonly">
             <option value="">-- Select --</option>
             <option *ngFor="let s of sectors" [value]="s">{{ s }}</option>
           </select>
-          <input *ngIf="!useSectorSelect" [(ngModel)]="form.businessSector" name="businessSector" placeholder="e.g. Retail">
+          <input *ngIf="!useSectorSelect" [(ngModel)]="form.businessSector" name="businessSector" placeholder="e.g. Retail" [disabled]="borrowerDetailsReadonly">
         </div>
       </div>
     </div>
@@ -53,11 +53,11 @@
       <div class="grid-2">
         <div class="form-group">
           <label>Monthly Income (USD) *</label>
-          <input type="number" [(ngModel)]="form.monthlyIncome" name="monthlyIncome" placeholder="e.g. 4500" min="0">
+          <input type="number" [(ngModel)]="form.monthlyIncome" name="monthlyIncome" placeholder="e.g. 4500" min="0" [disabled]="financialDetailsReadonly">
         </div>
         <div class="form-group">
           <label>Collateral Value (USD) *</label>
-          <input type="number" [(ngModel)]="form.collateralValue" name="collateralValue" placeholder="e.g. 20000" min="0">
+          <input type="number" [(ngModel)]="form.collateralValue" name="collateralValue" placeholder="e.g. 20000" min="0" [disabled]="financialDetailsReadonly">
         </div>
       </div>
       <div class="ratio-indicator" *ngIf="collateralRatio > 0">
@@ -107,6 +107,7 @@
 
   <div class="error-msg" *ngIf="error">{{ error }}</div>
   <div class="warn-msg" *ngIf="lookupWarning">{{ lookupWarning }}</div>
+  <div class="warn-msg" *ngIf="profileWarning">{{ profileWarning }}</div>
 
   <div class="form-actions">
     <button type="submit" class="btn-generate" [disabled]="loading">

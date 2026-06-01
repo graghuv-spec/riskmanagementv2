@@ -28,6 +28,12 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/risk-scores/*").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/borrowers/lookups").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/risk-scores/calculate").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/borrowers").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/loans").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/risk-scores").authenticated()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

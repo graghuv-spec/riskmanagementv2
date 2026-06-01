@@ -1,0 +1,2350 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\playwright.config.ts",
+    "rootDir": "C:/Users/raghu/Downloads/svr/riskmanagementv2/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/raghu/Downloads/svr/riskmanagementv2/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/raghu/Downloads/svr/riskmanagementv2/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run start",
+      "url": "http://localhost:4200",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "auth.spec.ts",
+      "file": "auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication",
+          "file": "auth.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "unauthenticated visit to dashboard redirects to /login",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1782,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:13.774Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-53c6779d5382b1496f01",
+              "file": "auth.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "unauthenticated visit to any guarded route redirects to /login",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 990,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:15.715Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-3c97a1ae91676bea93e1",
+              "file": "auth.spec.ts",
+              "line": 16,
+              "column": 7
+            },
+            {
+              "title": "shows validation error when fields are empty",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 739,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:16.718Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-623b2f4cac47c345a4c4",
+              "file": "auth.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "shows error on invalid credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1521,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:17.467Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-1fe1c570c5c3e6d77282",
+              "file": "auth.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "successfully logs in with valid credentials and lands on dashboard",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30250,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 14,
+                            "line": 14
+                          },
+                          "message": "Error: page.waitForURL: Test timeout of 30000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/dashboard\" until \"load\"\n============================================================\n\n   at helpers\\auth.helper.ts:14\n\n  12 |   await page.getByLabel('Password').fill(TEST_PASSWORD);\n  13 |   await page.getByRole('button', { name: /sign in/i }).click();\n> 14 |   await page.waitForURL('**/dashboard');\n     |              ^\n  15 | }\n  16 |\n  17 | /**\n    at loginViaUI (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:14:14)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\auth.spec.ts:42:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:18.999Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\auth-Authentication-succes-3ada2-ials-and-lands-on-dashboard-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\auth-Authentication-succes-3ada2-ials-and-lands-on-dashboard-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-b5d2cdb7762f622bd2ef",
+              "file": "auth.spec.ts",
+              "line": 40,
+              "column": 7
+            },
+            {
+              "title": "already authenticated user is redirected away from /login",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 238,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\auth.spec.ts:48:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\auth.spec.ts:48:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:51.949Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\auth-Authentication-alread-d1073--redirected-away-from-login-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-d81b1c87be5855497b8f",
+              "file": "auth.spec.ts",
+              "line": 47,
+              "column": 7
+            },
+            {
+              "title": "logout clears session and redirects to /login",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 219,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\auth.spec.ts:54:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\auth.spec.ts:54:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:54.999Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\auth-Authentication-logout-52ebd-sion-and-redirects-to-login-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-4a8d927b27af6349cab4",
+              "file": "auth.spec.ts",
+              "line": 53,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "dashboard.spec.ts",
+      "file": "dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard",
+          "file": "dashboard.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "renders the page title / heading",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 212,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:56:57.713Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\dashboard-Dashboard-renders-the-page-title-heading-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-7d29f77c70339bbbbe1b",
+              "file": "dashboard.spec.ts",
+              "line": 14,
+              "column": 7
+            },
+            {
+              "title": "displays the four KPI stat cards",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 219,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:00.397Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\dashboard-Dashboard-displays-the-four-KPI-stat-cards-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-e751beaaa9488e17ffe6",
+              "file": "dashboard.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "shows non-zero total portfolio value",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 213,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:03.067Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\dashboard-Dashboard-shows-non-zero-total-portfolio-value-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-f6bb601c95d5ba97d440",
+              "file": "dashboard.spec.ts",
+              "line": 25,
+              "column": 7
+            },
+            {
+              "title": "sector risk chart canvas is present",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 222,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:05.864Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\dashboard-Dashboard-sector-risk-chart-canvas-is-present-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-f429731dfccab06518f9",
+              "file": "dashboard.spec.ts",
+              "line": 32,
+              "column": 7
+            },
+            {
+              "title": "risk grade distribution chart canvas is present",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 201,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:08.640Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\dashboard-Dashboard-risk-g-b2f7b-ion-chart-canvas-is-present-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-35acbca6a448a5dea422",
+              "file": "dashboard.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "\"New Loan\" action link navigates to /new-loan",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 207,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\dashboard.spec.ts:11:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:11.245Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\dashboard-Dashboard-New-Lo-85c4c--link-navigates-to-new-loan-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-c0035ab5d2c25283ebaa",
+              "file": "dashboard.spec.ts",
+              "line": 43,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "loan-flow.spec.ts",
+      "file": "loan-flow.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Loan Application Flow",
+          "file": "loan-flow.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "new-loan page renders the loan form",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 212,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:13.855Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-f311f--page-renders-the-loan-form-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "432bd871c26c43021b2f-bfc3015fddc15809607f",
+              "file": "loan-flow.spec.ts",
+              "line": 22,
+              "column": 7
+            },
+            {
+              "title": "borrower and financial fields are read-only, while loan fields stay editable",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 232,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:16.607Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-70245-e-loan-fields-stay-editable-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "432bd871c26c43021b2f-e93e30391ee9cf37d092",
+              "file": "loan-flow.spec.ts",
+              "line": 26,
+              "column": 7
+            },
+            {
+              "title": "shows validation error when required fields are empty",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 243,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:19.452Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-90aa4-n-required-fields-are-empty-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "432bd871c26c43021b2f-b780023fd2301d8749d4",
+              "file": "loan-flow.spec.ts",
+              "line": 37,
+              "column": 7
+            },
+            {
+              "title": "collateral ratio updates as loan amount is entered against profile collateral",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 215,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:22.256Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-6f400--against-profile-collateral-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "432bd871c26c43021b2f-e13c96c04c2e812d4c92",
+              "file": "loan-flow.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "submitting a complete form calculates risk score and navigates to /risk-result",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 221,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:25.001Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-72d02-nd-navigates-to-risk-result-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "432bd871c26c43021b2f-5716d1adbc0c60a1a020",
+              "file": "loan-flow.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "invalid token redirects to login with session-expired reason",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 223,
+                      "error": {
+                        "message": "Error: Storage login failed: 401",
+                        "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                        "location": {
+                          "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                          "column": 11,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          },
+                          "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:27.873Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-6d6d4-with-session-expired-reason-chromium\\test-failed-1.png"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                        "column": 11,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "432bd871c26c43021b2f-fc24b74adaf5e69faa33",
+              "file": "loan-flow.spec.ts",
+              "line": 66,
+              "column": 7
+            }
+          ],
+          "suites": [
+            {
+              "title": "Risk Result Page",
+              "file": "loan-flow.spec.ts",
+              "line": 88,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "displays the risk score",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 15,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 245,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                            },
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:92:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:30.578Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-8eb79-age-displays-the-risk-score-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "432bd871c26c43021b2f-96ee64bf86dc3cef73db",
+                  "file": "loan-flow.spec.ts",
+                  "line": 116,
+                  "column": 9
+                },
+                {
+                  "title": "displays the risk grade",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 16,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 238,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                            },
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:92:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:33.475Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-12ca8-age-displays-the-risk-grade-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "432bd871c26c43021b2f-8ae55a9f870e24b9431d",
+                  "file": "loan-flow.spec.ts",
+                  "line": 120,
+                  "column": 9
+                },
+                {
+                  "title": "displays the probability of default",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 17,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 233,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                            },
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:92:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:36.309Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-f9a0e--the-probability-of-default-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "432bd871c26c43021b2f-b1f8a544960961c94cd3",
+                  "file": "loan-flow.spec.ts",
+                  "line": 124,
+                  "column": 9
+                },
+                {
+                  "title": "displays the recommended limit",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 18,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 262,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                            },
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:92:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:39.054Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-16a42-plays-the-recommended-limit-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "432bd871c26c43021b2f-790ac86cd6b74367c03c",
+                  "file": "loan-flow.spec.ts",
+                  "line": 129,
+                  "column": 9
+                },
+                {
+                  "title": "driver contribution values are deterministic (no random flicker)",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 19,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 262,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                            },
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:92:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:41.789Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-626c7-ministic-no-random-flicker--chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "432bd871c26c43021b2f-c97a08278d93247de3fa",
+                  "file": "loan-flow.spec.ts",
+                  "line": 133,
+                  "column": 9
+                },
+                {
+                  "title": "\"New Application\" button navigates back to /new-loan",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 20,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 250,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:17:5"
+                            },
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\loan-flow.spec.ts:92:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:44.676Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\loan-flow-Loan-Application-dcc76--navigates-back-to-new-loan-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "432bd871c26c43021b2f-9add1528bd9abf8e44c9",
+                  "file": "loan-flow.spec.ts",
+                  "line": 144,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Loan Field Editability",
+          "file": "loan-flow.spec.ts",
+          "line": 155,
+          "column": 6,
+          "specs": [
+            {
+              "title": "new-loan locks borrower and financial sections while loan fields stay editable (isolated)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1297,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-13T07:57:47.533Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "432bd871c26c43021b2f-33e41380c15326d950af",
+              "file": "loan-flow.spec.ts",
+              "line": 156,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "navigation.spec.ts",
+      "file": "navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Navigation",
+          "file": "navigation.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Auth guard",
+              "file": "navigation.spec.ts",
+              "line": 10,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "redirects every protected route to /login when unauthenticated",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 21,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1269,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:48.970Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-8121eed2dad2951a0ee1",
+                  "file": "navigation.spec.ts",
+                  "line": 12,
+                  "column": 9
+                },
+                {
+                  "title": "root path \"/\" redirects to /dashboard when authenticated",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 21,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 223,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:22:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:22:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:50.251Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Auth-c4456-ashboard-when-authenticated-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-59cf7a0438040aa576c7",
+                  "file": "navigation.spec.ts",
+                  "line": 21,
+                  "column": 9
+                },
+                {
+                  "title": "wildcard \"/**\" redirects to /dashboard when authenticated",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 22,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 234,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:28:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:28:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:52.797Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Auth-bbcfc-ashboard-when-authenticated-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-d340c4606ba3b1659d83",
+                  "file": "navigation.spec.ts",
+                  "line": 27,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Sidebar navigation",
+              "file": "navigation.spec.ts",
+              "line": 35,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "sidebar is visible on all authenticated pages",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 23,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 223,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:55.533Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Side-dd73f--on-all-authenticated-pages-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-83dcffea0ced229617bc",
+                  "file": "navigation.spec.ts",
+                  "line": 41,
+                  "column": 9
+                },
+                {
+                  "title": "clicking Dashboard link navigates to /dashboard",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 24,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 205,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:57:58.236Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Side-b2599-link-navigates-to-dashboard-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-d36f9ee3e73e9e06f6fa",
+                  "file": "navigation.spec.ts",
+                  "line": 49,
+                  "column": 9
+                },
+                {
+                  "title": "clicking New Loan link navigates to /new-loan",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 25,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 187,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:58:01.005Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Side-e668b--link-navigates-to-new-loan-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-cfec9d98a06d1077bbb3",
+                  "file": "navigation.spec.ts",
+                  "line": 56,
+                  "column": 9
+                },
+                {
+                  "title": "clicking Portfolio link navigates to /portfolio",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 26,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 238,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:58:03.698Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Side-7498f-link-navigates-to-portfolio-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-804477548db4a0792ca9",
+                  "file": "navigation.spec.ts",
+                  "line": 64,
+                  "column": 9
+                },
+                {
+                  "title": "clicking Reports link navigates to /reports",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 27,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 228,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:38:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:58:06.437Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Side-914ac-s-link-navigates-to-reports-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-55b93b5c5ea00b6c3d70",
+                  "file": "navigation.spec.ts",
+                  "line": 72,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Header",
+              "file": "navigation.spec.ts",
+              "line": 82,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "header is visible on all authenticated pages",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 28,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 227,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:85:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:85:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:58:09.163Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Head-7ecd8--on-all-authenticated-pages-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-538c348c1ed4acbd26c5",
+                  "file": "navigation.spec.ts",
+                  "line": 88,
+                  "column": 9
+                },
+                {
+                  "title": "header shows the application name",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 29,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 220,
+                          "error": {
+                            "message": "Error: Storage login failed: 401",
+                            "stack": "Error: Storage login failed: 401\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:85:7",
+                            "location": {
+                              "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                              "column": 11,
+                              "line": 27
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mhelpers\\auth.helper.ts:27\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mloginResponse\u001b[33m.\u001b[39mok()) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Storage login failed: ${loginResponse.status()}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m loginUser \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginResponse\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                                "column": 11,
+                                "line": 27
+                              },
+                              "message": "Error: Storage login failed: 401\n\n   at helpers\\auth.helper.ts:27\n\n  25 |\n  26 |   if (!loginResponse.ok()) {\n> 27 |     throw new Error(`Storage login failed: ${loginResponse.status()}`);\n     |           ^\n  28 |   }\n  29 |\n  30 |   const loginUser = await loginResponse.json();\n    at loginViaStorage (C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts:27:11)\n    at C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\navigation.spec.ts:85:7"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-03-13T07:58:11.898Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\test-results\\navigation-Navigation-Head-f953b--shows-the-application-name-chromium\\test-failed-1.png"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "C:\\Users\\raghu\\Downloads\\svr\\riskmanagementv2\\frontend\\e2e\\helpers\\auth.helper.ts",
+                            "column": 11,
+                            "line": 27
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "5d2868f7d23420c27cca-13a95888b5e7bb50b0a2",
+                  "file": "navigation.spec.ts",
+                  "line": 96,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-13T07:56:10.753Z",
+    "duration": 121601.285,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 30,
+    "flaky": 0
+  }
+}

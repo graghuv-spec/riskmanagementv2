@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { finalize, switchMap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { LoanService } from '../../core/services/loan.service';
-import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-risk-result',
@@ -20,6 +19,8 @@ export class RiskResultComponent implements OnInit {
   overrideScore: number | null = null;
   saveMsg = '';
   saving = false;
+  loadingResult = false;
+  loadError = '';
 
   drivers = [
     { label: 'Income Stability',  weight: 30, icon: '💰' },
@@ -29,14 +30,25 @@ export class RiskResultComponent implements OnInit {
     { label: 'Location Risk',     weight: 10, icon: '📍' }
   ];
 
-  constructor(private router: Router, private loanService: LoanService, private auth: AuthService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private loanService: LoanService) {
+    // Capture navigation state in constructor where getCurrentNavigation() is still available.
+    // In ngOnInit of lazy-loaded components, getCurrentNavigation() returns null.
+    const nav = this.router.getCurrentNavigation();
+    if (nav?.extras?.state) {
+      this.riskScore = nav.extras.state['riskScore'] ?? null;
+      this.loanData = nav.extras.state['loanData'] ?? null;
+    }
+  }
 
   ngOnInit() {
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras?.state ?? history.state;
-    this.riskScore = state?.['riskScore'];
-    this.loanData = state?.['loanData'];
+    // Fallback 1: history.state (available after navigation completes)
+    if (!this.riskScore) {
+      const state = history.state;
+      this.riskScore = state?.['riskScore'] ?? null;
+      this.loanData = state?.['loanData'] ?? null;
+    }
 
+    // Fallback 2: sessionStorage (set synchronously before navigation in new-loan)
     if (!this.riskScore) {
       const raw = sessionStorage.getItem('rm_latest_risk_result');
       if (raw) {
@@ -45,12 +57,34 @@ export class RiskResultComponent implements OnInit {
           this.riskScore = cached?.riskScore ?? null;
           this.loanData = cached?.loanData ?? null;
         } catch {
-          // Ignore malformed cache and continue to guarded redirect.
+          // Ignore malformed cache and continue to API fallback.
         }
       }
     }
 
-    if (!this.riskScore) this.router.navigate(['/new-loan']);
+    // Fallback 3: fetch by riskId query param from API
+    if (!this.riskScore) {
+      const riskId = Number(this.route.snapshot.queryParamMap.get('riskId'));
+      if (Number.isFinite(riskId) && riskId > 0) {
+        this.loadingResult = true;
+        this.loanService.getRiskScoreById(riskId).subscribe({
+          next: (savedRisk) => {
+            this.riskScore = savedRisk;
+            this.loadingResult = false;
+          },
+          error: () => {
+            this.loadingResult = false;
+            this.loadError = 'Could not load risk assessment. The record may no longer exist.';
+          }
+        });
+      } else {
+        this.loadError = 'No risk assessment data available. Please generate a new risk score.';
+      }
+    }
+
+    if (this.loanData?.autoSaved) {
+      this.saveMsg = 'Saved automatically during generation. You can optionally override the score below.';
+    }
   }
 
   get scoreColor(): string {
@@ -86,83 +120,50 @@ export class RiskResultComponent implements OnInit {
   }
 
   saveWithOverride() {
-    if (!this.loanData || !this.riskScore || this.saving) return;
+    if (!this.riskScore || this.saving) return;
 
-    if (this.overrideScore !== null && (this.overrideScore < 0 || this.overrideScore > 100)) {
+    if (this.overrideScore === null) {
+      this.saveMsg = 'Already saved. Enter an override score only if you want to update it.';
+      return;
+    }
+
+    if (this.overrideScore < 0 || this.overrideScore > 100) {
       this.saveMsg = '✗ Override score must be between 0 and 100.';
+      return;
+    }
+
+    if (!this.riskScore?.riskId) {
+      this.saveMsg = '✗ Could not locate saved risk record. Please regenerate the loan assessment.';
       return;
     }
 
     this.saveMsg = '';
     this.saving = true;
 
-    const scoreToSave = this.overrideScore ?? this.riskScore.riskScore;
-    const user = this.auth.getUser();
-    const institutionId = user?.institutionId ?? null;
-    const now = this.toApiDateTime(new Date().toISOString());
-
-    const borrowerPayload = {
-      fullName: this.loanData.fullName,
-      nationalId: this.loanData.nationalId,
-      gender: this.loanData.gender,
-      age: Number(this.loanData.age),
-      location: this.loanData.location,
-      businessSector: this.loanData.businessSector,
-      monthlyIncome: Number(this.loanData.monthlyIncome),
-      collateralValue: Number(this.loanData.collateralValue),
-      institutionId,
-      createdAt: now
+    const scoreToSave = this.overrideScore;
+    const updated = {
+      ...this.riskScore,
+      riskScore: scoreToSave,
+      riskGrade: this.getGrade(scoreToSave)
     };
 
-    this.loanService.createBorrower(borrowerPayload).pipe(
-      switchMap((savedBorrower) => {
-        const loanPayload = {
-          borrowerId: savedBorrower?.borrowerId ?? null,
-          institutionId,
-          loanAmount: Number(this.loanData.loanAmount),
-          interestRate: Number(this.loanData.interestRate),
-          tenureMonths: Number(this.loanData.tenureMonths),
-          status: this.loanData.status,
-          disbursementDate: this.toApiDateTime(this.loanData.disbursementDate),
-          createdAt: now
-        };
-        return this.loanService.createLoan(loanPayload);
-      }),
-      switchMap((savedLoan) => {
-        const rs = {
-          ...this.riskScore,
-          loanId: savedLoan.loanId,
-          riskScore: scoreToSave,
-          riskGrade: this.getGrade(scoreToSave),
-          createdAt: now
-        };
-        return this.loanService.saveRiskScore(rs);
-      }),
+    this.loanService.updateRiskScore(this.riskScore.riskId, updated).pipe(
       finalize(() => {
         this.saving = false;
       })
     ).subscribe({
-      next: () => {
-        this.saveMsg = '✓ Borrower, loan and risk score saved successfully!';
+      next: (saved) => {
+        this.riskScore = saved;
+        this.saveMsg = '✓ Risk score override saved successfully.';
       },
       error: (err: HttpErrorResponse) => {
         if (err.status === 401 || err.status === 403) {
-          this.saveMsg = '✗ Session expired. Please login and try saving again.';
+          this.saveMsg = '✗ Session expired. Please login and try again.';
           return;
         }
-        this.saveMsg = '✗ Failed to save complete flow. Please try again.';
+        this.saveMsg = '✗ Failed to update risk score. Please try again.';
       }
     });
-  }
-
-  private toApiDateTime(value: string | null | undefined): string | null {
-    if (!value) return null;
-    const trimmed = String(value).trim();
-    if (!trimmed) return null;
-    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-      return `${trimmed}T00:00:00`;
-    }
-    return trimmed.endsWith('Z') ? trimmed.slice(0, 19) : trimmed;
   }
 
   getGrade(s: number): string {

@@ -122,6 +122,34 @@ public class DataInitializer {
             adminUser.getEmail(), officerUser.getEmail(),
             seed.getDefaultUserPassword() == null ? 0 : seed.getDefaultUserPassword().length());
 
+        Borrower adminProfile = new Borrower();
+        adminProfile.setUserId(admin.getUserId());
+        adminProfile.setInstitutionId(instId);
+        adminProfile.setFullName(admin.getName());
+        adminProfile.setNationalId("NID-ADMIN-001");
+        adminProfile.setGender("Male");
+        adminProfile.setAge(36);
+        adminProfile.setLocation("Nairobi");
+        adminProfile.setBusinessSector("Finance");
+        adminProfile.setMonthlyIncome(6800.0);
+        adminProfile.setCollateralValue(28000.0);
+        adminProfile.setCreatedAt(LocalDateTime.now().minusMonths(10));
+        borrowerRepository.save(adminProfile);
+
+        Borrower officerProfile = new Borrower();
+        officerProfile.setUserId(officer.getUserId());
+        officerProfile.setInstitutionId(instId);
+        officerProfile.setFullName(officer.getName());
+        officerProfile.setNationalId("NID-OFFICER-001");
+        officerProfile.setGender("Female");
+        officerProfile.setAge(33);
+        officerProfile.setLocation("Mombasa");
+        officerProfile.setBusinessSector("Agriculture");
+        officerProfile.setMonthlyIncome(4300.0);
+        officerProfile.setCollateralValue(16500.0);
+        officerProfile.setCreatedAt(LocalDateTime.now().minusMonths(9));
+        borrowerRepository.save(officerProfile);
+
         // Borrowers
         String[][] borrowerData = {
             {"Samuel Omondi",   "NID001", "Male",   "32", "Nairobi",      "Technology",    "5500",  "25000"},

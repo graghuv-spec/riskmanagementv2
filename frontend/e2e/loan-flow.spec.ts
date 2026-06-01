@@ -8,38 +8,9 @@ import { loginViaStorage } from './helpers/auth.helper';
 test.describe('Loan Application Flow', () => {
 
   async function fillRequiredLoanFields(page: any) {
-    await page.locator('input[name="fullName"], input[placeholder*="name" i]').first().fill('Test Borrower');
-    await page.locator('input[name="nationalId"], input[placeholder*="id" i]').first().fill('NID-TEST-001');
-    await page.locator('input[name="age"], input[placeholder*="age" i]').first().fill('35');
-    await page.locator('input[name="monthlyIncome"], input[placeholder*="income" i]').first().fill('3000');
-    await page.locator('input[name="collateralValue"], input[placeholder*="collateral" i]').first().fill('20000');
     await page.locator('input[name="loanAmount"], input[placeholder*="amount" i]').first().fill('10000');
     await page.locator('input[name="interestRate"], input[placeholder*="interest" i]').first().fill('12');
     await page.locator('input[name="tenureMonths"], input[placeholder*="tenure" i]').first().fill('24');
-
-    const locationSelect = page.locator('select[name="location"]');
-    if (await locationSelect.count() > 0) {
-      const locationOptions = await locationSelect.locator('option').count();
-      if (locationOptions > 1) {
-        await locationSelect.selectOption({ index: 1 });
-      } else {
-        await page.locator('input[name="location"]').first().fill('Nairobi');
-      }
-    } else {
-      await page.locator('input[name="location"]').first().fill('Nairobi');
-    }
-
-    const sectorSelect = page.locator('select[name="businessSector"]');
-    if (await sectorSelect.count() > 0) {
-      const sectorOptions = await sectorSelect.locator('option').count();
-      if (sectorOptions > 1) {
-        await sectorSelect.selectOption({ index: 1 });
-      } else {
-        await page.locator('input[name="businessSector"]').first().fill('Retail');
-      }
-    } else {
-      await page.locator('input[name="businessSector"]').first().fill('Retail');
-    }
   }
 
   test.beforeEach(async ({ page }) => {
@@ -52,6 +23,17 @@ test.describe('Loan Application Flow', () => {
     await expect(page.locator('form, [class*="form"]').first()).toBeVisible({ timeout: 10_000 });
   });
 
+  test('borrower and financial fields are read-only, while loan fields stay editable', async ({ page }) => {
+    await expect(page.locator('input[name="fullName"]').first()).toBeDisabled();
+    await expect(page.locator('input[name="nationalId"]').first()).toBeDisabled();
+    await expect(page.locator('input[name="monthlyIncome"]').first()).toBeDisabled();
+    await expect(page.locator('input[name="collateralValue"]').first()).toBeDisabled();
+
+    await expect(page.locator('input[name="loanAmount"]').first()).toBeEditable();
+    await expect(page.locator('input[name="interestRate"]').first()).toBeEditable();
+    await expect(page.locator('input[name="tenureMonths"]').first()).toBeEditable();
+  });
+
   test('shows validation error when required fields are empty', async ({ page }) => {
     // Click submit without filling in anything
     const submitBtn = page.getByRole('button', { name: /generate|assess|calculate|submit/i });
@@ -61,16 +43,14 @@ test.describe('Loan Application Flow', () => {
       .toContainText(/required|fill/i, { timeout: 5_000 });
   });
 
-  test('collateral ratio updates as amounts are entered', async ({ page }) => {
-    // Fill loan amount and collateral value to trigger the computed ratio
+  test('collateral ratio updates as loan amount is entered against profile collateral', async ({ page }) => {
+    // Borrower collateral comes from profile and remains read-only.
     const loanAmountInput = page.locator('input[name="loanAmount"], input[placeholder*="amount" i]').first();
-    const collateralInput = page.locator('input[name="collateralValue"], input[placeholder*="collateral" i]').first();
 
     await loanAmountInput.fill('10000');
-    await collateralInput.fill('15000');
 
-    // Ratio = 1.50 — the template should render it somewhere on the page
-    await expect(page.locator('body')).toContainText(/1\.5/);
+    // Ratio should be rendered once loan amount is set and profile collateral is present.
+    await expect(page.locator('.ratio-indicator')).toBeVisible({ timeout: 10_000 });
   });
 
   test('submitting a complete form calculates risk score and navigates to /risk-result', async ({ page }) => {
@@ -108,10 +88,10 @@ test.describe('Loan Application Flow', () => {
   test.describe('Risk Result Page', () => {
 
     test.beforeEach(async ({ page }) => {
-      // Inject a mock risk result directly via router state using History API
+      // Seed the same cache used by the app so the page can always restore data.
       await loginViaStorage(page);
       await page.evaluate(() => {
-        const mockState = {
+        const cachedState = {
           riskScore: {
             riskScore: 75,
             riskGrade: 'B',
@@ -128,7 +108,7 @@ test.describe('Loan Application Flow', () => {
             location: 'Nairobi',
           },
         };
-        history.pushState(mockState, '', '/risk-result');
+        sessionStorage.setItem('rm_latest_risk_result', JSON.stringify(cachedState));
       });
       await page.goto('/risk-result');
     });
@@ -170,4 +150,32 @@ test.describe('Loan Application Flow', () => {
     });
   });
 
+});
+
+test.describe('Loan Field Editability', () => {
+  test('new-loan locks borrower and financial sections while loan fields stay editable (isolated)', async ({ page }) => {
+    await page.goto('/login');
+    await page.evaluate(() => {
+      localStorage.setItem('rm_user', JSON.stringify({
+        userId: 1,
+        name: 'Test User',
+        email: 'test@example.com',
+        role: 'Admin',
+        institutionId: 1,
+        token: 'test-token',
+        tokenType: 'Bearer'
+      }));
+    });
+
+    await page.goto('/new-loan');
+
+    await expect(page.locator('input[name="fullName"]').first()).toBeDisabled();
+    await expect(page.locator('input[name="nationalId"]').first()).toBeDisabled();
+    await expect(page.locator('input[name="monthlyIncome"]').first()).toBeDisabled();
+    await expect(page.locator('input[name="collateralValue"]').first()).toBeDisabled();
+
+    await expect(page.locator('input[name="loanAmount"]').first()).toBeEditable();
+    await expect(page.locator('input[name="interestRate"]').first()).toBeEditable();
+    await expect(page.locator('input[name="tenureMonths"]').first()).toBeEditable();
+  });
 });
